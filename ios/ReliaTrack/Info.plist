@@ -33,8 +33,20 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<key>UIBackgroundModes</key>
+<array>
+  <string>location</string>
+</array>
+
+<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+<string>We track location for active deliveries</string>
+
+<key>NSLocationAlwaysUsageDescription</key>
+<string>We track location for deliveries even in background</string>
+
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>We track your delivery location</string>
+
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
