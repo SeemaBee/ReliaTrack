@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import { useTheme } from 'common/helperFunctions';
+import { changeLanguage, useTheme } from 'common/helperFunctions';
 import CustomText from 'common/components/text';
 import { AppNavigationProp } from 'common/types/navigationTypes';
 import styles from './Splash.styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Language } from 'common/types/types';
 
 type Props = {
   navigation: AppNavigationProp<'Splash'>;
@@ -11,6 +13,15 @@ type Props = {
 
 const SplashScreen: React.FC<Props> = ({ navigation }) => {
   const theme = useTheme();
+
+  const checkLanguage = async () => {
+    const lang = await AsyncStorage.getItem('language');
+    if (lang !== 'en') changeLanguage(lang as Language);
+  };
+
+  useEffect(() => {
+    checkLanguage();
+  }, []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ThemeMode } from 'common/types/theme';
+import { ThemeMode } from 'common/types/types';
 import { Appearance } from 'react-native';
 
 const getInitialTheme = (): ThemeMode => {
