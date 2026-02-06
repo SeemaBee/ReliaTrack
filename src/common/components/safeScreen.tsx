@@ -10,7 +10,7 @@ type Props = {
 export default function SafeScreen({ children }: Props) {
   const theme = useTheme();
 
-  return <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>{children}</SafeAreaView>;
+  return <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>{children}</SafeAreaView>;
 }
 
 const styles = StyleSheet.create({

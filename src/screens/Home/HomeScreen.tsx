@@ -16,7 +16,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     const timeout = setTimeout(() => {
       navigation.replace("Login");
     }, 3000);
-
     return () => clearTimeout(timeout);
   }, [navigation]);
 

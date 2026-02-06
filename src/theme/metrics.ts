@@ -18,6 +18,7 @@ export const Metrics = {
   _28: moderateScale(28),
   _30: moderateScale(30),
   _32: moderateScale(32),
+  _35: moderateScale(35),
   _38: moderateScale(38),
   _40: moderateScale(40),
   _48: moderateScale(48),

@@ -1,29 +1,47 @@
-import { StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
+import store from './src/redux/store';
+import SafeScreen from 'common/components/safeScreen';
+import AppNavigator from 'navigation/AppNavigator';
+import { useEffect, useState } from 'react';
+import { addEventListener } from '@react-native-community/netinfo';
+import Orientation from 'react-native-orientation-locker';
+import CheckInternetConnection from 'common/components/checkInternetConnection';
+import { I18nextProvider } from 'react-i18next';
+import i18n from "./src/i18n";
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
+  const [showNoInternetPopup, setShowNoInternetPopup] = useState(false);
+  useEffect(() => {
+    Orientation.lockToPortrait();
+    const checkConnection = addEventListener(state => {
+      const isConnected = state.isConnected ?? true;
+      setShowNoInternetPopup(!isConnected);
+    });
+    return () => checkConnection();
+  }, []);
 
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
+      <SafeScreen>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <AppNavigator />
+        {showNoInternetPopup ? <CheckInternetConnection /> : null}
+      </SafeScreen>
     </SafeAreaProvider>
   );
 }
 
 function AppContent() {
-  return <View style={styles.container}>
-    <Text>Relia Track</Text>
-  </View>;
+  return (
+    <Provider store={store}>
+      <I18nextProvider i18n={i18n}>
+           <App />
+      </I18nextProvider>
+    </Provider>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-
-export default App;
+export default AppContent;
