@@ -4,11 +4,13 @@
     },
     "auth": {
         "login": "Login",
-        "email": "Email",
+        "subTitle": "Sign in to connect, collaborate, and grow.",
+        "email": "Username",
         "email_placeholder": "Enter your email",
         "password": "Password",
         "password_placeholder": "Enter your password",
-        "btn_signin": "Sign In"
+        "forgotPassword": "Forgot Password?",
+        "btn_signin": "Login"
     },
     "validation": {
         "email_invalid": "Enter a valid email",
@@ -20,11 +22,10 @@
         "password_match": "Passwords do not match"
     },
     "home": {
-        "home": "Home",
-        "profile": "Profile",
-        "change_password": "Change Password",
-        "privacy_policy": "Privacy Policy",
-        "terms_conditions": "Terms & Conditions",
-        "logout": "Logout"
+        "title1": "Job Status",
+        "title2": "My Jobs",
+        "tab1": "New Requests",
+        "tab2": "Active",
+        "tab3": "Completed"
     }
 }

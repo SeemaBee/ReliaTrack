@@ -1,16 +1,14 @@
 import React, { useRef } from 'react';
-import { TextInput } from 'react-native';
+import { TextInput, TouchableOpacity, View } from 'react-native';
 import { Formik } from 'formik';
-import { LogIn, Lock } from 'lucide-react-native';
 import { AppNavigationProp } from 'common/types/navigationTypes';
-import { useTheme } from 'common/helperFunctions';
 import Container from 'common/components/container';
-import styles from './Login.styles';
 import CustomText from 'common/components/text';
 import { Input } from 'common/components/input';
 import Button from 'common/components/button';
 import { useTranslation } from 'react-i18next';
 import { LoginSchema } from 'utils/validationSchemas';
+import getStyles from './Login.styles';
 
 interface LoginProps {
   navigation: AppNavigationProp<'Login'>;
@@ -18,7 +16,7 @@ interface LoginProps {
 
 const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   const { t } = useTranslation();
-  const theme = useTheme();
+  const styles = getStyles();
 
   const passwordRef = useRef<TextInput>(null);
 
@@ -36,20 +34,18 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 
   return (
     <Container contentStyle={styles.container}>
-      <CustomText style={[styles.title, { color: theme.text }]}>
-        {t("auth.login")}
-      </CustomText>
+      <CustomText style={styles.title}>{t('auth.login')}</CustomText>
+      <CustomText style={styles.subTitle}>{t('auth.subTitle')}</CustomText>
       <Formik
         initialValues={initialValues}
-        validationSchema={LoginSchema}
+        // validationSchema={LoginSchema}
         onSubmit={handleSignIn}
       >
         {({ handleChange, handleSubmit, values, errors, touched }) => (
           <>
             <Input
-              label={t("auth.email")}
-              placeholder={t("auth.email_placeholder")}
-              leftIcon={<LogIn size={20} color={theme.textSecondary} />}
+              label={t('auth.email')}
+              placeholder={t('auth.email_placeholder')}
               onChangeText={handleChange('email')}
               value={values.email}
               keyboardType="email-address"
@@ -61,10 +57,8 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
             />
 
             <Input
-              label={t("auth.password")}
-              placeholder={t("auth.password_placeholder")}
-              secureToggle
-              leftIcon={<Lock size={20} color={theme.textSecondary} />}
+              label={t('auth.password')}
+              placeholder={t('auth.password_placeholder')}
               onChangeText={handleChange('password')}
               value={values.password}
               secureTextEntry
@@ -74,7 +68,15 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
               ref={passwordRef}
               onSubmitEditing={() => handleSubmit()}
             />
-            <Button title={t("auth.btn_signin")} onPress={handleSubmit} />
+            <View style={styles.forgotContainer}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate('ForgotPassword')}
+              >
+                <CustomText>{t('auth.forgotPassword')}</CustomText>
+              </TouchableOpacity>
+            </View>
+            <Button title={t('auth.btn_signin')} onPress={handleSubmit} />
           </>
         )}
       </Formik>

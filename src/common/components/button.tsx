@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -6,19 +6,19 @@ import {
   TextStyle,
   ActivityIndicator,
   View,
-} from "react-native";
-import { moderateScale, scale } from "react-native-size-matters";
-import { LucideIcon } from "lucide-react-native";
-import { useTheme } from "common/helperFunctions";
-import CustomText from "./text";
-import { Metrics } from "theme/metrics";
+} from 'react-native';
+import { moderateScale, scale } from 'react-native-size-matters';
+import { LucideIcon } from 'lucide-react-native';
+import { useTheme } from 'common/helperFunctions';
+import CustomText from './text';
+import { Metrics } from 'theme/metrics';
 
 interface ButtonProps {
   title: string;
   onPress: () => void;
   disabled?: boolean;
   loading?: boolean;
-  variant?: "primary" | "secondary" | "outline";
+  variant?: 'primary' | 'secondary' | 'outline';
   iconLeft?: LucideIcon;
   iconRight?: LucideIcon;
   style?: ViewStyle;
@@ -30,7 +30,7 @@ const Button: React.FC<ButtonProps> = ({
   onPress,
   disabled = false,
   loading = false,
-  variant = "primary",
+  variant = 'primary',
   iconLeft: LeftIcon,
   iconRight: RightIcon,
   style,
@@ -38,21 +38,20 @@ const Button: React.FC<ButtonProps> = ({
   const theme = useTheme();
 
   const bgColor =
-    variant === "primary"
-      ? theme.buttonPrimary
-      : variant === "secondary"
-      ? theme.buttonSecondary
-      : "transparent";
+    variant === 'primary'
+      ? theme.primary
+      : variant === 'secondary'
+      ? theme.secondary
+      : 'transparent';
 
-  const borderColor =
-    variant === "outline" ? theme.primary : "transparent";
+  const borderColor = variant === 'outline' ? theme.secondary : 'transparent';
 
   const textColor =
-    variant === "outline"
-      ? theme.primary
-      : variant === "secondary"
-      ? theme.buttonSecondaryText
-      : theme.buttonPrimaryText;
+    variant === 'outline'
+      ? theme.secondary
+      : variant === 'secondary'
+      ? theme.white
+      : theme.white;
 
   return (
     <TouchableOpacity
@@ -81,9 +80,7 @@ const Button: React.FC<ButtonProps> = ({
             />
           )}
 
-          <CustomText color={textColor}>
-            {title}
-          </CustomText>
+          <CustomText color={textColor}>{title}</CustomText>
 
           {RightIcon && (
             <RightIcon
@@ -106,11 +103,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: Metrics._16,
     borderRadius: Metrics._12,
     borderWidth: moderateScale(1),
-    justifyContent: "center",
+    justifyContent: 'center',
+    marginTop: Metrics._20,
   },
   content: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

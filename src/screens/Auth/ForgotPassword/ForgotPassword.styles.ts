@@ -7,15 +7,10 @@ const getStyles = () => {
   return StyleSheet.create({
     container: {
       flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
       backgroundColor: theme.background,
     },
-    title: {
-      fontSize: Metrics._28,
-      fontWeight: 700,
-      marginBottom: Metrics._16,
-      color: theme.text,
+    subContainer: {
+      padding: Metrics._16,
     },
   });
 };

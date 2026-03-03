@@ -7,9 +7,7 @@ export const LoginSchema = Yup.object().shape({
     .email(i18n.t('validation.email_invalid'))
     .required(i18n.t('validation.email_required')),
 
-  password: Yup.string()
-    .min(8, i18n.t('validation.password_min'))
-    .required(i18n.t('validation.password_required')),
+  password: Yup.string().required(i18n.t('validation.password_required')),
 });
 
 export const ForgotPasswordSchema = Yup.object().shape({
@@ -18,8 +16,14 @@ export const ForgotPasswordSchema = Yup.object().shape({
     .required(i18n.t('validation.email_required')),
 });
 
+export const VerifyOtpSchema = Yup.object().shape({
+  otp: Yup.string()
+    .required('OTP is required')
+    .matches(/^\d{5}$/, 'OTP must be exactly 5 digits'),
+});
+
 export const ResetPasswordSchema = Yup.object().shape({
-  newPassword: Yup.string()
+  password: Yup.string()
     .min(8, i18n.t('validation.password_min'))
     .matches(passwordRegex, i18n.t('validation.password_regex'))
     .required(i18n.t('validation.password_required')),

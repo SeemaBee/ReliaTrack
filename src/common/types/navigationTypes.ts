@@ -4,6 +4,9 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 export type StackParamList = {
   Splash: undefined;
   Login: undefined;
+  ForgotPassword: undefined;
+  OtpScreen: { email: string };
+  ResetPassword: { email: string };
   Home: undefined;
 };
 

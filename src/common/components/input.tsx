@@ -1,24 +1,24 @@
-import React, { Ref, useState } from "react";
+import React, { Ref, useState } from 'react';
 import {
   TextInput,
   View,
   TextInputProps,
   TouchableOpacity,
   StyleSheet,
-} from "react-native";
-import { verticalScale } from "react-native-size-matters";
-import { Eye, EyeOff } from "lucide-react-native";
-import { useTheme } from "common/helperFunctions";
-import CustomText from "./text";
-import { Metrics } from "theme/metrics";
+} from 'react-native';
+import { verticalScale } from 'react-native-size-matters';
+import { Eye, EyeOff } from 'lucide-react-native';
+import { useTheme } from 'common/helperFunctions';
+import CustomText from './text';
+import { Metrics } from 'theme/metrics';
 
 interface InputProps extends TextInputProps {
   label?: string;
   error?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  secureToggle?: boolean;
-  ref?: Ref<TextInput> | undefined
+  secureTextEntry?: boolean;
+  ref?: Ref<TextInput> | undefined;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -26,8 +26,7 @@ export const Input: React.FC<InputProps> = ({
   error,
   leftIcon,
   rightIcon,
-  secureTextEntry,
-  secureToggle = false,
+  secureTextEntry = false,
   style,
   ref,
   ...rest
@@ -43,8 +42,8 @@ export const Input: React.FC<InputProps> = ({
         style={[
           styles.inputContainer,
           {
-            backgroundColor: theme.surface,
-            borderColor: error ? theme.error : theme.border,
+            backgroundColor: theme.white,
+            borderColor: error ? theme.error : theme.border1,
           },
         ]}
       >
@@ -52,25 +51,21 @@ export const Input: React.FC<InputProps> = ({
 
         <TextInput
           placeholderTextColor={theme.textSecondary}
-          secureTextEntry={secureToggle ? isSecure : secureTextEntry}
-          style={[
-            styles.input,
-            { color: theme.text },
-            style,
-          ]}
+          secureTextEntry={isSecure}
+          style={[styles.input, { color: theme.text }, style]}
           ref={ref}
           {...rest}
         />
 
-        {secureToggle ? (
+        {secureTextEntry ? (
           <TouchableOpacity
             onPress={() => setIsSecure(!isSecure)}
             style={styles.iconRight}
           >
             {isSecure ? (
-              <EyeOff size={20} color={theme.textSecondary} />
-            ) : (
               <Eye size={20} color={theme.textSecondary} />
+            ) : (
+              <EyeOff size={20} color={theme.textSecondary} />
             )}
           </TouchableOpacity>
         ) : (
@@ -86,16 +81,16 @@ export const Input: React.FC<InputProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginVertical: Metrics._16,
-    width: "100%",
+    width: '100%',
   },
   label: {
     fontSize: Metrics._14,
-    marginBottom: Metrics._8, 
-    fontWeight: "500",
+    marginBottom: Metrics._8,
+    fontWeight: '500',
   },
   inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
     borderRadius: Metrics._8,
     paddingHorizontal: Metrics._12,
@@ -112,7 +107,7 @@ const styles = StyleSheet.create({
     marginLeft: Metrics._4,
   },
   error: {
-    marginTop: Metrics._8, 
+    marginTop: Metrics._8,
     fontSize: Metrics._10,
   },
 });

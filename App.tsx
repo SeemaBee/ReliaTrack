@@ -9,10 +9,9 @@ import { addEventListener } from '@react-native-community/netinfo';
 import Orientation from 'react-native-orientation-locker';
 import CheckInternetConnection from 'common/components/checkInternetConnection';
 import { I18nextProvider } from 'react-i18next';
-import i18n from "./src/i18n";
+import i18n from './src/i18n';
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
   const [showNoInternetPopup, setShowNoInternetPopup] = useState(false);
   useEffect(() => {
     Orientation.lockToPortrait();
@@ -26,7 +25,7 @@ function App() {
   return (
     <SafeAreaProvider>
       <SafeScreen>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <StatusBar barStyle={'dark-content'} />
         <AppNavigator />
         {showNoInternetPopup ? <CheckInternetConnection /> : null}
       </SafeScreen>
@@ -38,10 +37,10 @@ function AppContent() {
   return (
     <Provider store={store}>
       <I18nextProvider i18n={i18n}>
-           <App />
+        <App />
       </I18nextProvider>
     </Provider>
-  )
+  );
 }
 
 export default AppContent;

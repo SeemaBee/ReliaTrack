@@ -1,4 +1,4 @@
-import { moderateScale } from "react-native-size-matters";
+import { moderateScale } from 'react-native-size-matters';
 
 export const Metrics = {
   _1: moderateScale(1),
@@ -10,6 +10,7 @@ export const Metrics = {
   _10: moderateScale(10),
   _12: moderateScale(12),
   _14: moderateScale(14),
+  _15: moderateScale(15),
   _16: moderateScale(16),
   _18: moderateScale(18),
   _20: moderateScale(20),
@@ -22,6 +23,7 @@ export const Metrics = {
   _38: moderateScale(38),
   _40: moderateScale(40),
   _48: moderateScale(48),
+  _50: moderateScale(50),
   _60: moderateScale(60),
   _76: moderateScale(76),
   _78: moderateScale(78),
