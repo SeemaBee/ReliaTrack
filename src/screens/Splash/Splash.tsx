@@ -27,7 +27,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
     const timeout = setTimeout(() => {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Login' }],
+        routes: [{ name: 'OnboardingNavigation' }],
       });
     }, 3000);
 

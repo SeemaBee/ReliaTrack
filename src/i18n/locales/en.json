@@ -5,12 +5,15 @@
     "auth": {
         "login": "Login",
         "subTitle": "Sign in to connect, collaborate, and grow.",
-        "email": "Username",
+        "email": "Email",
         "email_placeholder": "Enter your email",
         "password": "Password",
         "password_placeholder": "Enter your password",
         "forgotPassword": "Forgot Password?",
         "btn_signin": "Login"
+    },
+    "forgot":{
+        "title":"Forgot Password"
     },
     "validation": {
         "email_invalid": "Enter a valid email",

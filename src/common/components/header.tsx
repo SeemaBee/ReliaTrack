@@ -5,6 +5,7 @@ import { useTheme } from 'common/helperFunctions';
 import { Metrics } from 'theme/metrics';
 import CustomText from './text';
 import { ArrowLeft } from 'lucide-react-native';
+import { FontFamily, FontSizes } from 'theme/typography';
 
 type Props = {
   title: string;
@@ -35,7 +36,8 @@ const getStyles = (theme: typeof LightTheme) =>
       gap: Metrics._8,
     },
     title: {
-      fontSize: Metrics._22,
+      fontSize: FontSizes._22,
+      fontFamily: FontFamily.interMedium,
     },
   });
 

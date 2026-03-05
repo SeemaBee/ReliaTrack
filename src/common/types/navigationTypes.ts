@@ -3,10 +3,12 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export type StackParamList = {
   Splash: undefined;
+  OnboardingNavigation: undefined;
   Login: undefined;
   ForgotPassword: undefined;
   OtpScreen: { email: string };
   ResetPassword: { email: string };
+  DashboardNavigation: undefined;
   Home: undefined;
 };
 

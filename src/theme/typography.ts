@@ -15,9 +15,8 @@ export const FontSizes = {
 };
 
 export const FontFamily = {
-  interBold: 'Inter-Bold',
-  interMedium: 'Inter-Medium',
-  interRegular: 'Inter-Regular',
-  interLight: 'Inter-Light',
-  interSemiBold: 'Inter-SemiBold',
+  interTightBold: 'InterTight-Bold',
+  interTightMedium: 'InterTight-Medium',
+  interTightRegular: 'InterTight-Regular',
+  interTightSemiBold: 'InterTight-SemiBold',
 };

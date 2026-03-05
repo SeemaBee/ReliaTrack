@@ -28,7 +28,7 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   const handleSignIn = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Home' }],
+      routes: [{ name: 'DashboardNavigation' }],
     });
   };
 
@@ -55,7 +55,6 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
               onSubmitEditing={() => passwordRef?.current?.focus()}
               submitBehavior={'submit'}
             />
-
             <Input
               label={t('auth.password')}
               placeholder={t('auth.password_placeholder')}
@@ -73,7 +72,9 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
                 activeOpacity={0.8}
                 onPress={() => navigation.navigate('ForgotPassword')}
               >
-                <CustomText>{t('auth.forgotPassword')}</CustomText>
+                <CustomText style={styles.forgotText}>
+                  {t('auth.forgotPassword')}
+                </CustomText>
               </TouchableOpacity>
             </View>
             <Button title={t('auth.btn_signin')} onPress={handleSubmit} />

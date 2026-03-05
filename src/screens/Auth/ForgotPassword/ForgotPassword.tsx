@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
 import getStyles from './ForgotPassword.styles';
 import Header from 'common/components/header';
@@ -8,6 +8,7 @@ import { Input } from 'common/components/input';
 import Button from 'common/components/button';
 import { Formik, FormikHelpers } from 'formik';
 import { ForgotPasswordSchema } from 'utils/validationSchemas';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   navigation: AppNavigationProp<'ForgotPassword'>;
@@ -19,6 +20,7 @@ type initialProps = {
 
 const ForgotPassword = ({ navigation }: Props) => {
   const styles = getStyles();
+  const { t } = useTranslation();
 
   const handleSubmit = async (
     values: initialProps,
@@ -29,7 +31,10 @@ const ForgotPassword = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
-      <Header title="Forgot Password" onBackPress={() => navigation.goBack()} />
+      <Header
+        title={t('forgot.title')}
+        onBackPress={() => navigation.goBack()}
+      />
       <Formik
         initialValues={{ email: '' }}
         validationSchema={ForgotPasswordSchema}
@@ -38,7 +43,7 @@ const ForgotPassword = ({ navigation }: Props) => {
         {({ values, handleSubmit, touched, errors, handleChange }) => (
           <Container contentStyle={styles.subContainer}>
             <Input
-              label="Email"
+              label={t('auth.email')}
               placeholder="Enter your email"
               keyboardType="email-address"
               value={values.email}

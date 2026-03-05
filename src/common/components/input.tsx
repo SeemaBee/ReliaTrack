@@ -11,6 +11,7 @@ import { Eye, EyeOff } from 'lucide-react-native';
 import { useTheme } from 'common/helperFunctions';
 import CustomText from './text';
 import { Metrics } from 'theme/metrics';
+import { FontFamily, FontSizes } from 'theme/typography';
 
 interface InputProps extends TextInputProps {
   label?: string;
@@ -80,11 +81,11 @@ export const Input: React.FC<InputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: Metrics._16,
+    marginBottom: Metrics._16,
     width: '100%',
   },
   label: {
-    fontSize: Metrics._14,
+    fontSize: FontSizes._14,
     marginBottom: Metrics._8,
     fontWeight: '500',
   },
@@ -98,7 +99,8 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: Metrics._12,
+    fontSize: FontSizes._12,
+    fontFamily: FontFamily.interTight,
   },
   iconLeft: {
     marginRight: Metrics._4,
@@ -108,6 +110,6 @@ const styles = StyleSheet.create({
   },
   error: {
     marginTop: Metrics._8,
-    fontSize: Metrics._10,
+    fontSize: FontSizes._10,
   },
 });
