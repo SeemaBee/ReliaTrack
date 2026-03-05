@@ -1,18 +1,30 @@
+import { useTheme } from 'common/helperFunctions';
 import { StyleSheet } from 'react-native';
-import { Metrics } from 'theme/metrics';
+import { fontFamily, Metrics } from 'theme/metrics';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: Metrics._16,
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: Metrics._28,
-    fontWeight: 700,
-    marginBottom: Metrics._20,
-    textAlign: 'center',
-  },
-});
+const useStyles = () => {
+  const theme = useTheme();
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: Metrics._16,
+    },
+    title: {
+      fontSize: Metrics._28,
+      color: theme.text,
+      fontFamily: fontFamily.InterTightMedium,
+    },
+    tagLine: {
+      color: theme.grey,
+    },
+    forgotText: {
+      color: theme.grey,
+    },
+    forgotBtn: {
+      alignSelf: 'flex-end',
+      marginBottom: Metrics._20,
+    },
+  });
+};
 
-export default styles;
+export default useStyles;

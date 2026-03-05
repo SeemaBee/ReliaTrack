@@ -39,10 +39,10 @@ const Button: React.FC<ButtonProps> = ({
 
   const bgColor =
     variant === "primary"
-      ? theme.buttonPrimary
+      ? theme.primary
       : variant === "secondary"
-      ? theme.buttonSecondary
-      : "transparent";
+        ? theme.buttonSecondary
+        : "transparent";
 
   const borderColor =
     variant === "outline" ? theme.primary : "transparent";
@@ -51,8 +51,8 @@ const Button: React.FC<ButtonProps> = ({
     variant === "outline"
       ? theme.primary
       : variant === "secondary"
-      ? theme.buttonSecondaryText
-      : theme.buttonPrimaryText;
+        ? theme.buttonSecondaryText
+        : theme.buttonPrimaryText;
 
   return (
     <TouchableOpacity
@@ -81,7 +81,7 @@ const Button: React.FC<ButtonProps> = ({
             />
           )}
 
-          <CustomText color={textColor}>
+          <CustomText style={styles.btnText} color={textColor}>
             {title}
           </CustomText>
 
@@ -102,15 +102,19 @@ export default Button;
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: Metrics._12,
+    paddingVertical: Metrics._14,
     paddingHorizontal: Metrics._16,
     borderRadius: Metrics._12,
     borderWidth: moderateScale(1),
     justifyContent: "center",
+    marginTop: Metrics._10
   },
   content: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
   },
+  btnText: {
+    fontSize: Metrics._16
+  }
 });

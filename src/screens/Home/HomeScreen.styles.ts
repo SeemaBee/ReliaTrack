@@ -1,17 +1,21 @@
-import { StyleSheet } from "react-native";
-import { Metrics } from "theme/metrics";
+import { useTheme } from 'common/helperFunctions';
+import { StyleSheet } from 'react-native';
+import { fontFamily, Metrics } from 'theme/metrics';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: Metrics._28,
-    fontWeight: 700,
-    marginBottom: Metrics._16,
-  },
-});
+const useStyles = () => {
+  const theme = useTheme();
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.background,
+      padding:Metrics._10
+    },
+    jobLabel: {
+      color: theme.text,
+      fontSize: Metrics._18,
+      fontFamily: fontFamily.InterRegular,
+    },
+  });
+};
 
-export default styles;
+export default useStyles;

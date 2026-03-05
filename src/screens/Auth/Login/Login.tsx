@@ -1,16 +1,16 @@
 import React, { useRef } from 'react';
-import { TextInput } from 'react-native';
+import { TextInput, TouchableOpacity } from 'react-native';
 import { Formik } from 'formik';
 import { LogIn, Lock } from 'lucide-react-native';
 import { AppNavigationProp } from 'common/types/navigationTypes';
 import { useTheme } from 'common/helperFunctions';
 import Container from 'common/components/container';
-import styles from './Login.styles';
 import CustomText from 'common/components/text';
 import { Input } from 'common/components/input';
 import Button from 'common/components/button';
 import { useTranslation } from 'react-i18next';
 import { LoginSchema } from 'utils/validationSchemas';
+import useStyles from './Login.styles';
 
 interface LoginProps {
   navigation: AppNavigationProp<'Login'>;
@@ -19,42 +19,45 @@ interface LoginProps {
 const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const styles = useStyles();
 
   const passwordRef = useRef<TextInput>(null);
 
   const initialValues = {
-    email: '',
+    username: '',
     password: '',
   };
 
   const handleSignIn = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Home' }],
-    });
+    navigation.navigate('Home')
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{ name: 'Home' }],
+    // });
   };
 
   return (
     <Container contentStyle={styles.container}>
-      <CustomText style={[styles.title, { color: theme.text }]}>
+      <CustomText style={styles.title}>
         {t("auth.login")}
       </CustomText>
+      <CustomText style={styles.tagLine}>{t("auth.login_tagLine")}</CustomText>
       <Formik
         initialValues={initialValues}
-        validationSchema={LoginSchema}
+        // validationSchema={LoginSchema}
         onSubmit={handleSignIn}
       >
         {({ handleChange, handleSubmit, values, errors, touched }) => (
           <>
             <Input
-              label={t("auth.email")}
-              placeholder={t("auth.email_placeholder")}
+              label={t("auth.username")}
+              placeholder={t("auth.username_placeholder")}
               leftIcon={<LogIn size={20} color={theme.textSecondary} />}
-              onChangeText={handleChange('email')}
-              value={values.email}
+              onChangeText={handleChange('username')}
+              value={values.username}
               keyboardType="email-address"
               autoCapitalize="none"
-              error={touched.email ? errors.email : undefined}
+              error={touched.username ? errors.username : undefined}
               returnKeyType="next"
               onSubmitEditing={() => passwordRef?.current?.focus()}
               submitBehavior={'submit'}
@@ -74,6 +77,9 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
               ref={passwordRef}
               onSubmitEditing={() => handleSubmit()}
             />
+            <TouchableOpacity activeOpacity={1} style={styles.forgotBtn} onPress={() => navigation.navigate("ForgotPassword")}>
+              <CustomText style={styles.forgotText}>{t("auth.forgot_password")}?</CustomText>
+            </TouchableOpacity>
             <Button title={t("auth.btn_signin")} onPress={handleSubmit} />
           </>
         )}
@@ -83,3 +89,4 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 };
 
 export default LoginScreen;
+

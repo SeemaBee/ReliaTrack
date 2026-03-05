@@ -1,17 +1,15 @@
 import { useTheme } from 'common/helperFunctions';
 import React from 'react';
 import { Text, TextProps } from 'react-native';
-import { Metrics } from 'theme/metrics';
+import { fontFamily, Metrics } from 'theme/metrics';
 
 interface AppTextProps extends TextProps {
   variant?: 'h1' | 'h2' | 'h3' | 'title' | 'body' | 'caption';
-  weight?: '400' | '500' | '600' | '700';
   color?: string;
 }
 
 export const CustomText: React.FC<AppTextProps> = ({
   variant = 'body',
-  weight = '400',
   color,
   style,
   children,
@@ -35,7 +33,7 @@ export const CustomText: React.FC<AppTextProps> = ({
         {
           color: color || theme.text,
           fontSize: variantFontSize,
-          fontWeight: weight,
+          fontFamily: fontFamily.InterTightRegular,
         },
         style,
       ]}

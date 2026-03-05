@@ -3,7 +3,7 @@ import i18n from 'i18n';
 import { passwordRegex } from './regex';
 
 export const LoginSchema = Yup.object().shape({
-  email: Yup.string()
+  username: Yup.string()
     .email(i18n.t('validation.email_invalid'))
     .required(i18n.t('validation.email_required')),
 
@@ -13,7 +13,7 @@ export const LoginSchema = Yup.object().shape({
 });
 
 export const ForgotPasswordSchema = Yup.object().shape({
-  email: Yup.string()
+  username: Yup.string()
     .email(i18n.t('validation.email_invalid'))
     .required(i18n.t('validation.email_required')),
 });

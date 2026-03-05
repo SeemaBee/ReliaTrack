@@ -6,10 +6,11 @@ import SafeScreen from 'common/components/safeScreen';
 import AppNavigator from 'navigation/AppNavigator';
 import { useEffect, useState } from 'react';
 import { addEventListener } from '@react-native-community/netinfo';
-import Orientation from 'react-native-orientation-locker';
 import CheckInternetConnection from 'common/components/checkInternetConnection';
 import { I18nextProvider } from 'react-i18next';
 import i18n from "./src/i18n";
+import { initThemeListener } from 'common/components/themelistener';
+import Orientation from 'react-native-orientation-locker';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -21,6 +22,11 @@ function App() {
       setShowNoInternetPopup(!isConnected);
     });
     return () => checkConnection();
+  }, []);
+
+  useEffect(() => {
+    const cleanup = initThemeListener();
+    return cleanup;
   }, []);
 
   return (
@@ -38,7 +44,7 @@ function AppContent() {
   return (
     <Provider store={store}>
       <I18nextProvider i18n={i18n}>
-           <App />
+        <App />
       </I18nextProvider>
     </Provider>
   )

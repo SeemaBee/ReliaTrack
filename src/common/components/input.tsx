@@ -10,7 +10,7 @@ import { verticalScale } from "react-native-size-matters";
 import { Eye, EyeOff } from "lucide-react-native";
 import { useTheme } from "common/helperFunctions";
 import CustomText from "./text";
-import { Metrics } from "theme/metrics";
+import { fontFamily, Metrics } from "theme/metrics";
 
 interface InputProps extends TextInputProps {
   label?: string;
@@ -90,8 +90,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: Metrics._14,
-    marginBottom: Metrics._8, 
-    fontWeight: "500",
+    marginBottom: Metrics._8,
   },
   inputContainer: {
     flexDirection: "row",
@@ -104,6 +103,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: Metrics._12,
+    fontFamily: fontFamily.InterTightRegular
   },
   iconLeft: {
     marginRight: Metrics._4,
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     marginLeft: Metrics._4,
   },
   error: {
-    marginTop: Metrics._8, 
+    marginTop: Metrics._8,
     fontSize: Metrics._10,
   },
 });

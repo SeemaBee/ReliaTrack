@@ -5,6 +5,10 @@ export type StackParamList = {
   Splash: undefined;
   Login: undefined;
   Home: undefined;
+  BarcodeScan: undefined;
+  SignatureScreen: undefined;
+  DeliveryScreen: undefined;
+  ForgotPassword: undefined;
 };
 
 export type AppNavigationProp<T extends keyof StackParamList> =

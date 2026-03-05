@@ -1,4 +1,5 @@
-import { moderateScale } from "react-native-size-matters";
+import { Dimensions } from 'react-native';
+import { moderateScale } from 'react-native-size-matters';
 
 export const Metrics = {
   _1: moderateScale(1),
@@ -15,6 +16,7 @@ export const Metrics = {
   _20: moderateScale(20),
   _22: moderateScale(22),
   _24: moderateScale(24),
+  _26: moderateScale(26),
   _28: moderateScale(28),
   _30: moderateScale(30),
   _32: moderateScale(32),
@@ -30,4 +32,17 @@ export const Metrics = {
   _130: moderateScale(130),
   _224: moderateScale(224),
   _300: moderateScale(300),
+  deviceHeight: Dimensions.get('window').height,
+  deviceWidth: Dimensions.get('window').width,
+};
+
+export const fontFamily = {
+  InterBold: 'Inter-Bold',
+  InterMedium: 'Inter-Medium',
+  InterRegular: 'Inter-Regular',
+  InterSemiBold: 'Inter-SemiBold',
+  InterTightBold: 'InterTight-Bold',
+  InterTightMedium: 'InterTight-Medium',
+  InterTightRegular: 'InterTight-Regular',
+  InterTightSemiBold: 'InterTight-SemiBold',
 };
