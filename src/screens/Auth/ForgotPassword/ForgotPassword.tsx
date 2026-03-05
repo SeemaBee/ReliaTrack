@@ -1,6 +1,5 @@
 import { View } from 'react-native';
 import React from 'react';
-import getStyles from './ForgotPassword.styles';
 import Header from 'common/components/header';
 import { AppNavigationProp } from 'common/types/navigationTypes';
 import Container from 'common/components/container';
@@ -9,6 +8,7 @@ import Button from 'common/components/button';
 import { Formik, FormikHelpers } from 'formik';
 import { ForgotPasswordSchema } from 'utils/validationSchemas';
 import { useTranslation } from 'react-i18next';
+import useStyles from './ForgotPassword.styles';
 
 interface Props {
   navigation: AppNavigationProp<'ForgotPassword'>;
@@ -19,7 +19,7 @@ type initialProps = {
 };
 
 const ForgotPassword = ({ navigation }: Props) => {
-  const styles = getStyles();
+  const styles = useStyles();
   const { t } = useTranslation();
 
   const handleSubmit = async (

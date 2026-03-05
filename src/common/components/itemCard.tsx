@@ -1,0 +1,109 @@
+import { useTheme } from "common/helperFunctions";
+import { StyleSheet, TouchableOpacity, View } from "react-native"
+import { LightTheme } from "theme/colors";
+import { Metrics } from "theme/metrics";
+import CustomText from "./text";
+import { Check } from "lucide-react-native";
+import React from "react";
+
+interface Props {
+    onPress?: () => void;
+    show?: boolean;
+    selected?: boolean;
+}
+
+const ItemCard: React.FC<Props> = ({ onPress, show, selected }) => {
+    const theme = useTheme();
+    const styles = getStyles(theme);
+    return (
+        <View style={styles.container}>
+            <View style={styles.row}>
+                <View style={styles.itemBox}>
+                    <CustomText style={styles.itemText}>Item 1</CustomText>
+                </View>
+                {show && <TouchableOpacity activeOpacity={1} style={[styles.checkBoxContainer, selected && styles.selectionStyle]} onPress={onPress}>
+                    {selected && <Check size={Metrics._20} color={theme.white} />}
+                </TouchableOpacity>}
+            </View>
+            <View style={styles.rowBox}>
+                <CustomText style={styles.labelTxt}>Name</CustomText>
+                <CustomText>Blood</CustomText>
+            </View>
+            <View style={styles.rowBox}>
+                <CustomText style={styles.labelTxt}>Specimen Type</CustomText>
+                <CustomText>Blood</CustomText>
+            </View>
+            <View style={styles.rowBox}>
+                <CustomText style={styles.labelTxt}>Accession/Specimen ID</CustomText>
+                <CustomText>SP-2026-10245</CustomText>
+            </View>
+            <View style={styles.horizontalLine} />
+            <CustomText style={styles.labelTxt}>Drop off location</CustomText>
+            <CustomText style={styles.dropOffTxt}>1901 Thornridge Cir. Shiloh, Hawaii 81063..</CustomText>
+        </View>
+    )
+}
+
+const getStyles = (theme: typeof LightTheme) =>
+    StyleSheet.create({
+        container: {
+            width: '100%',
+            padding: Metrics._16,
+            borderWidth: Metrics._1,
+            borderColor: theme.border8,
+            marginBottom: Metrics._20,
+            borderRadius: Metrics._10,
+            alignItems: 'flex-start',
+        },
+        itemBox: {
+            paddingHorizontal: Metrics._12,
+            paddingVertical: Metrics._6,
+            backgroundColor: theme.lightSkyBlue,
+            borderWidth: Metrics._1,
+            borderColor: theme.border9,
+            borderRadius: Metrics._8,
+        },
+        itemText: {
+            fontSize: Metrics._16,
+            color: theme.primary,
+        },
+        rowBox: {
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginBottom: Metrics._6
+        },
+        labelTxt: {
+            color: theme.black2
+        },
+        horizontalLine: {
+            width: "100%",
+            height: Metrics._1,
+            backgroundColor: theme.border2,
+            marginVertical: Metrics._8
+        },
+        dropOffTxt: {
+            marginTop: Metrics._4
+        },
+        checkBoxContainer: {
+            height: Metrics._22,
+            width: Metrics._22,
+            borderWidth: Metrics._1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: Metrics._4,
+            borderColor: theme.border11
+        },
+        selectionStyle: {
+            backgroundColor: theme.primary
+        },
+        row: {
+            width: "100%",
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: Metrics._10,
+            justifyContent: 'space-between',
+        }
+    })
+
+export default ItemCard;

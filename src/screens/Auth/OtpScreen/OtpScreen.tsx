@@ -1,8 +1,7 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from 'common/components/header';
 import { AppNavigationProp, AppRouteProp } from 'common/types/navigationTypes';
-import getStyles from './OtpScreen.styles';
 import Container from 'common/components/container';
 import { Formik, FormikHelpers } from 'formik';
 import { VerifyOtpSchema } from 'utils/validationSchemas';
@@ -10,6 +9,7 @@ import OTPInput from 'common/components/otpInut';
 import CustomText from 'common/components/text';
 import Button from 'common/components/button';
 import Loader from 'common/components/loader';
+import useStyles from './OtpScreen.styles';
 
 interface Props {
   navigation: AppNavigationProp<'OtpScreen'>;
@@ -21,7 +21,7 @@ type initialProp = {
 };
 
 const OtpScreen = ({ navigation, route }: Props) => {
-  const styles = getStyles();
+  const styles = useStyles();
   const [secondsLeft, setSecondsLeft] = useState(30);
   const [showResend, setShowResend] = useState(false);
   const { email } = route.params;
@@ -39,7 +39,7 @@ const OtpScreen = ({ navigation, route }: Props) => {
     return () => clearTimeout(timer);
   }, [secondsLeft]);
 
-  const handleResend = () => {};
+  const handleResend = () => { };
   const handleOtpComplete = (
     values: initialProp,
     actions: FormikHelpers<initialProp>,

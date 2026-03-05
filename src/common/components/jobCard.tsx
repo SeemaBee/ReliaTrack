@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { LightTheme } from 'theme/colors';
 import { useTheme } from 'common/helperFunctions';
@@ -7,9 +7,17 @@ import CustomText from './text';
 import { MapIcon } from 'assets/svg';
 import { Calendar, ChevronRight, Clock } from 'lucide-react-native';
 
-const JobCard = () => {
+interface Props {
+  onPress?: () => void;
+  data: any
+}
+
+const JobCard: React.FC<Props> = ({ onPress, data }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
+
+  console.log('data - ',data);
+  
   return (
     <View style={styles.container}>
       <View style={styles.itemBox}>
@@ -23,7 +31,7 @@ const JobCard = () => {
         </CustomText>
       </View>
       <CustomText>Pickup</CustomText>
-      <View style={styles.dateTimeBox}>
+      <View style={styles.pickupDateTimeBox}>
         <View style={styles.row}>
           <Calendar color={theme.black5} size={Metrics._14} />
           <CustomText style={styles.dateTimeText}>11/02/2026</CustomText>
@@ -34,7 +42,7 @@ const JobCard = () => {
         </View>
       </View>
       <CustomText>Delivery</CustomText>
-      <View style={styles.dateTimeBox}>
+      <View style={styles.deliveryDateTimeBox}>
         <View style={styles.row}>
           <Calendar color={theme.black5} size={Metrics._14} />
           <CustomText style={styles.dateTimeText}>11/02/2026</CustomText>
@@ -44,12 +52,12 @@ const JobCard = () => {
           <CustomText style={styles.dateTimeText}>12:30</CustomText>
         </View>
       </View>
-      <View style={styles.detailBox}>
+      {onPress && <TouchableOpacity activeOpacity={1} style={styles.detailBox} onPress={onPress}>
         <CustomText style={styles.detailText}>
           View More Detail{' '}
-          <ChevronRight color={theme.black5} size={Metrics._16} />
         </CustomText>
-      </View>
+        <ChevronRight color={theme.black1} size={Metrics._16} />
+      </TouchableOpacity>}
     </View>
   );
 };
@@ -82,12 +90,18 @@ const getStyles = (theme: typeof LightTheme) =>
       gap: Metrics._4,
       alignItems: 'center',
     },
-    dateTimeBox: {
+    pickupDateTimeBox: {
       flexDirection: 'row',
       width: '100%',
       gap: Metrics._14,
       borderBottomWidth: Metrics._1,
       borderColor: theme.border1,
+      paddingBottom: Metrics._8
+    },
+    deliveryDateTimeBox: {
+      flexDirection: 'row',
+      width: '100%',
+      gap: Metrics._14,
     },
     dateTimeText: {
       fontSize: Metrics._16,

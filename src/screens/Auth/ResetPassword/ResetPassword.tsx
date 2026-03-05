@@ -1,6 +1,5 @@
-import { View, Text, TextInput } from 'react-native';
+import { View, TextInput } from 'react-native';
 import React, { useRef } from 'react';
-import getStyles from './ResetPassword.styles';
 import Header from 'common/components/header';
 import { Formik } from 'formik';
 import Container from 'common/components/container';
@@ -9,6 +8,7 @@ import Button from 'common/components/button';
 import Loader from 'common/components/loader';
 import { AppNavigationProp, AppRouteProp } from 'common/types/navigationTypes';
 import { ResetPasswordSchema } from 'utils/validationSchemas';
+import useStyles from './ResetPassword.styles';
 
 interface Props {
   navigation: AppNavigationProp<'ResetPassword'>;
@@ -16,16 +16,16 @@ interface Props {
 }
 
 const ResetPassword = () => {
-  const styles = getStyles();
+  const styles = useStyles();
   const passRef = useRef<TextInput>(null);
 
   return (
     <View style={styles.container}>
-      <Header title="Reset Password" onBackPress={() => {}} />
+      <Header title="Reset Password" onBackPress={() => { }} />
       <Formik
         initialValues={{ password: '', confirmPassword: '' }}
         validationSchema={ResetPasswordSchema}
-        onSubmit={() => {}}
+        onSubmit={() => { }}
       >
         {({
           values,

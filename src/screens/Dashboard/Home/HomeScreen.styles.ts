@@ -2,7 +2,7 @@ import { useTheme } from 'common/helperFunctions';
 import { StyleSheet } from 'react-native';
 import { Metrics } from 'theme/metrics';
 
-const getStyles = () => {
+const useStyles = () => {
   const theme = useTheme();
   return StyleSheet.create({
     container: {
@@ -28,11 +28,10 @@ const getStyles = () => {
       width: '100%',
     },
     contentStyle: {
-      flex: 1,
       flexGrow: 1,
       paddingVertical: Metrics._20,
     },
   });
 };
 
-export default getStyles;
+export default useStyles;

@@ -8,7 +8,7 @@ import { Input } from 'common/components/input';
 import Button from 'common/components/button';
 import { useTranslation } from 'react-i18next';
 import { LoginSchema } from 'utils/validationSchemas';
-import getStyles from './Login.styles';
+import useStyles from './Login.styles';
 
 interface LoginProps {
   navigation: AppNavigationProp<'Login'>;
@@ -16,7 +16,7 @@ interface LoginProps {
 
 const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   const { t } = useTranslation();
-  const styles = getStyles();
+  const styles = useStyles();
 
   const passwordRef = useRef<TextInput>(null);
 

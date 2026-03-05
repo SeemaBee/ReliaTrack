@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { FlatList, Switch, View } from 'react-native';
 import { AppNavigationProp } from 'common/types/navigationTypes';
 import CustomText from 'common/components/text';
-import getStyles from './HomeScreen.styles';
 import { useTheme } from 'common/helperFunctions';
 import Tabs from 'common/components/tab';
 import { useTranslation } from 'react-i18next';
 import JobCard from 'common/components/jobCard';
+import useStyles from './HomeScreen.styles';
 
 type Props = {
   navigation: AppNavigationProp<'Home'>;
 };
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
-  const styles = getStyles();
+  const styles = useStyles();
   const { t } = useTranslation();
   const theme = useTheme();
   const [isEnabled, setIsEnabled] = useState(false);
@@ -51,7 +51,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         data={['1', '2']}
         style={styles.flx}
         contentContainerStyle={styles.contentStyle}
-        renderItem={item => <JobCard />}
+        renderItem={item => <JobCard data={item} onPress={() => navigation.navigate("RequestScreen")} />}
         keyExtractor={item => item}
         showsVerticalScrollIndicator={false}
       />

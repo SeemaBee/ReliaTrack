@@ -19,6 +19,8 @@ interface InputProps extends TextInputProps {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   secureTextEntry?: boolean;
+  multiline?: boolean;
+  numberOfLines?: number;
   ref?: Ref<TextInput> | undefined;
 }
 
@@ -28,6 +30,8 @@ export const Input: React.FC<InputProps> = ({
   leftIcon,
   rightIcon,
   secureTextEntry = false,
+  multiline = false,
+  numberOfLines,
   style,
   ref,
   ...rest
@@ -42,6 +46,7 @@ export const Input: React.FC<InputProps> = ({
       <View
         style={[
           styles.inputContainer,
+          multiline && styles.multilineInput,
           {
             backgroundColor: theme.white,
             borderColor: error ? theme.error : theme.border1,
@@ -53,8 +58,11 @@ export const Input: React.FC<InputProps> = ({
         <TextInput
           placeholderTextColor={theme.textSecondary}
           secureTextEntry={isSecure}
-          style={[styles.input, { color: theme.text }, style]}
+          style={[styles.input, multiline && styles.multilineInput, { color: theme.text }, style]}
           ref={ref}
+          multiline={multiline}
+          numberOfLines={numberOfLines}
+          textAlignVertical={multiline ? 'top' : 'center'}
           {...rest}
         />
 
@@ -64,9 +72,9 @@ export const Input: React.FC<InputProps> = ({
             style={styles.iconRight}
           >
             {isSecure ? (
-              <Eye size={20} color={theme.textSecondary} />
-            ) : (
               <EyeOff size={20} color={theme.textSecondary} />
+            ) : (
+              <Eye size={20} color={theme.textSecondary} />
             )}
           </TouchableOpacity>
         ) : (
@@ -87,7 +95,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: FontSizes._14,
     marginBottom: Metrics._8,
-    fontWeight: '500',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -97,10 +104,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: Metrics._12,
     height: verticalScale(48),
   },
+  multilineInput: {
+    height: Metrics._100,
+    textAlignVertical: 'top',
+  },
   input: {
     flex: 1,
     fontSize: FontSizes._12,
-    fontFamily: FontFamily.interTight,
+    fontFamily: FontFamily.interTightRegular,
   },
   iconLeft: {
     marginRight: Metrics._4,

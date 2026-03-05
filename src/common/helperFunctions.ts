@@ -1,10 +1,7 @@
-import { Appearance } from 'react-native';
-import { useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
-import { DarkTheme, LightTheme } from 'theme/colors';
+import { LightTheme } from 'theme/colors';
 import i18n from 'i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Language, ThemeMode } from './types/types';
+import { Language } from './types/types';
 
 export const useTheme = () => {
   // const mode: ThemeMode = useSelector((state: RootState) => state.theme);

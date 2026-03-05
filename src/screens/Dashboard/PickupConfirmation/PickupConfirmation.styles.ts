@@ -11,25 +11,29 @@ const useStyles = () => {
       padding: Metrics._16,
       backgroundColor: theme.background,
     },
-    title: {
-      fontSize: FontSizes._28,
-      marginBottom: Metrics._4,
+    headerStyle: {
+      paddingHorizontal: 0,
+      gap: Metrics._10,
+      height: Metrics._50,
+    },
+    title2: {
+      fontSize: FontSizes._20,
       fontFamily: FontFamily.interTightMedium,
+      marginBottom: Metrics._10,
     },
-    subTitle: {
-      fontSize: FontSizes._14,
-      color: theme.grey2,
+    detailsLabel: {
+      color: theme.black2,
+    },
+    detailsValue: {
+      fontSize: FontSizes._16,
+      marginTop: Metrics._4,
+    },
+    detailsItemView: {
+      borderBottomWidth: Metrics._1,
+      borderBottomColor: theme.border10,
+      paddingBottom: Metrics._8,
       marginBottom: Metrics._20,
-    },
-    forgotContainer: {
-      width: '100%',
-      alignItems: 'flex-end',
-    },
-    forgotText: {
-      fontSize: FontSizes._14,
-      color: theme.grey4,
     },
   });
 };
-
 export default useStyles;

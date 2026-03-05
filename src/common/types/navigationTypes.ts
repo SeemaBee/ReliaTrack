@@ -10,6 +10,10 @@ export type StackParamList = {
   ResetPassword: { email: string };
   DashboardNavigation: undefined;
   Home: undefined;
+  RequestScreen: undefined;
+  PickupConfirmation: undefined;
+  ProofOfPickup: undefined;
+  RouteScreen: undefined;
 };
 
 export type AppNavigationProp<T extends keyof StackParamList> =

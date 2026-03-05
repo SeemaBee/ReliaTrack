@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import React from 'react';
 import { LightTheme } from 'theme/colors';
 import { useTheme } from 'common/helperFunctions';
@@ -10,13 +10,14 @@ import { FontFamily, FontSizes } from 'theme/typography';
 type Props = {
   title: string;
   onBackPress: () => void;
+  style: ViewStyle;
 };
 
-const Header = ({ title, onBackPress }: Props) => {
+const Header = ({ title, onBackPress, style }: Props) => {
   const theme = useTheme();
   const styles = getStyles(theme);
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <TouchableOpacity activeOpacity={0.8} onPress={() => onBackPress()}>
         <ArrowLeft />
       </TouchableOpacity>
@@ -37,7 +38,7 @@ const getStyles = (theme: typeof LightTheme) =>
     },
     title: {
       fontSize: FontSizes._22,
-      fontFamily: FontFamily.interMedium,
+      fontFamily: FontFamily.interTightMedium,
     },
   });
 
