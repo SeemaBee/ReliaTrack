@@ -1,59 +1,47 @@
-import { ScrollView, TextInput, View } from 'react-native'
+import { ScrollView, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useRef, useState } from 'react'
 import CustomText from 'common/components/text'
-import useStyles from './RouteScreen.styles';
+import useStyles from './StatusScreen.styles'
 import { AppNavigationProp } from 'common/types/navigationTypes';
 import Header from 'common/components/header';
 import JobCard from 'common/components/jobCard';
+import { ChevronRight } from 'lucide-react-native';
+import { useTheme } from 'common/helperFunctions';
+import { Metrics } from 'theme/metrics';
 import ItemCard from 'common/components/itemCard';
-import { Input } from 'common/components/input';
-import Button from 'common/components/button';
 import Container from 'common/components/container';
 import { Formik } from 'formik';
+import { Input } from 'common/components/input';
+import Button from 'common/components/button';
+import ReasonModal from 'common/components/ReasonModal';
 
 type Props = {
-    navigation: AppNavigationProp<'RouteScreen'>;
+    navigation: AppNavigationProp<'StatusScreen'>;
 };
-const items = [
-    { id: '1' },
-    { id: '2' },
-    { id: '3' },
-];
 
-const RouteScreen: React.FC<Props> = ({ navigation }) => {
+const StatusScreen: React.FC<Props> = ({ navigation }) => {
+    const theme = useTheme();
     const styles = useStyles();
     const noteRef = useRef<TextInput>(null);
-    const [selectedItems, setSelectedItems] = useState<string[]>([]);
+    const [showReason, setShowReason] = useState(false);
     const initialValues = {
         temperatureReading: '',
         note: '',
     };
-    const handleRoute = () => {
-        navigation.navigate('StatusScreen')
+    const handleDeliver = () => {
+        navigation.navigate("ProofOfDelivery")
     }
-    const toggleItem = (id: string) => {
-        setSelectedItems(prev => {
-            if (prev.includes(id)) {
-                return prev.filter(item => item !== id);
-            } else {
-                return [...prev, id];
-            }
-        });
-    };
     return (
         <View style={styles.container}>
-            <Header title="Start Route" onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
+            <Header title="Status" onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <JobCard data={{}} />
+                <TouchableOpacity activeOpacity={1} style={styles.itemDetailsView} onPress={() => navigation.navigate("ItemDetailsScreen")}>
+                    <CustomText style={styles.innerLabel}>All Item Details</CustomText>
+                    <ChevronRight color={theme.black1} size={Metrics._20} />
+                </TouchableOpacity>
                 <CustomText style={styles.title2}>Delivery Items</CustomText>
-                {items.map(item => (
-                    <ItemCard
-                        key={item.id}
-                        show
-                        selected={selectedItems.includes(item.id)}
-                        onPress={() => toggleItem(item.id)}
-                    />
-                ))}
+                <ItemCard />
                 <CustomText style={styles.title2}>More Details</CustomText>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>Urgency Level</CustomText>
@@ -76,10 +64,11 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
                     <Formik
                         initialValues={initialValues}
                         // validationSchema={}
-                        onSubmit={handleRoute}
+                        onSubmit={handleDeliver}
                     >
                         {({ handleChange, handleSubmit, values, errors, touched }) => (
                             <>
+
                                 <Input
                                     label={'Temperature Reading'}
                                     onChangeText={handleChange('temperatureReading')}
@@ -101,15 +90,25 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
                                     numberOfLines={5}
                                     onSubmitEditing={() => handleSubmit()}
                                 />
-                                <Button title='Start Route' onPress={handleSubmit} />
+                                <Button title='Deliver' onPress={handleSubmit} />
+                                <Button title='Not Deliver' onPress={() => setShowReason(true)} variant='outline' />
                             </>
                         )}
-
                     </Formik>
                 </Container>
             </ScrollView>
+            {
+                showReason &&
+                <ReasonModal
+                    show={showReason}
+                    onClose={() => {
+                        setShowReason(false);
+                    }}
+                    onSuccess={() => setShowReason(false)}
+                />
+            }
         </View>
     )
 }
 
-export default RouteScreen
+export default StatusScreen

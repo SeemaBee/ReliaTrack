@@ -14,6 +14,9 @@ export type StackParamList = {
   PickupConfirmation: undefined;
   ProofOfPickup: undefined;
   RouteScreen: undefined;
+  StatusScreen: undefined;
+  ItemDetailsScreen: undefined;
+  ProofOfDelivery: undefined;
 };
 
 export type AppNavigationProp<T extends keyof StackParamList> =

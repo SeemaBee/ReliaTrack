@@ -15,6 +15,8 @@ export const LightTheme = {
   border9: '#8598C3',
   border10: '#B3B3B3',
   border11: '#00000073',
+  border12: '#D0CCCC',
+  border13: '#B2B2B2',
   borderSecondary: '#889921',
   error: '#E74C3C',
   primary: '#222F4E',
@@ -34,6 +36,8 @@ export const LightTheme = {
   black12: '#7B7B7B',
   black13: '#6E6E6E',
   black14: '#535353',
+  black15: '#000000C4',
+  black16: '#00000033',
   tooltipColor: '#E9FFEB',
   lightBlue: '#C0DBFB',
   darkBlue: '#2280EF',
@@ -44,6 +48,8 @@ export const LightTheme = {
   grey3: '#CBCBCB',
   grey4: '#868686',
   grey5: '#F1F1F1',
+  grey6: '#8D8D8D',
+  grey7: '#979797',
   white: '#FFFFFF',
 };
 

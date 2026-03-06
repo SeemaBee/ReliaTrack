@@ -6,6 +6,9 @@ import RequestScreen from 'screens/Dashboard/RequestScreen/RequestScreen';
 import PickupConfirmation from 'screens/Dashboard/PickupConfirmation/PickupConfirmation';
 import ProofOfPickup from 'screens/Dashboard/ProofOfPickup/ProofOfPickup';
 import RouteScreen from 'screens/Dashboard/RouteScreen/RouteScreen';
+import StatusScreen from 'screens/Dashboard/StatusScreen/StatusScreen';
+import ItemDetailsScreen from 'screens/Dashboard/ItemDetailsScreen/ItemDetailsScreen';
+import ProofOfDelivery from 'screens/Dashboard/ProofOfDelivery/ProofOfDelivery';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
@@ -17,6 +20,9 @@ export default () => {
       <Stack.Screen name="PickupConfirmation" component={PickupConfirmation} />
       <Stack.Screen name="ProofOfPickup" component={ProofOfPickup} />
       <Stack.Screen name="RouteScreen" component={RouteScreen} />
+      <Stack.Screen name="StatusScreen" component={StatusScreen} />
+      <Stack.Screen name="ItemDetailsScreen" component={ItemDetailsScreen} />
+      <Stack.Screen name="ProofOfDelivery" component={ProofOfDelivery} />
     </Stack.Navigator>
   );
 };
