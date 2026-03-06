@@ -7,6 +7,7 @@ import Tabs from 'common/components/tab';
 import { useTranslation } from 'react-i18next';
 import JobCard from 'common/components/jobCard';
 import useStyles from './HomeScreen.styles';
+import ChecklistModal from 'common/components/checklistModal';
 
 type Props = {
   navigation: AppNavigationProp<'Home'>;
@@ -17,8 +18,14 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const [isEnabled, setIsEnabled] = useState(false);
+  const [showChecklist, setShowChecklist] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const toggleSwitch = () => {
+    if (!isEnabled) {
+      setShowChecklist(true);
+    }
+    setIsEnabled(previousState => !previousState);
+  };
   return (
     <View style={styles.container}>
       <CustomText style={styles.title}>{t('home.title1')}</CustomText>
@@ -51,10 +58,25 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         data={['1', '2']}
         style={styles.flx}
         contentContainerStyle={styles.contentStyle}
-        renderItem={item => <JobCard data={item} onPress={() => navigation.navigate("RequestScreen")} />}
+        renderItem={item => (
+          <JobCard
+            data={item}
+            onPress={() => navigation.navigate('RequestScreen')}
+          />
+        )}
         keyExtractor={item => item}
         showsVerticalScrollIndicator={false}
       />
+      {showChecklist && (
+        <ChecklistModal
+          show={showChecklist}
+          onClose={() => {
+            setIsEnabled(false);
+            setShowChecklist(false);
+          }}
+          onSuccess={() => setShowChecklist(false)}
+        />
+      )}
     </View>
   );
 };

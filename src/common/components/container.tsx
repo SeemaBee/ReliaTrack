@@ -10,16 +10,14 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { moderateScale } from 'react-native-size-matters';
+import { Metrics } from 'theme/metrics';
 
 type ContainerProps = {
   children: React.ReactNode;
   contentStyle?: StyleProp<ViewStyle>;
 };
 
-const Container: React.FC<ContainerProps> = ({
-  children,
-  contentStyle,
-}) => {
+const Container: React.FC<ContainerProps> = ({ children, contentStyle }) => {
   const theme = useTheme();
 
   const handleContainerPress = () => {
@@ -33,7 +31,7 @@ const Container: React.FC<ContainerProps> = ({
           contentContainerStyle={[styles.contentContainer, contentStyle]}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
-          extraScrollHeight={moderateScale(100)}
+          extraScrollHeight={Metrics._100}
           enableOnAndroid={true}
           enableAutomaticScroll={true}
         >

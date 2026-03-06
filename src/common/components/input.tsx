@@ -58,7 +58,12 @@ export const Input: React.FC<InputProps> = ({
         <TextInput
           placeholderTextColor={theme.textSecondary}
           secureTextEntry={isSecure}
-          style={[styles.input, multiline && styles.multilineInput, { color: theme.text }, style]}
+          style={[
+            styles.input,
+            multiline && styles.multilineInput,
+            { color: theme.text },
+            style,
+          ]}
           ref={ref}
           multiline={multiline}
           numberOfLines={numberOfLines}
@@ -102,7 +107,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: Metrics._8,
     paddingHorizontal: Metrics._12,
-    height: verticalScale(48),
+    height: Metrics._48,
   },
   multilineInput: {
     height: Metrics._100,

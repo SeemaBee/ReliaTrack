@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
   View,
 } from 'react-native';
-import { moderateScale, scale } from 'react-native-size-matters';
 import { LucideIcon } from 'lucide-react-native';
 import { useTheme } from 'common/helperFunctions';
 import CustomText from './text';
@@ -75,8 +74,8 @@ const Button: React.FC<ButtonProps> = ({
           {LeftIcon && (
             <LeftIcon
               color={textColor}
-              size={scale(18)}
-              style={{ marginRight: scale(6) }}
+              size={Metrics._18}
+              style={{ marginRight: Metrics._6 }}
             />
           )}
 
@@ -85,8 +84,8 @@ const Button: React.FC<ButtonProps> = ({
           {RightIcon && (
             <RightIcon
               color={textColor}
-              size={scale(18)}
-              style={{ marginLeft: scale(6) }}
+              size={Metrics._18}
+              style={{ marginLeft: Metrics._6 }}
             />
           )}
         </View>
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
     paddingVertical: Metrics._12,
     paddingHorizontal: Metrics._16,
     borderRadius: Metrics._12,
-    borderWidth: moderateScale(1),
+    borderWidth: Metrics._1,
     justifyContent: 'center',
     marginTop: Metrics._20,
   },

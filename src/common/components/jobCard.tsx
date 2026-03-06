@@ -9,15 +9,15 @@ import { Calendar, ChevronRight, Clock } from 'lucide-react-native';
 
 interface Props {
   onPress?: () => void;
-  data: any
+  data: any;
 }
 
 const JobCard: React.FC<Props> = ({ onPress, data }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
-  console.log('data - ',data);
-  
+  console.log('data - ', data);
+
   return (
     <View style={styles.container}>
       <View style={styles.itemBox}>
@@ -52,12 +52,18 @@ const JobCard: React.FC<Props> = ({ onPress, data }) => {
           <CustomText style={styles.dateTimeText}>12:30</CustomText>
         </View>
       </View>
-      {onPress && <TouchableOpacity activeOpacity={1} style={styles.detailBox} onPress={onPress}>
-        <CustomText style={styles.detailText}>
-          View More Detail{' '}
-        </CustomText>
-        <ChevronRight color={theme.black1} size={Metrics._16} />
-      </TouchableOpacity>}
+      {onPress && (
+        <View style={styles.detailContainer}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.detailBox}
+            onPress={onPress}
+          >
+            <CustomText style={styles.detailText}>View More Detail </CustomText>
+            <ChevronRight color={theme.black1} size={Metrics._16} />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
@@ -96,7 +102,7 @@ const getStyles = (theme: typeof LightTheme) =>
       gap: Metrics._14,
       borderBottomWidth: Metrics._1,
       borderColor: theme.border1,
-      paddingBottom: Metrics._8
+      paddingBottom: Metrics._8,
     },
     deliveryDateTimeBox: {
       flexDirection: 'row',
@@ -107,11 +113,15 @@ const getStyles = (theme: typeof LightTheme) =>
       fontSize: Metrics._16,
       color: theme.black5,
     },
-    detailBox: {
+    detailContainer: {
       width: '100%',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-end',
+    },
+    detailBox: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     detailText: {
       fontSize: Metrics._14,
