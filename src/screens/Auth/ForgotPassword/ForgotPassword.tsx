@@ -44,7 +44,7 @@ const ForgotPassword = ({ navigation }: Props) => {
           <Container contentStyle={styles.subContainer}>
             <Input
               label={t('auth.email')}
-              placeholder="Enter your email"
+              placeholder={t('auth.email_placeholder')}
               keyboardType="email-address"
               value={values.email}
               autoCapitalize="none"
@@ -53,7 +53,7 @@ const ForgotPassword = ({ navigation }: Props) => {
               onChangeText={handleChange('email')}
               error={touched.email && errors.email ? errors.email : undefined}
             />
-            <Button title="Submit" onPress={() => handleSubmit()} />
+            <Button title={t("action.submit")} onPress={() => handleSubmit()} />
           </Container>
         )}
       </Formik>

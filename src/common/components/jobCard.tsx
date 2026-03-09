@@ -6,6 +6,7 @@ import { Metrics } from 'theme/metrics';
 import CustomText from './text';
 import { MapIcon } from 'assets/svg';
 import { Calendar, ChevronRight, Clock } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   onPress?: () => void;
@@ -14,6 +15,7 @@ interface Props {
 
 const JobCard: React.FC<Props> = ({ onPress, data }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const styles = getStyles(theme);
 
   console.log('data - ', data);
@@ -21,16 +23,16 @@ const JobCard: React.FC<Props> = ({ onPress, data }) => {
   return (
     <View style={styles.container}>
       <View style={styles.itemBox}>
-        <CustomText style={styles.itemText}>2 Items</CustomText>
+        <CustomText style={styles.itemText}>2 {t("home.items")}</CustomText>
       </View>
-      <CustomText>From</CustomText>
+      <CustomText>{t("home.from")}</CustomText>
       <View style={styles.row}>
         <MapIcon />
         <CustomText numberOfLines={1} ellipsizeMode="tail">
           1901 Thornridge Cir. Shiloh, Hawaii, USA, 81063
         </CustomText>
       </View>
-      <CustomText>Pickup</CustomText>
+      <CustomText>{t("home.pickup")}</CustomText>
       <View style={styles.pickupDateTimeBox}>
         <View style={styles.row}>
           <Calendar color={theme.black5} size={Metrics._14} />
@@ -41,7 +43,7 @@ const JobCard: React.FC<Props> = ({ onPress, data }) => {
           <CustomText style={styles.dateTimeText}>10:30</CustomText>
         </View>
       </View>
-      <CustomText>Delivery</CustomText>
+      <CustomText>{t("home.delivery")}</CustomText>
       <View style={styles.deliveryDateTimeBox}>
         <View style={styles.row}>
           <Calendar color={theme.black5} size={Metrics._14} />
@@ -59,7 +61,7 @@ const JobCard: React.FC<Props> = ({ onPress, data }) => {
             style={styles.detailBox}
             onPress={onPress}
           >
-            <CustomText style={styles.detailText}>View More Detail </CustomText>
+            <CustomText style={styles.detailText}>{t("home.view_more")} </CustomText>
             <ChevronRight color={theme.black1} size={Metrics._16} />
           </TouchableOpacity>
         </View>

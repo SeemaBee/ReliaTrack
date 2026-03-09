@@ -6,6 +6,7 @@ import useStyles from './ItemDetailsScreen.styles';
 import Header from 'common/components/header';
 import JobCard from 'common/components/jobCard';
 import ItemCard from 'common/components/itemCard';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     navigation: AppNavigationProp<'ItemDetailsScreen'>;
@@ -13,12 +14,13 @@ type Props = {
 
 const ItemDetailsScreen: React.FC<Props> = ({ navigation }) => {
     const styles = useStyles();
+    const { t } = useTranslation();
     return (
         <View style={styles.container}>
-            <Header title="Item Detail" onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
+            <Header title={t("route.item_detail")} onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <JobCard data={{}} />
-                <CustomText style={styles.title2}>Delivery Items</CustomText>
+                <CustomText style={styles.title2}>{t("request.delivery_items")}</CustomText>
                 <ItemCard />
                 <ItemCard />
             </ScrollView>

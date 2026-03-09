@@ -5,6 +5,7 @@ import { Metrics } from "theme/metrics";
 import CustomText from "./text";
 import { Check } from "lucide-react-native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     onPress?: () => void;
@@ -14,31 +15,32 @@ interface Props {
 
 const ItemCard: React.FC<Props> = ({ onPress, show, selected }) => {
     const theme = useTheme();
+    const { t } = useTranslation();
     const styles = getStyles(theme);
     return (
         <View style={styles.container}>
             <View style={styles.row}>
                 <View style={styles.itemBox}>
-                    <CustomText style={styles.itemText}>Item 1</CustomText>
+                    <CustomText style={styles.itemText}>{t("request.item")} 1</CustomText>
                 </View>
                 {show && <TouchableOpacity activeOpacity={1} style={[styles.checkBoxContainer, selected && styles.selectionStyle]} onPress={onPress}>
                     {selected && <Check size={Metrics._20} color={theme.white} />}
                 </TouchableOpacity>}
             </View>
             <View style={styles.rowBox}>
-                <CustomText style={styles.labelTxt}>Name</CustomText>
+                <CustomText style={styles.labelTxt}>{t("request.name")}</CustomText>
                 <CustomText>Blood</CustomText>
             </View>
             <View style={styles.rowBox}>
-                <CustomText style={styles.labelTxt}>Specimen Type</CustomText>
+                <CustomText style={styles.labelTxt}>{t("request.specimen_type")}</CustomText>
                 <CustomText>Blood</CustomText>
             </View>
             <View style={styles.rowBox}>
-                <CustomText style={styles.labelTxt}>Accession/Specimen ID</CustomText>
+                <CustomText style={styles.labelTxt}>{t("request.accession")}</CustomText>
                 <CustomText>SP-2026-10245</CustomText>
             </View>
             <View style={styles.horizontalLine} />
-            <CustomText style={styles.labelTxt}>Drop off location</CustomText>
+            <CustomText style={styles.labelTxt}>{t("request.drop_off")}</CustomText>
             <CustomText style={styles.dropOffTxt}>1901 Thornridge Cir. Shiloh, Hawaii 81063..</CustomText>
         </View>
     )

@@ -9,19 +9,21 @@ import Loader from 'common/components/loader';
 import { AppNavigationProp, AppRouteProp } from 'common/types/navigationTypes';
 import { ResetPasswordSchema } from 'utils/validationSchemas';
 import useStyles from './ResetPassword.styles';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   navigation: AppNavigationProp<'ResetPassword'>;
   route: AppRouteProp<'ResetPassword'>;
 }
 
-const ResetPassword = () => {
+const ResetPassword: React.FC<Props> = () => {
   const styles = useStyles();
+  const { t } = useTranslation();
   const passRef = useRef<TextInput>(null);
 
   return (
     <View style={styles.container}>
-      <Header title="Reset Password" onBackPress={() => { }} />
+      <Header title={t("auth.reset_password_title")} onBackPress={() => { }} />
       <Formik
         initialValues={{ password: '', confirmPassword: '' }}
         validationSchema={ResetPasswordSchema}
@@ -37,8 +39,8 @@ const ResetPassword = () => {
         }) => (
           <Container contentStyle={styles.subContainer}>
             <Input
-              label="New password"
-              placeholder="Enter new password"
+              label={t("auth.new_password")}
+              placeholder={t("auth.new_password_placeholder")}
               value={values.password}
               error={
                 touched.password && errors.password
@@ -53,8 +55,8 @@ const ResetPassword = () => {
             />
             <Input
               ref={passRef}
-              label="Confirm new password"
-              placeholder="Confirm new password"
+              label={t("auth.confirm_new_password")}
+              placeholder={t("auth.confirm_new_password_placeholder")}
               value={values.confirmPassword}
               error={
                 touched.confirmPassword && errors.confirmPassword
@@ -64,7 +66,7 @@ const ResetPassword = () => {
               secureTextEntry={true}
               onChangeText={handleChange('confirmPassword')}
             />
-            <Button onPress={() => handleSubmit()} title="Submit" />
+            <Button onPress={() => handleSubmit()} title={t("action.submit")} />
             {isSubmitting && <Loader show={isSubmitting} />}
           </Container>
         )}

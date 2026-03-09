@@ -10,10 +10,22 @@
         "password": "Password",
         "password_placeholder": "Enter your password",
         "forgotPassword": "Forgot Password?",
-        "btn_signin": "Login"
+        "btn_signin": "Login",
+        "reset_password_title": "Reset Password",
+        "new_password": "New password",
+        "new_password_placeholder": "Enter new password",
+        "confirm_new_password": "Confirm new password",
+        "confirm_new_password_placeholder": "Confirm new password"
     },
-    "forgot":{
-        "title":"Forgot Password"
+    "forgot": {
+        "title": "Forgot Password"
+    },
+    "verifyOtp": {
+        "title": "Verify Otp",
+        "subTitle": "We have sent the code to email",
+        "resendTimer": "Resend code in",
+        "not_received_code": "Didn’t receive the code?",
+        "resend_code": "Resend Code"
     },
     "validation": {
         "email_invalid": "Enter a valid email",
@@ -22,13 +34,83 @@
         "password_required": "Password is required",
         "password_regex": "Password must contain upper, lower, number & special character",
         "confirm_password_required": "Confirm password required",
-        "password_match": "Passwords do not match"
+        "password_match": "Passwords do not match",
+        "otp_required": "OTP is required",
+        "otp_max": "OTP must be exactly 5 digits"
     },
     "home": {
         "title1": "Job Status",
         "title2": "My Jobs",
         "tab1": "New Requests",
         "tab2": "Active",
-        "tab3": "Completed"
+        "tab3": "Completed",
+        "items": "Items",
+        "from": "From",
+        "pickup": "Pickup",
+        "delivery": "Delivery",
+        "view_more": "View More Detail"
+    },
+    "checklist": {
+        "title": "Pre-Duty Safety Checklist",
+        "title1": "Vehicle Safety & Readiness",
+        "subTitle1": "Perform a quick and thorough check to ensure the vehicle is roadworthy.",
+        "title2": "HIPAA & Security Compliance",
+        "subTitle2": "These items are essential for protecting Protected Health Information (PHI) and maintaining liability coverage.",
+        "title3": "Medical Equipment & Biohazard Safety",
+        "q1": "Are the headlights, tail lights, turn signals, and brake lights working properly?",
+        "q2": "Are the tires properly inflated with no visible damage or excessive wear?",
+        "q3": "Are all mirrors properly adjusted and the windshield clean and free of obstructions?",
+        "q4": "Confirm that the vehicle will remain locked whenever PHI is present.",
+        "q5": "Are all medical packages and PHI containers stored in a secure, non-visible area (e.g., the trunk)?",
+        "q6": "Are you carrying your ID badge?",
+        "q7": "Is a medical-grade biohazard spill kit present in the vehicle and easily accessible?",
+        "q8": "Are the insulated transport containers clean and the temperature-monitoring devices (if required) functioning properly?",
+        "q9": "Are disposable gloves, masks, and hand sanitizer available in the vehicle?",
+        "q10": "Are extra leakproof bags and absorbent materials available for emergency repacking?",
+        "yes": "Yes",
+        "no": "No"
+    },
+    "request": {
+        "requests": "Requests",
+        "pickup_confirmation": "Pickup Confirmation",
+        "delivery_items": "Delivery Items",
+        "item": "Item",
+        "name": "Name",
+        "specimen_type": "Specimen Type",
+        "accession": "Accession/Specimen ID",
+        "drop_off": "Drop off location",
+        "more_details": "More Details",
+        "urgency_level": "Urgency Level",
+        "temperature_requirement": "Temperature Requirement",
+        "vehicle_requirements": "Vehicle Requirements",
+        "number_of_bags": "Number of containers or bags"
+    },
+    "proof": {
+        "title1": "Required Proof of Pickup",
+        "title2": "Required Proof of Delivery",
+        "all_item_details": "All Item Details",
+        "photo_of_seal": "Photo of Seal",
+        "barcode_scan": "Barcode Scan",
+        "add_note": "Add note",
+        "recipient_signature": "Recipient Signature",
+        "or": "Or",
+        "drop_off_photo": "Drop Off Photo"
+    },
+    "route": {
+        "start_route": "Start Route",
+        "fill_in_the_details": "Please Fill in the Details Below",
+        "temperature_reading": "Temperature Reading",
+        "status": "Status",
+        "reason": "Reason",
+        "provide_reason": "Please provide reason for not deliver",
+        "item_detail": "Item Detail"
+    },
+    "action": {
+        "submit": "Submit",
+        "verify": "Verify OTP",
+        "accept": "Accept",
+        "confirm_pickup": "Confirm Pickup",
+        "deliver": "Deliver",
+        "not_deliver": "Not Deliver"
     }
 }

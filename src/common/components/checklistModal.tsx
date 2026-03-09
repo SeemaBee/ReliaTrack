@@ -9,6 +9,7 @@ import { LightTheme } from '../../theme/colors';
 import { useTheme } from '../helperFunctions';
 import Header from './header';
 import { Car, Medical, Safety } from 'assets/svg';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   show: boolean;
@@ -18,6 +19,7 @@ type Props = {
 
 const ChecklistModal = ({ show, onClose, onSuccess }: Props) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const styles = getStyles(theme);
   const [answers, setAnswers] = useState({
     lights: 'No',
@@ -47,160 +49,159 @@ const ChecklistModal = ({ show, onClose, onSuccess }: Props) => {
     >
       <View style={styles.container}>
         <View style={styles.subContainer}>
-          <Header title="Pre-Duty Safety Checklist" onBackPress={() => onClose()} style={styles.headerStyle} />
+          <Header title={t("checklist.title")} onBackPress={() => onClose()} style={styles.headerStyle} />
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.checkListContainer}>
               <View style={styles.row}>
                 <Car />
-                <CustomText style={styles.title}>Vehicle Safety & Readiness</CustomText>
+                <CustomText style={styles.title}>{t("checklist.title1")}</CustomText>
               </View>
-              <CustomText style={styles.description}>Perform a quick and thorough check to ensure the vehicle is roadworthy.</CustomText>
+              <CustomText style={styles.description}>{t("checklist.subTitle1")}</CustomText>
               <View style={styles.dotRow}>
                 <View style={styles.dot} />
-                <CustomText style={styles.label}>Are the headlights, tail lights, turn signals, and brake lights working properly?</CustomText>
+                <CustomText style={styles.label}>{t("checklist.q1")}</CustomText>
               </View>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("lights", "Yes")}>
                 <View style={answers.lights === 'Yes' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>Yes</CustomText>
+                <CustomText>{t("checklist.yes")}</CustomText>
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("lights", "No")}>
                 <View style={answers.lights === 'No' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>No</CustomText>
+                <CustomText>{t("checklist.no")}</CustomText>
               </TouchableOpacity>
 
               <View style={styles.dotRow}>
                 <View style={styles.dot} />
-                <CustomText style={styles.label}>Are the tires properly inflated with no visible damage or excessive wear?</CustomText>
+                <CustomText style={styles.label}>{t("checklist.q2")}</CustomText>
               </View>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("tires", "Yes")}>
                 <View style={answers.tires === 'Yes' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>Yes</CustomText>
+                <CustomText>{t("checklist.yes")}</CustomText>
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("tires", "No")}>
                 <View style={answers.tires === 'No' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>No</CustomText>
+                <CustomText>{t("checklist.no")}</CustomText>
               </TouchableOpacity>
 
               <View style={styles.dotRow}>
                 <View style={styles.dot} />
-                <CustomText style={styles.label}>Are all mirrors properly adjusted and the windshield clean and free of obstructions?</CustomText>
+                <CustomText style={styles.label}>{t("checklist.q3")}</CustomText>
               </View>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("mirrors", "Yes")}>
                 <View style={answers.mirrors === 'Yes' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>Yes</CustomText>
+                <CustomText>{t("checklist.yes")}</CustomText>
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("mirrors", "No")}>
                 <View style={answers.mirrors === 'No' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>No</CustomText>
+                <CustomText>{t("checklist.no")}</CustomText>
               </TouchableOpacity>
             </View>
 
             <View style={styles.checkListContainer}>
               <View style={styles.row}>
                 <Safety />
-                <CustomText style={styles.title}>HIPAA & Security Compliance</CustomText>
+                <CustomText style={styles.title}>{t("checklist.title2")}</CustomText>
               </View>
-              <CustomText style={styles.description}>These items are essential for protecting Protected Health Information (PHI) and maintaining liability coverage.</CustomText>
+              <CustomText style={styles.description}>{t("checklist.subTitle2")}</CustomText>
               <View style={styles.dotRow}>
                 <View style={styles.dot} />
-                <CustomText style={styles.label}>Confirm that the vehicle will remain locked whenever PHI is present.</CustomText>
+                <CustomText style={styles.label}>{t("checklist.q4")}</CustomText>
               </View>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("vehicle_lock", "Yes")}>
                 <View style={answers.vehicle_lock === 'Yes' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>Yes</CustomText>
+                <CustomText>{t("checklist.yes")}</CustomText>
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("vehicle_lock", "No")}>
                 <View style={answers.vehicle_lock === 'No' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>No</CustomText>
+                <CustomText>{t("checklist.no")}</CustomText>
               </TouchableOpacity>
 
               <View style={styles.dotRow}>
                 <View style={styles.dot} />
-                <CustomText style={styles.label}>Are all medical packages and PHI containers stored in a secure, non-visible area (e.g., the trunk)?</CustomText>
+                <CustomText style={styles.label}>{t("checklist.q5")}</CustomText>
               </View>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("package_storage", "Yes")}>
                 <View style={answers.package_storage === 'Yes' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>Yes</CustomText>
+                <CustomText>{t("checklist.yes")}</CustomText>
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("package_storage", "No")}>
                 <View style={answers.package_storage === 'No' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>No</CustomText>
+                <CustomText>{t("checklist.no")}</CustomText>
               </TouchableOpacity>
 
               <View style={styles.dotRow}>
                 <View style={styles.dot} />
-                <CustomText style={styles.label}>Are you carrying your ID badge?</CustomText>
+                <CustomText style={styles.label}>{t("checklist.q6")}</CustomText>
               </View>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("id_badge", "Yes")}>
                 <View style={answers.id_badge === 'Yes' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>Yes</CustomText>
+                <CustomText>{t("checklist.yes")}</CustomText>
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("id_badge", "No")}>
                 <View style={answers.id_badge === 'No' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>No</CustomText>
+                <CustomText>{t("checklist.no")}</CustomText>
               </TouchableOpacity>
             </View>
-
 
             <View style={styles.checkListContainer}>
               <View style={styles.row}>
                 <Medical />
-                <CustomText style={styles.title}>Medical Equipment & Biohazard Safety</CustomText>
+                <CustomText style={styles.title}>{t("checklist.title3")}</CustomText>
               </View>
-              <CustomText style={styles.description}>These items are essential for protecting Protected Health Information (PHI) and maintaining liability coverage.</CustomText>
+              <CustomText style={styles.description}>{t("checklist.subTitle2")}</CustomText>
               <View style={styles.dotRow}>
                 <View style={styles.dot} />
-                <CustomText style={styles.label}>Is a medical-grade biohazard spill kit present in the vehicle and easily accessible?</CustomText>
+                <CustomText style={styles.label}>{t("checklist.q7")}</CustomText>
               </View>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("biohazard_kit", "Yes")}>
                 <View style={answers.biohazard_kit === 'Yes' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>Yes</CustomText>
+                <CustomText>{t("checklist.yes")}</CustomText>
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("biohazard_kit", "No")}>
                 <View style={answers.biohazard_kit === 'No' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>No</CustomText>
+                <CustomText>{t("checklist.no")}</CustomText>
               </TouchableOpacity>
 
               <View style={styles.dotRow}>
                 <View style={styles.dot} />
-                <CustomText style={styles.label}>Are the insulated transport containers clean and the temperature-monitoring devices (if required) functioning properly?</CustomText>
+                <CustomText style={styles.label}>{t("checklist.q8")}</CustomText>
               </View>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("containers", "Yes")}>
                 <View style={answers.containers === 'Yes' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>Yes</CustomText>
+                <CustomText>{t("checklist.yes")}</CustomText>
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("containers", "No")}>
                 <View style={answers.containers === 'No' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>No</CustomText>
+                <CustomText>{t("checklist.no")}</CustomText>
               </TouchableOpacity>
 
               <View style={styles.dotRow}>
                 <View style={styles.dot} />
-                <CustomText style={styles.label}>Are disposable gloves, masks, and hand sanitizer available in the vehicle?</CustomText>
+                <CustomText style={styles.label}>{t("checklist.q9")}</CustomText>
               </View>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("gloves", "Yes")}>
                 <View style={answers.gloves === 'Yes' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>Yes</CustomText>
+                <CustomText>{t("checklist.yes")}</CustomText>
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("gloves", "No")}>
                 <View style={answers.gloves === 'No' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>No</CustomText>
+                <CustomText>{t("checklist.no")}</CustomText>
               </TouchableOpacity>
 
               <View style={styles.dotRow}>
                 <View style={styles.dot} />
-                <CustomText style={styles.label}>Are extra leakproof bags and absorbent materials available for emergency repacking?</CustomText>
+                <CustomText style={styles.label}>{t("checklist.q10")}</CustomText>
               </View>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("bags", "Yes")}>
                 <View style={answers.bags === 'Yes' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>Yes</CustomText>
+                <CustomText>{t("checklist.yes")}</CustomText>
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={0.8} style={styles.row2} onPress={() => handleSelect("bags", "No")}>
                 <View style={answers.bags === 'No' ? styles.fillCircle : styles.emptyCircle} />
-                <CustomText>No</CustomText>
+                <CustomText>{t("checklist.no")}</CustomText>
               </TouchableOpacity>
             </View>
-            <Button title="Submit" onPress={() => onSuccess()} />
+            <Button title={t("action.submit")} onPress={() => onSuccess()} />
           </ScrollView>
         </View>
       </View>

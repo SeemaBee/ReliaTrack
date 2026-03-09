@@ -7,6 +7,7 @@ import { AppNavigationProp } from 'common/types/navigationTypes'
 import JobCard from 'common/components/jobCard'
 import ItemCard from 'common/components/itemCard'
 import Button from 'common/components/button'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
     navigation: AppNavigationProp<'PickupConfirmation'>;
@@ -14,32 +15,33 @@ type Props = {
 
 const PickupConfirmation: React.FC<Props> = ({ navigation }) => {
     const styles = useStyles();
+    const { t } = useTranslation();
     return (
         <View style={styles.container}>
-            <Header title="Pickup Confirmation" onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
+            <Header title={t("request.pickup_confirmation")} onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <JobCard data={{}} />
-                <CustomText style={styles.title2}>Delivery Items</CustomText>
+                <CustomText style={styles.title2}>{t("request.delivery_items")}</CustomText>
                 <ItemCard />
                 <ItemCard />
-                <CustomText style={styles.title2}>More Details</CustomText>
+                <CustomText style={styles.title2}>{t("request.more_details")}</CustomText>
                 <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>Urgency Level</CustomText>
+                    <CustomText style={styles.detailsLabel}>{t("request.urgency_level")}</CustomText>
                     <CustomText style={styles.detailsValue}>ASAP</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>Temperature Requirement</CustomText>
+                    <CustomText style={styles.detailsLabel}>{t("request.temperature_requirement")}</CustomText>
                     <CustomText style={styles.detailsValue}>Ambient</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>Vehicle Requirements</CustomText>
+                    <CustomText style={styles.detailsLabel}>{t("request.vehicle_requirements")}</CustomText>
                     <CustomText style={styles.detailsValue}>Refrigerator</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>Number of containers or bags </CustomText>
+                    <CustomText style={styles.detailsLabel}>{t("request.number_of_bags")}</CustomText>
                     <CustomText style={styles.detailsValue}>4</CustomText>
                 </View>
-                <Button title='Confirm Pickup' onPress={() => navigation.navigate("ProofOfPickup")} />
+                <Button title={t("action.confirm_pickup")} onPress={() => navigation.navigate("ProofOfPickup")} />
             </ScrollView>
         </View>
     )

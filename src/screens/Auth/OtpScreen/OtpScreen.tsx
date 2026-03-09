@@ -10,6 +10,7 @@ import CustomText from 'common/components/text';
 import Button from 'common/components/button';
 import Loader from 'common/components/loader';
 import useStyles from './OtpScreen.styles';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   navigation: AppNavigationProp<'OtpScreen'>;
@@ -22,6 +23,7 @@ type initialProp = {
 
 const OtpScreen = ({ navigation, route }: Props) => {
   const styles = useStyles();
+  const { t } = useTranslation();
   const [secondsLeft, setSecondsLeft] = useState(30);
   const [showResend, setShowResend] = useState(false);
   const { email } = route.params;
@@ -50,11 +52,9 @@ const OtpScreen = ({ navigation, route }: Props) => {
 
   return (
     <View style={styles.container}>
-      <Header title="Verify Otp" onBackPress={() => navigation.goBack()} />
+      <Header title={t("verifyOtp.title")} onBackPress={() => navigation.goBack()} />
       <Container contentStyle={styles.subContainer}>
-        <CustomText style={styles.title}>
-          We have sent the code to email
-        </CustomText>
+        <CustomText style={styles.title}>{t("verifyOtp.subTitle")}</CustomText>
         <Formik
           initialValues={{ otp: '' }}
           validationSchema={VerifyOtpSchema}
@@ -73,23 +73,23 @@ const OtpScreen = ({ navigation, route }: Props) => {
               {showResend ? (
                 <View style={styles.resendBox}>
                   <CustomText style={styles.resendText}>
-                    Didn’t receive the code?{' '}
+                    {t("verifyOtp.not_received_code")}{' '}
                   </CustomText>
                   <TouchableOpacity
                     activeOpacity={0.8}
                     onPress={() => handleResend()}
                   >
-                    <CustomText style={styles.linkText}>Resend Code</CustomText>
+                    <CustomText style={styles.linkText}>{t("verifyOtp.resend_code")}</CustomText>
                   </TouchableOpacity>
                 </View>
               ) : (
                 <View style={styles.resendBox}>
                   <CustomText style={styles.resendText}>
-                    Resend code in {secondsLeft} Sec...
+                    {t("verifyOtp.resendTimer")} {secondsLeft} Sec...
                   </CustomText>
                 </View>
               )}
-              <Button title="Verify OTP" onPress={handleSubmit} />
+              <Button title={t("action.verify")} onPress={handleSubmit} />
               {isSubmitting && <Loader show={isSubmitting} />}
             </>
           )}

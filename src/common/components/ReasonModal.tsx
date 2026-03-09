@@ -8,6 +8,7 @@ import { X } from "lucide-react-native";
 import { FontFamily, FontSizes } from "theme/typography";
 import { Input } from "./input";
 import Button from "./button";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     show: boolean;
@@ -17,6 +18,7 @@ type Props = {
 
 const ReasonModal = ({ show, onClose, onSuccess }: Props) => {
     const theme = useTheme();
+    const { t } = useTranslation();
     const styles = getStyles(theme);
     return (
         <ReactNativeModal
@@ -30,18 +32,18 @@ const ReasonModal = ({ show, onClose, onSuccess }: Props) => {
                 <View style={styles.subContainer}>
                     <View style={styles.row}>
                         <CustomText style={styles.title}>
-                            Reason
+                            {t("route.reason")}
                         </CustomText>
                         <TouchableOpacity activeOpacity={0.8} onPress={() => onClose()}>
                             <X />
                         </TouchableOpacity>
                     </View>
                     <Input
-                        label="Please provide reason for not deliver"
+                        label={t("route.provide_reason")}
                         multiline
                         numberOfLines={5}
                     />
-                    <Button title="Submit" onPress={() => onSuccess()} />
+                    <Button title={t("action.submit")} onPress={() => onSuccess()} />
                 </View>
             </View>
         </ReactNativeModal>

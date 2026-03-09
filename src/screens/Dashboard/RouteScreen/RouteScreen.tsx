@@ -1,4 +1,4 @@
-import { ScrollView, TextInput, View } from 'react-native'
+import { Keyboard, ScrollView, TextInput, View } from 'react-native'
 import React, { useRef, useState } from 'react'
 import CustomText from 'common/components/text'
 import useStyles from './RouteScreen.styles';
@@ -10,6 +10,7 @@ import { Input } from 'common/components/input';
 import Button from 'common/components/button';
 import Container from 'common/components/container';
 import { Formik } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     navigation: AppNavigationProp<'RouteScreen'>;
@@ -22,6 +23,7 @@ const items = [
 
 const RouteScreen: React.FC<Props> = ({ navigation }) => {
     const styles = useStyles();
+    const { t } = useTranslation();
     const noteRef = useRef<TextInput>(null);
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
     const initialValues = {
@@ -29,6 +31,7 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
         note: '',
     };
     const handleRoute = () => {
+        Keyboard.dismiss();
         navigation.navigate('StatusScreen')
     }
     const toggleItem = (id: string) => {
@@ -39,40 +42,40 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
                 return [...prev, id];
             }
         });
-    };
+    }
     return (
         <View style={styles.container}>
-            <Header title="Start Route" onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <JobCard data={{}} />
-                <CustomText style={styles.title2}>Delivery Items</CustomText>
-                {items.map(item => (
-                    <ItemCard
-                        key={item.id}
-                        show
-                        selected={selectedItems.includes(item.id)}
-                        onPress={() => toggleItem(item.id)}
-                    />
-                ))}
-                <CustomText style={styles.title2}>More Details</CustomText>
-                <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>Urgency Level</CustomText>
-                    <CustomText style={styles.detailsValue}>ASAP</CustomText>
-                </View>
-                <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>Temperature Requirement</CustomText>
-                    <CustomText style={styles.detailsValue}>Ambient</CustomText>
-                </View>
-                <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>Vehicle Requirements</CustomText>
-                    <CustomText style={styles.detailsValue}>Refrigerator</CustomText>
-                </View>
-                <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>Number of containers or bags </CustomText>
-                    <CustomText style={styles.detailsValue}>4</CustomText>
-                </View>
-                <CustomText style={styles.title3}>Please Fill in the Details Below</CustomText>
+            <Header title={t("route.start_route")} onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
+            <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={"always"}>
                 <Container>
+                    <JobCard data={{}} />
+                    <CustomText style={styles.title2}>{t("request.delivery_items")}</CustomText>
+                    {items.map(item => (
+                        <ItemCard
+                            key={item.id}
+                            show
+                            selected={selectedItems.includes(item.id)}
+                            onPress={() => toggleItem(item.id)}
+                        />
+                    ))}
+                    <CustomText style={styles.title2}>{t("request.more_details")}</CustomText>
+                    <View style={styles.detailsItemView}>
+                        <CustomText style={styles.detailsLabel}>{t("request.urgency_level")}</CustomText>
+                        <CustomText style={styles.detailsValue}>ASAP</CustomText>
+                    </View>
+                    <View style={styles.detailsItemView}>
+                        <CustomText style={styles.detailsLabel}>{t("request.temperature_requirement")}</CustomText>
+                        <CustomText style={styles.detailsValue}>Ambient</CustomText>
+                    </View>
+                    <View style={styles.detailsItemView}>
+                        <CustomText style={styles.detailsLabel}>{t("request.vehicle_requirements")}</CustomText>
+                        <CustomText style={styles.detailsValue}>Refrigerator</CustomText>
+                    </View>
+                    <View style={styles.detailsItemView}>
+                        <CustomText style={styles.detailsLabel}>{t("request.number_of_bags")}</CustomText>
+                        <CustomText style={styles.detailsValue}>4</CustomText>
+                    </View>
+                    <CustomText style={styles.title3}>{t("route.fill_in_the_details")}</CustomText>
                     <Formik
                         initialValues={initialValues}
                         // validationSchema={}
@@ -81,7 +84,7 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
                         {({ handleChange, handleSubmit, values, errors, touched }) => (
                             <>
                                 <Input
-                                    label={'Temperature Reading'}
+                                    label={t("route.temperature_reading")}
                                     onChangeText={handleChange('temperatureReading')}
                                     value={values.temperatureReading}
                                     autoCapitalize="none"
@@ -92,7 +95,7 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
                                 />
                                 <Input
                                     ref={noteRef}
-                                    label={'Add note'}
+                                    label={t("proof.add_note")}
                                     onChangeText={handleChange('note')}
                                     value={values.note}
                                     autoCapitalize="none"
@@ -101,10 +104,9 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
                                     numberOfLines={5}
                                     onSubmitEditing={() => handleSubmit()}
                                 />
-                                <Button title='Start Route' onPress={handleSubmit} />
+                                <Button title={t("route.start_route")} onPress={handleSubmit} />
                             </>
                         )}
-
                     </Formik>
                 </Container>
             </ScrollView>

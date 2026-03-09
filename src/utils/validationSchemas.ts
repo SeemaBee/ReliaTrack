@@ -18,8 +18,8 @@ export const ForgotPasswordSchema = Yup.object().shape({
 
 export const VerifyOtpSchema = Yup.object().shape({
   otp: Yup.string()
-    .required('OTP is required')
-    .matches(/^\d{5}$/, 'OTP must be exactly 5 digits'),
+    .required(i18n.t('validation.otp_required'))
+    .matches(/^\d{5}$/, i18n.t('validation.otp_max')),
 });
 
 export const ResetPasswordSchema = Yup.object().shape({

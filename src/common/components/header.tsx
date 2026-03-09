@@ -10,7 +10,7 @@ import { FontFamily, FontSizes } from 'theme/typography';
 type Props = {
   title: string;
   onBackPress: () => void;
-  style: ViewStyle;
+  style?: ViewStyle;
 };
 
 const Header = ({ title, onBackPress, style }: Props) => {

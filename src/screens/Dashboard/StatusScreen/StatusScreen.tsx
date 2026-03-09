@@ -14,6 +14,7 @@ import { Formik } from 'formik';
 import { Input } from 'common/components/input';
 import Button from 'common/components/button';
 import ReasonModal from 'common/components/ReasonModal';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     navigation: AppNavigationProp<'StatusScreen'>;
@@ -21,6 +22,7 @@ type Props = {
 
 const StatusScreen: React.FC<Props> = ({ navigation }) => {
     const theme = useTheme();
+    const { t } = useTranslation();
     const styles = useStyles();
     const noteRef = useRef<TextInput>(null);
     const [showReason, setShowReason] = useState(false);
@@ -33,33 +35,33 @@ const StatusScreen: React.FC<Props> = ({ navigation }) => {
     }
     return (
         <View style={styles.container}>
-            <Header title="Status" onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <Header title={t("route.status")} onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
+            <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={"always"}>
                 <JobCard data={{}} />
                 <TouchableOpacity activeOpacity={1} style={styles.itemDetailsView} onPress={() => navigation.navigate("ItemDetailsScreen")}>
-                    <CustomText style={styles.innerLabel}>All Item Details</CustomText>
+                    <CustomText style={styles.innerLabel}>{t("proof.all_item_details")}</CustomText>
                     <ChevronRight color={theme.black1} size={Metrics._20} />
                 </TouchableOpacity>
-                <CustomText style={styles.title2}>Delivery Items</CustomText>
+                <CustomText style={styles.title2}>{t("request.delivery_items")}</CustomText>
                 <ItemCard />
-                <CustomText style={styles.title2}>More Details</CustomText>
+                <CustomText style={styles.title2}>{t("request.more_details")}</CustomText>
                 <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>Urgency Level</CustomText>
+                    <CustomText style={styles.detailsLabel}>{t("request.urgency_level")}</CustomText>
                     <CustomText style={styles.detailsValue}>ASAP</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>Temperature Requirement</CustomText>
+                    <CustomText style={styles.detailsLabel}>{t("request.temperature_requirement")}</CustomText>
                     <CustomText style={styles.detailsValue}>Ambient</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>Vehicle Requirements</CustomText>
+                    <CustomText style={styles.detailsLabel}>{t("request.vehicle_requirements")}</CustomText>
                     <CustomText style={styles.detailsValue}>Refrigerator</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>Number of containers or bags </CustomText>
+                    <CustomText style={styles.detailsLabel}>{t("request.number_of_bags")}</CustomText>
                     <CustomText style={styles.detailsValue}>4</CustomText>
                 </View>
-                <CustomText style={styles.title3}>Please Fill in the Details Below</CustomText>
+                <CustomText style={styles.title3}>{t("route.fill_in_the_details")}</CustomText>
                 <Container>
                     <Formik
                         initialValues={initialValues}
@@ -68,9 +70,8 @@ const StatusScreen: React.FC<Props> = ({ navigation }) => {
                     >
                         {({ handleChange, handleSubmit, values, errors, touched }) => (
                             <>
-
                                 <Input
-                                    label={'Temperature Reading'}
+                                    label={t("route.temperature_reading")}
                                     onChangeText={handleChange('temperatureReading')}
                                     value={values.temperatureReading}
                                     autoCapitalize="none"
@@ -81,7 +82,7 @@ const StatusScreen: React.FC<Props> = ({ navigation }) => {
                                 />
                                 <Input
                                     ref={noteRef}
-                                    label={'Add note'}
+                                    label={t("proof.add_note")}
                                     onChangeText={handleChange('note')}
                                     value={values.note}
                                     autoCapitalize="none"
@@ -90,8 +91,8 @@ const StatusScreen: React.FC<Props> = ({ navigation }) => {
                                     numberOfLines={5}
                                     onSubmitEditing={() => handleSubmit()}
                                 />
-                                <Button title='Deliver' onPress={handleSubmit} />
-                                <Button title='Not Deliver' onPress={() => setShowReason(true)} variant='outline' />
+                                <Button title={t("action.deliver")} onPress={handleSubmit} />
+                                <Button title={t("action.not_deliver")} onPress={() => setShowReason(true)} variant='outline' />
                             </>
                         )}
                     </Formik>
