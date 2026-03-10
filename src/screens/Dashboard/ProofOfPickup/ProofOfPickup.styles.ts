@@ -82,6 +82,13 @@ const useStyles = () => {
     flx: {
       flex: 1,
     },
+    error:{
+      color:theme.error
+    },
+    sealPhotoStyle:{
+      height:Metrics._50,
+      width:Metrics._100,
+    }
   });
 };
 

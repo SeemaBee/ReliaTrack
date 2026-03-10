@@ -105,6 +105,13 @@ const useStyles = () => {
     deliveryProofContainer: {
       marginBottom: Metrics._20,
     },
+    error: {
+      color: theme.error,
+    },
+    sealPhotoStyle: {
+      height: Metrics._50,
+      width: Metrics._100,
+    },
   });
 };
 

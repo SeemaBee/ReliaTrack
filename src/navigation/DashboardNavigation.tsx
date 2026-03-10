@@ -9,6 +9,8 @@ import RouteScreen from 'screens/Dashboard/RouteScreen/RouteScreen';
 import StatusScreen from 'screens/Dashboard/StatusScreen/StatusScreen';
 import ItemDetailsScreen from 'screens/Dashboard/ItemDetailsScreen/ItemDetailsScreen';
 import ProofOfDelivery from 'screens/Dashboard/ProofOfDelivery/ProofOfDelivery';
+import BarcodeScan from 'screens/Dashboard/BarcodeScan/BarcodeScan';
+import SignatureScreen from 'screens/Dashboard/SignatureScreen/SignatureScreen';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
@@ -19,10 +21,12 @@ export default () => {
       <Stack.Screen name="RequestScreen" component={RequestScreen} />
       <Stack.Screen name="PickupConfirmation" component={PickupConfirmation} />
       <Stack.Screen name="ProofOfPickup" component={ProofOfPickup} />
+      <Stack.Screen name="BarcodeScan" component={BarcodeScan} />
       <Stack.Screen name="RouteScreen" component={RouteScreen} />
       <Stack.Screen name="StatusScreen" component={StatusScreen} />
       <Stack.Screen name="ItemDetailsScreen" component={ItemDetailsScreen} />
       <Stack.Screen name="ProofOfDelivery" component={ProofOfDelivery} />
+      <Stack.Screen name="SignatureScreen" component={SignatureScreen} />
     </Stack.Navigator>
   );
 };

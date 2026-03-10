@@ -17,6 +17,8 @@ export type StackParamList = {
   StatusScreen: undefined;
   ItemDetailsScreen: undefined;
   ProofOfDelivery: undefined;
+  BarcodeScan: undefined;
+  SignatureScreen: undefined;
 };
 
 export type AppNavigationProp<T extends keyof StackParamList> =

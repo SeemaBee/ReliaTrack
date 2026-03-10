@@ -1,0 +1,62 @@
+import { Alert, View } from 'react-native'
+import React, { useCallback, useEffect, useRef } from 'react'
+import useStyles from './SignatureScreen.styles'
+import { AppNavigationProp } from 'common/types/navigationTypes'
+import SignatureCanvas, { SignatureViewRef } from 'react-native-signature-canvas';
+import Orientation from 'react-native-orientation-locker'
+import Button from 'common/components/button'
+import { useTranslation } from 'react-i18next';
+
+type Props = {
+    navigation: AppNavigationProp<'SignatureScreen'>;
+};
+
+const SignatureScreen: React.FC<Props> = ({ navigation }) => {
+    const styles = useStyles();
+    const { t } = useTranslation();
+    const signatureRef = useRef<SignatureViewRef>(null);
+
+    useEffect(() => {
+        Orientation.lockToLandscape();
+        return () => Orientation.lockToPortrait();
+    }, []);
+
+    const handleSignature = useCallback((signature: string) => {
+        Alert.alert("Signature Captured", signature.substring(0, 50) + "...");
+        console.log(signature);
+        navigation.goBack();
+    }, [navigation]);
+
+    const handleClear = () => {
+        signatureRef.current?.clearSignature();
+    };
+
+    const handleSave = () => {
+        signatureRef.current?.readSignature();
+    };
+
+    const webStyle = `
+        .m-signature-pad--footer { display: none; margin: 0px; }
+        body,html { width: 100%; height: 100%; }
+    `;
+
+    return (
+        <View style={styles.container}>
+            <SignatureCanvas
+                ref={signatureRef}
+                onOK={handleSignature}
+                onEmpty={() => Alert.alert("Empty", "Please provide a signature first.")}
+                descriptionText="Sign Here"
+                webStyle={webStyle}
+                autoClear={false}
+            />
+            <View style={styles.actionContainer}>
+                <Button title={t("action.go_back")} onPress={() => navigation.goBack()} style={styles.actionStyle} />
+                <Button title={t("action.clear")} onPress={handleClear} style={styles.actionStyle} />
+                <Button title={t("action.save")} onPress={handleSave} style={styles.actionStyle} />
+            </View>
+        </View>
+    )
+}
+
+export default SignatureScreen

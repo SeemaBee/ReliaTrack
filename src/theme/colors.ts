@@ -42,6 +42,8 @@ export const LightTheme = {
   lightBlue: '#C0DBFB',
   darkBlue: '#2280EF',
   verticalSeparator: '#1B5E2021',
+  unfocusedArea: '#000000b3',
+  transparent: 'transparent',
   text: '#000000',
   grey1: '#9A9A9A',
   grey2: '#909090',

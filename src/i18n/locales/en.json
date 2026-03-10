@@ -111,6 +111,9 @@
         "accept": "Accept",
         "confirm_pickup": "Confirm Pickup",
         "deliver": "Deliver",
-        "not_deliver": "Not Deliver"
+        "not_deliver": "Not Deliver",
+        "clear": "Clear",
+        "save": "Save",
+        "go_back": "Go back"
     }
 }
