@@ -1,11 +1,10 @@
-import { Alert, Animated, Easing, Linking, Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Alert, Animated, Easing, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import CustomText from 'common/components/text'
 import { useTheme } from 'common/helperFunctions'
 import useStyles from './BarcodeScan.styles'
 import { Camera, useCameraDevice, useCameraPermission, useCodeScanner } from 'react-native-vision-camera'
 import { AppNavigationProp } from 'common/types/navigationTypes'
-import Button from 'common/components/button'
 import { Metrics } from 'theme/metrics'
 import { Flashlight, FlashlightOff, X } from 'lucide-react-native'
 
@@ -22,13 +21,13 @@ const BarcodeScan: React.FC<Props> = ({ navigation }) => {
     const device = useCameraDevice('back');
     const scanAnim = useRef(new Animated.Value(0)).current;
 
-    const handleOpenSettings = async () => {
-        if (Platform.OS === 'ios') {
-            await Linking.openURL('app-settings:');
-        } else {
-            await Linking.openSettings();
-        }
-    };
+    // const handleOpenSettings = async () => {
+    //     if (Platform.OS === 'ios') {
+    //         await Linking.openURL('app-settings:');
+    //     } else {
+    //         await Linking.openSettings();
+    //     }
+    // };
 
     useEffect(() => {
         const animation = Animated.loop(
@@ -83,15 +82,15 @@ const BarcodeScan: React.FC<Props> = ({ navigation }) => {
         outputRange: [0, Metrics.deviceWidth * 0.9 - 6],
     });
 
-    if (!hasPermission) {
-        return (
-            <View style={styles.blankContainer}>
-                <CustomText>Camera permission is required to scan barcode.</CustomText>
-                <CustomText>Go to setting to enable camera permission of this app.</CustomText>
-                <Button title={'Go to settings'} onPress={handleOpenSettings} />
-            </View>
-        );
-    }
+    // if (!hasPermission) {
+    //     return (
+    //         <View style={styles.blankContainer}>
+    //             <CustomText>Camera permission is required to scan barcode.</CustomText>
+    //             <CustomText>Go to setting to enable camera permission of this app.</CustomText>
+    //             <Button title={'Go to settings'} onPress={handleOpenSettings} />
+    //         </View>
+    //     );
+    // }
 
     if (device == null) {
         return (

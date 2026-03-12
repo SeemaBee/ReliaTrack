@@ -104,11 +104,11 @@ const ProofOfDelivery: React.FC<Props> = ({ navigation }) => {
                         setShow(true);
                     }}>
                         <CustomText style={styles.actionLabel}>{t("proof.photo_of_seal")}</CustomText>
-                        <Camera color={theme.grey6} size={Metrics._20} />
+                        <Camera color={theme.grey6} size={Metrics._20} strokeWidth={Metrics._1} />
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={1} style={styles.proofAction} onPress={() => navigation.navigate("BarcodeScan")}>
                         <CustomText style={styles.actionLabel}>{t("proof.barcode_scan")}</CustomText>
-                        <Scan color={theme.grey6} size={Metrics._20} />
+                        <Scan color={theme.grey6} size={Metrics._20} strokeWidth={Metrics._1} />
                     </TouchableOpacity>
                 </View>
                 {sealImage && <Image src={sealImage?.uri} style={styles.sealPhotoStyle} />}
@@ -128,7 +128,7 @@ const ProofOfDelivery: React.FC<Props> = ({ navigation }) => {
                         setShow(true);
                     }}>
                         <CustomText style={styles.deliveryLabel}>{t("proof.drop_off_photo")}</CustomText>
-                        <Camera color={theme.grey6} size={Metrics._20} />
+                        <Camera color={theme.grey6} size={Metrics._20} strokeWidth={Metrics._1} />
                     </TouchableOpacity>
                 </View>
                 {dropOffImage && <Image src={dropOffImage?.uri} style={styles.sealPhotoStyle} />}
