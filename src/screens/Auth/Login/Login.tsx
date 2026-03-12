@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, TextInput, TouchableOpacity, View } from 'react-native';
 import { Formik } from 'formik';
 import { AppNavigationProp } from 'common/types/navigationTypes';
 import Container from 'common/components/container';
@@ -9,6 +9,7 @@ import Button from 'common/components/button';
 import { useTranslation } from 'react-i18next';
 import { LoginSchema } from 'utils/validationSchemas';
 import useStyles from './Login.styles';
+import { checkBiometricAvailability, triggerBiometricPrompt } from 'utils/biometrics';
 
 interface LoginProps {
   navigation: AppNavigationProp<'Login'>;
@@ -17,8 +18,24 @@ interface LoginProps {
 const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const styles = useStyles();
-
+  const [biometricAvailable, setBiometricAvailable] = useState(false);
+  const [biometricType, setBiometricType] = useState<string | null>(null);
   const passwordRef = useRef<TextInput>(null);
+
+  const checkBiometric = async () => {
+    const { available, biometryType } =
+      await checkBiometricAvailability();
+    // console.log(available);
+    // console.log(biometryType)
+
+    setBiometricAvailable(available);
+    if (biometryType) {
+      setBiometricType(biometryType);
+    }
+  };
+  useEffect(() => {
+    checkBiometric();
+  }, []);
 
   const initialValues = {
     email: '',
@@ -30,6 +47,24 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
       index: 0,
       routes: [{ name: 'DashboardNavigation' }],
     });
+  };
+
+  const handleBiometricLogin = async () => {
+    if (!biometricAvailable) {
+      Alert.alert('Biometrics not available on this device');
+      return;
+    }
+
+    const success = await triggerBiometricPrompt();
+
+    if (success) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'DashboardNavigation' }],
+      });
+    } else {
+      Alert.alert('Authentication failed or cancelled');
+    }
   };
 
   return (
@@ -81,6 +116,11 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
           </>
         )}
       </Formik>
+      <Button
+        title={`Login with ${biometricType === null ? "biometrics" : biometricType}`}
+        onPress={handleBiometricLogin}
+        disabled={!biometricAvailable}
+      />
     </Container>
   );
 };

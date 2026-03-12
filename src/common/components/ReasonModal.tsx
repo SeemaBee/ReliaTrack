@@ -20,6 +20,7 @@ const ReasonModal = ({ show, onClose, onSuccess }: Props) => {
     const theme = useTheme();
     const { t } = useTranslation();
     const styles = getStyles(theme);
+    
     return (
         <ReactNativeModal
             isVisible={show}

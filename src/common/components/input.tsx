@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import { verticalScale } from 'react-native-size-matters';
 import { Eye, EyeOff } from 'lucide-react-native';
 import { useTheme } from 'common/helperFunctions';
 import CustomText from './text';

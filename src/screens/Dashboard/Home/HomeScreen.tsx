@@ -32,7 +32,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       <Switch
         trackColor={{ false: theme.grey3, true: theme.primary }}
         thumbColor={theme.white}
-        ios_backgroundColor={theme.primary}
         onValueChange={toggleSwitch}
         value={isEnabled}
       />
@@ -54,19 +53,30 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           text={t('home.tab3')}
         />
       </View>
-      <FlatList
-        data={['1', '2']}
-        style={styles.flx}
-        contentContainerStyle={styles.contentStyle}
-        renderItem={item => (
-          <JobCard
-            data={item}
-            onPress={() => navigation.navigate('RequestScreen')}
-          />
-        )}
-        keyExtractor={item => item}
-        showsVerticalScrollIndicator={false}
-      />
+      {selectedTab === 0 ?
+        <FlatList
+          data={['1', '2']}
+          style={styles.flx}
+          contentContainerStyle={styles.contentStyle}
+          renderItem={item => (
+            <JobCard
+              data={item}
+              onPress={() => navigation.navigate('RequestScreen')}
+            />
+          )}
+          keyExtractor={item => item}
+          showsVerticalScrollIndicator={false}
+        />
+        :
+        selectedTab === 1 ?
+          <View style={styles.centeredContainer}>
+            <CustomText>Active Requests</CustomText>
+          </View>
+          :
+          <View style={styles.centeredContainer}>
+            <CustomText>Completed Requests</CustomText>
+          </View>
+      }
       {showChecklist && (
         <ChecklistModal
           show={showChecklist}

@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import React, { useState } from 'react';
 import ReactNativeModal from 'react-native-modal';
 import CustomText from './text';
@@ -236,6 +236,7 @@ const getStyles = (theme: typeof LightTheme) =>
       height: '100%',
       padding: Metrics._16,
       backgroundColor: theme.white,
+      paddingTop: Platform.OS === "android" ? Metrics._16 : Metrics._50,
     },
     headerStyle: {
       paddingHorizontal: 0,

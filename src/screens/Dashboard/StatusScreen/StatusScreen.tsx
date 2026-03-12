@@ -1,5 +1,5 @@
 import { ScrollView, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CustomText from 'common/components/text'
 import useStyles from './StatusScreen.styles'
 import { AppNavigationProp } from 'common/types/navigationTypes';
@@ -15,6 +15,8 @@ import { Input } from 'common/components/input';
 import Button from 'common/components/button';
 import ReasonModal from 'common/components/ReasonModal';
 import { useTranslation } from 'react-i18next';
+import { requestBackgroundPermission, requestForegroundPermissions } from 'common/components/PermissionServices';
+import { startBackgroundJob, stopBackgroundJob } from 'common/components/FetchingLocation';
 
 type Props = {
     navigation: AppNavigationProp<'StatusScreen'>;
@@ -26,10 +28,38 @@ const StatusScreen: React.FC<Props> = ({ navigation }) => {
     const styles = useStyles();
     const noteRef = useRef<TextInput>(null);
     const [showReason, setShowReason] = useState(false);
+    const [startTracking, setStartTracking] = useState(false);
     const initialValues = {
         temperatureReading: '',
         note: '',
     };
+    useEffect(() => {
+        initDelivery();
+    }, []);
+    const initDelivery = async () => {
+        const foregroundOk = await requestForegroundPermissions();
+        if (!foregroundOk) {
+            return;
+        }
+        const backgroundOk = await requestBackgroundPermission();
+        if (!backgroundOk) {
+            return;
+        }
+    };
+    const toggleBackground = async () => {
+        try {
+            if (!startTracking) {
+                await startBackgroundJob();
+                setStartTracking(true);
+            } else {
+                await stopBackgroundJob();
+                setStartTracking(false);
+            }
+        } catch (error) {
+            console.log('Toggle error:', error);
+        }
+    };
+
     const handleDeliver = () => {
         navigation.navigate("ProofOfDelivery")
     }
@@ -37,32 +67,32 @@ const StatusScreen: React.FC<Props> = ({ navigation }) => {
         <View style={styles.container}>
             <Header title={t("route.status")} onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
             <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={"always"}>
-                <JobCard data={{}} />
-                <TouchableOpacity activeOpacity={1} style={styles.itemDetailsView} onPress={() => navigation.navigate("ItemDetailsScreen")}>
-                    <CustomText style={styles.innerLabel}>{t("proof.all_item_details")}</CustomText>
-                    <ChevronRight color={theme.black1} size={Metrics._20} />
-                </TouchableOpacity>
-                <CustomText style={styles.title2}>{t("request.delivery_items")}</CustomText>
-                <ItemCard />
-                <CustomText style={styles.title2}>{t("request.more_details")}</CustomText>
-                <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>{t("request.urgency_level")}</CustomText>
-                    <CustomText style={styles.detailsValue}>ASAP</CustomText>
-                </View>
-                <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>{t("request.temperature_requirement")}</CustomText>
-                    <CustomText style={styles.detailsValue}>Ambient</CustomText>
-                </View>
-                <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>{t("request.vehicle_requirements")}</CustomText>
-                    <CustomText style={styles.detailsValue}>Refrigerator</CustomText>
-                </View>
-                <View style={styles.detailsItemView}>
-                    <CustomText style={styles.detailsLabel}>{t("request.number_of_bags")}</CustomText>
-                    <CustomText style={styles.detailsValue}>4</CustomText>
-                </View>
-                <CustomText style={styles.title3}>{t("route.fill_in_the_details")}</CustomText>
                 <Container>
+                    <JobCard data={{}} />
+                    <TouchableOpacity activeOpacity={1} style={styles.itemDetailsView} onPress={() => navigation.navigate("ItemDetailsScreen")}>
+                        <CustomText style={styles.innerLabel}>{t("proof.all_item_details")}</CustomText>
+                        <ChevronRight color={theme.black1} size={Metrics._20} />
+                    </TouchableOpacity>
+                    <CustomText style={styles.title2}>{t("request.delivery_items")}</CustomText>
+                    <ItemCard />
+                    <CustomText style={styles.title2}>{t("request.more_details")}</CustomText>
+                    <View style={styles.detailsItemView}>
+                        <CustomText style={styles.detailsLabel}>{t("request.urgency_level")}</CustomText>
+                        <CustomText style={styles.detailsValue}>ASAP</CustomText>
+                    </View>
+                    <View style={styles.detailsItemView}>
+                        <CustomText style={styles.detailsLabel}>{t("request.temperature_requirement")}</CustomText>
+                        <CustomText style={styles.detailsValue}>Ambient</CustomText>
+                    </View>
+                    <View style={styles.detailsItemView}>
+                        <CustomText style={styles.detailsLabel}>{t("request.vehicle_requirements")}</CustomText>
+                        <CustomText style={styles.detailsValue}>Refrigerator</CustomText>
+                    </View>
+                    <View style={styles.detailsItemView}>
+                        <CustomText style={styles.detailsLabel}>{t("request.number_of_bags")}</CustomText>
+                        <CustomText style={styles.detailsValue}>4</CustomText>
+                    </View>
+                    <CustomText style={styles.title3}>{t("route.fill_in_the_details")}</CustomText>
                     <Formik
                         initialValues={initialValues}
                         // validationSchema={}
@@ -93,6 +123,7 @@ const StatusScreen: React.FC<Props> = ({ navigation }) => {
                                 />
                                 <Button title={t("action.deliver")} onPress={handleSubmit} />
                                 <Button title={t("action.not_deliver")} onPress={() => setShowReason(true)} variant='outline' />
+                                <Button title={startTracking ? "Stop fetching location" : "Get background location"} onPress={() => toggleBackground()} variant='outline' />
                             </>
                         )}
                     </Formik>

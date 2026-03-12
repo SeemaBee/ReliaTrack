@@ -24,6 +24,7 @@ const useStyles = () => {
     forgotContainer: {
       width: '100%',
       alignItems: 'flex-end',
+      top: -Metrics._10,
     },
     forgotText: {
       fontSize: FontSizes._14,

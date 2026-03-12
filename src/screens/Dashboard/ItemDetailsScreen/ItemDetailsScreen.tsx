@@ -23,6 +23,7 @@ const ItemDetailsScreen: React.FC<Props> = ({ navigation }) => {
                 <CustomText style={styles.title2}>{t("request.delivery_items")}</CustomText>
                 <ItemCard />
                 <ItemCard />
+                <ItemCard />
             </ScrollView>
         </View>
     )

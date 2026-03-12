@@ -1,5 +1,5 @@
 import { useTheme } from 'common/helperFunctions';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { Metrics } from 'theme/metrics';
 
 const useStyles = () => {
@@ -13,6 +13,7 @@ const useStyles = () => {
     },
     title: {
       fontSize: Metrics._18,
+      marginBottom: Platform.OS === 'android' ? 0 : Metrics._5,
     },
     title2: {
       fontSize: Metrics._22,
@@ -30,6 +31,12 @@ const useStyles = () => {
     contentStyle: {
       flexGrow: 1,
       paddingVertical: Metrics._20,
+    },
+    centeredContainer: {
+      flex: 1,
+      width: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
 };

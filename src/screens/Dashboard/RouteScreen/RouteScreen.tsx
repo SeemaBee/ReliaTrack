@@ -30,6 +30,7 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
         temperatureReading: '',
         note: '',
     };
+
     const handleRoute = () => {
         Keyboard.dismiss();
         navigation.navigate('StatusScreen')
