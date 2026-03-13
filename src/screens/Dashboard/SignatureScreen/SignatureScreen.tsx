@@ -1,5 +1,5 @@
 import { Alert, View } from 'react-native'
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import useStyles from './SignatureScreen.styles'
 import { AppNavigationProp } from 'common/types/navigationTypes'
 import SignatureCanvas, { SignatureViewRef } from 'react-native-signature-canvas';
@@ -15,10 +15,18 @@ const SignatureScreen: React.FC<Props> = ({ navigation }) => {
     const styles = useStyles();
     const { t } = useTranslation();
     const signatureRef = useRef<SignatureViewRef>(null);
+    const [canvasKey, setCanvasKey] = useState(0);
 
     useEffect(() => {
         Orientation.lockToLandscape();
-        return () => Orientation.lockToPortrait();
+
+        const timer = setTimeout(() => {
+            setCanvasKey(prev => prev + 1);
+        }, 300);
+        return () => {
+            clearTimeout(timer);
+            Orientation.lockToPortrait();
+        }
     }, []);
 
     const handleSignature = useCallback((signature: string) => {
@@ -43,6 +51,7 @@ const SignatureScreen: React.FC<Props> = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <SignatureCanvas
+                key={canvasKey}
                 ref={signatureRef}
                 onOK={handleSignature}
                 onEmpty={() => Alert.alert("Empty", "Please provide a signature first.")}
