@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Keyboard, TextInput, TouchableOpacity, View } from 'react-native';
 import { Formik } from 'formik';
 import { AppNavigationProp } from 'common/types/navigationTypes';
 import Container from 'common/components/container';
@@ -10,6 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { LoginSchema } from 'utils/validationSchemas';
 import useStyles from './Login.styles';
 import { checkBiometricAvailability, triggerBiometricPrompt } from 'utils/biometrics';
+import Loader from 'common/components/loader';
+import { loginAPI } from 'api/auth/authAPI';
 
 interface LoginProps {
   navigation: AppNavigationProp<'Login'>;
@@ -18,6 +20,7 @@ interface LoginProps {
 const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const styles = useStyles();
+  const [loader, setLoader] = useState(false)
   const [biometricAvailable, setBiometricAvailable] = useState(false);
   const [biometricType, setBiometricType] = useState<string | null>(null);
   const passwordRef = useRef<TextInput>(null);
@@ -42,11 +45,27 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
     password: '',
   };
 
-  const handleSignIn = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'DashboardNavigation' }],
-    });
+  const handleSignIn = async (values: any) => {
+    Keyboard.dismiss();
+    try {
+      setLoader(true);
+      const data = {
+        email: values.email,
+        password: '',
+        device_name: '',
+        fcm_token: ''
+      }
+      const response = await loginAPI(data);
+      console.log(response)
+    } catch (error) {
+      console.log("Error:-", error);
+    } finally {
+      setLoader(false)
+    }
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{ name: 'DashboardNavigation' }],
+    // });
   };
 
   const handleBiometricLogin = async () => {
@@ -69,12 +88,13 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 
   return (
     <Container contentStyle={styles.container}>
+      {loader && <Loader show={loader} />}
       <CustomText style={styles.title}>{t('auth.login')}</CustomText>
       <CustomText style={styles.subTitle}>{t('auth.subTitle')}</CustomText>
       <Formik
         initialValues={initialValues}
-        // validationSchema={LoginSchema}
-        onSubmit={handleSignIn}
+        validationSchema={LoginSchema}
+        onSubmit={(values) => handleSignIn(values)}
       >
         {({ handleChange, handleSubmit, values, errors, touched }) => (
           <>

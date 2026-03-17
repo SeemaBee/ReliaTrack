@@ -1,4 +1,5 @@
-export const BASE_URL = "api-url";
+export const BASE_URL = 'http://172.16.123.106:8000/api/mobile/v1/';
 
-export const LOGIN_ROUTE = `/login`;
-export const REGISTER_ROUTE = `/register`;
+export const ENDPOINTS = {
+  login: 'login',
+};
