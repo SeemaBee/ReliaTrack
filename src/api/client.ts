@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { BASE_URL } from './routes';
-import { LocalDB } from 'utils/constant';
+import { LocalDB } from 'services/database';
 
 const TIMEOUT = 10000;
 

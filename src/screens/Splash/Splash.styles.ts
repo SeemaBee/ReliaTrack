@@ -2,7 +2,7 @@ import { useTheme } from 'common/helperFunctions';
 import { StyleSheet } from 'react-native';
 import { Metrics } from 'theme/metrics';
 
-const getStyles = () => {
+const useStyles = () => {
   const theme = useTheme();
   return StyleSheet.create({
     container: {
@@ -20,4 +20,4 @@ const getStyles = () => {
   });
 };
 
-export default getStyles;
+export default useStyles;

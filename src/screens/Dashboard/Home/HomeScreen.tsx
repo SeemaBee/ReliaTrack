@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, Switch, View } from 'react-native';
 import { AppNavigationProp } from 'common/types/navigationTypes';
 import CustomText from 'common/components/text';
@@ -8,6 +8,10 @@ import { useTranslation } from 'react-i18next';
 import JobCard from 'common/components/jobCard';
 import useStyles from './HomeScreen.styles';
 import ChecklistModal from 'common/components/checklistModal';
+import Toast from 'react-native-simple-toast';
+import Loader from 'common/components/loader';
+import { safetyChecklistAPI } from 'api/dashboard/dashboardAPI';
+import { SafetyChecklistProps } from 'utils/constant';
 
 type Props = {
   navigation: AppNavigationProp<'Home'>;
@@ -17,6 +21,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const styles = useStyles();
   const { t } = useTranslation();
   const theme = useTheme();
+  const [loader, setLoader] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const [showChecklist, setShowChecklist] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -26,8 +31,42 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     }
     setIsEnabled(previousState => !previousState);
   };
+
+  useEffect(() => {
+    getJobRequests();
+  }, []);
+  const handleChecklist = async (checklistData: SafetyChecklistProps) => {
+    try {
+      const data = {
+        ...checklistData,
+        latitude: 0,
+        longitude: 0
+      }
+      console.log(data)
+      // return
+      const response = await safetyChecklistAPI(data);
+      console.log(response)
+    } catch (error: any) {
+      Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
+      console.log("Error:-", error);
+    } finally {
+      setLoader(false);
+    }
+  }
+
+  const getJobRequests = async () => {
+    try {
+      
+    } catch (error: any) {
+      Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
+      console.log("Error:-", error);
+    } finally {
+      setLoader(false);
+    }
+  }
   return (
     <View style={styles.container}>
+      {loader && <Loader show={loader} />}
       <CustomText style={styles.title}>{t('home.title1')}</CustomText>
       <Switch
         trackColor={{ false: theme.grey3, true: theme.primary }}
@@ -52,6 +91,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           handleClick={() => setSelectedTab(2)}
           text={t('home.tab3')}
         />
+
       </View>
       {selectedTab === 0 ?
         <FlatList
@@ -84,7 +124,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             setIsEnabled(false);
             setShowChecklist(false);
           }}
-          onSuccess={() => setShowChecklist(false)}
+          onSuccess={(data) => handleChecklist(data)}
         />
       )}
     </View>

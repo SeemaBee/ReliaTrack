@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Keyboard, TextInput, TouchableOpacity, View } from 'react-native';
-import { Formik } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import { AppNavigationProp } from 'common/types/navigationTypes';
 import Container from 'common/components/container';
 import CustomText from 'common/components/text';
@@ -12,6 +12,11 @@ import useStyles from './Login.styles';
 import { checkBiometricAvailability, triggerBiometricPrompt } from 'utils/biometrics';
 import Loader from 'common/components/loader';
 import { loginAPI } from 'api/auth/authAPI';
+import Toast from 'react-native-simple-toast';
+import { LoginFormValues } from 'utils/constant';
+import { useDispatch } from 'react-redux';
+import { setToken, setUser } from 'redux/features/authSlice';
+import { LocalDB } from 'services/database';
 
 interface LoginProps {
   navigation: AppNavigationProp<'Login'>;
@@ -20,10 +25,12 @@ interface LoginProps {
 const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const styles = useStyles();
+  const dispatch = useDispatch();
   const [loader, setLoader] = useState(false)
   const [biometricAvailable, setBiometricAvailable] = useState(false);
   const [biometricType, setBiometricType] = useState<string | null>(null);
   const passwordRef = useRef<TextInput>(null);
+  const formikRef = useRef<FormikProps<LoginFormValues> | null>(null);
 
   const checkBiometric = async () => {
     const { available, biometryType } =
@@ -45,27 +52,35 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
     password: '',
   };
 
-  const handleSignIn = async (values: any) => {
+  const handleSignIn = async (values: LoginFormValues) => {
     Keyboard.dismiss();
     try {
       setLoader(true);
       const data = {
         email: values.email,
-        password: '',
+        password: values.password,
         device_name: '',
         fcm_token: ''
       }
       const response = await loginAPI(data);
-      console.log(response)
-    } catch (error) {
+      // console.log(response, "====>Response");
+      if (response?.success) {
+        const { token, user } = response?.data;
+        Toast.showWithGravity(response?.message || "Login successful", Toast.LONG, Toast.BOTTOM);
+        await LocalDB.setMany({ authToken: token, userData: JSON.stringify(user) });
+        dispatch(setUser(user));
+        dispatch(setToken(token));
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'DashboardNavigation' }],
+        });
+      }
+    } catch (error: any) {
+      Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
       console.log("Error:-", error);
     } finally {
-      setLoader(false)
+      setLoader(false);
     }
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: 'DashboardNavigation' }],
-    // });
   };
 
   const handleBiometricLogin = async () => {
@@ -91,7 +106,8 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
       {loader && <Loader show={loader} />}
       <CustomText style={styles.title}>{t('auth.login')}</CustomText>
       <CustomText style={styles.subTitle}>{t('auth.subTitle')}</CustomText>
-      <Formik
+      <Formik<LoginFormValues>
+        innerRef={formikRef}
         initialValues={initialValues}
         validationSchema={LoginSchema}
         onSubmit={(values) => handleSignIn(values)}

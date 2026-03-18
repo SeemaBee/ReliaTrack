@@ -10,11 +10,12 @@ import { useTheme } from '../helperFunctions';
 import Header from './header';
 import { Car, Medical, Safety } from 'assets/svg';
 import { useTranslation } from 'react-i18next';
+import { SafetyChecklistProps } from 'utils/constant';
 
 type Props = {
   show: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: (data: SafetyChecklistProps) => void;
 };
 
 const ChecklistModal = ({ show, onClose, onSuccess }: Props) => {
@@ -39,6 +40,19 @@ const ChecklistModal = ({ show, onClose, onSuccess }: Props) => {
       [key]: value,
     }));
   };
+  const handleSubmit = () => {
+    const checklistData: SafetyChecklistProps = {
+      checklist_type: 'pre_duty',
+      lights_functional: answers.lights === 'Yes',
+      tire_pressure_checked: answers.tires === 'Yes',
+      vehicle_exterior_check: answers.mirrors === 'Yes',
+      id_badge_visible: answers.id_badge === 'Yes',
+      biohazard_bags_available: answers.biohazard_kit === 'Yes',
+      gloves_available: answers.gloves === 'Yes',
+      secure_transport_containers: answers.containers === 'Yes'
+    }
+    onSuccess(checklistData);
+  }
   return (
     <ReactNativeModal
       isVisible={show}
@@ -201,7 +215,7 @@ const ChecklistModal = ({ show, onClose, onSuccess }: Props) => {
                 <CustomText>{t("checklist.no")}</CustomText>
               </TouchableOpacity>
             </View>
-            <Button title={t("action.submit")} onPress={() => onSuccess()} />
+            <Button title={t("action.submit")} onPress={handleSubmit} />
           </ScrollView>
         </View>
       </View>

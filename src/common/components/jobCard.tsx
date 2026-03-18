@@ -33,7 +33,7 @@ const JobCard: React.FC<Props> = ({ onPress, data }) => {
         </CustomText>
       </View>
       <CustomText>{t("home.pickup")}</CustomText>
-      <View style={styles.pickupDateTimeBox}>
+      <View style={styles.dateTimeBox}>
         <View style={styles.row}>
           <Calendar color={theme.black5} size={Metrics._14} />
           <CustomText style={styles.dateTimeText}>11/02/2026</CustomText>
@@ -44,7 +44,7 @@ const JobCard: React.FC<Props> = ({ onPress, data }) => {
         </View>
       </View>
       <CustomText>{t("home.delivery")}</CustomText>
-      <View style={styles.deliveryDateTimeBox}>
+      <View style={styles.dateTimeBox}>
         <View style={styles.row}>
           <Calendar color={theme.black5} size={Metrics._14} />
           <CustomText style={styles.dateTimeText}>11/02/2026</CustomText>
@@ -53,6 +53,10 @@ const JobCard: React.FC<Props> = ({ onPress, data }) => {
           <Clock color={theme.black5} size={Metrics._14} />
           <CustomText style={styles.dateTimeText}>12:30</CustomText>
         </View>
+      </View>
+      <View style={styles.urgencyLevelBox}>
+        <CustomText style={styles.urgencyTxt}>{t("request.urgency_level")}: </CustomText>
+        <CustomText>ASAP</CustomText>
       </View>
       {onPress && (
         <View style={styles.detailContainer}>
@@ -98,18 +102,20 @@ const getStyles = (theme: typeof LightTheme) =>
       gap: Metrics._4,
       alignItems: 'center',
     },
-    pickupDateTimeBox: {
+    dateTimeBox: {
       flexDirection: 'row',
       width: '100%',
       gap: Metrics._14,
       borderBottomWidth: Metrics._1,
       borderColor: theme.border1,
-      paddingBottom: Metrics._8,
+      paddingBottom: Metrics._10,
     },
-    deliveryDateTimeBox: {
-      flexDirection: 'row',
+    urgencyLevelBox: {
       width: '100%',
-      gap: Metrics._14,
+      gap: Metrics._8,
+    },
+    urgencyTxt: {
+      color: theme.red
     },
     dateTimeText: {
       fontSize: Metrics._16,

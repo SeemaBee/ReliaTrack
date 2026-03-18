@@ -19,6 +19,7 @@ export const LightTheme = {
   border13: '#B2B2B2',
   borderSecondary: '#889921',
   error: '#E74C3C',
+  red:'#B10505',
   primary: '#222F4E',
   secondary: '#AEBD52',
   inactiveTab: '#A0A0A0',
