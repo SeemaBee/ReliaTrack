@@ -18,8 +18,6 @@ const JobCard: React.FC<Props> = ({ onPress, data }) => {
   const { t } = useTranslation();
   const styles = getStyles(theme);
 
-  console.log('data - ', data);
-
   return (
     <View style={styles.container}>
       <View style={styles.itemBox}>

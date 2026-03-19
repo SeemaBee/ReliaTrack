@@ -38,6 +38,9 @@ const useStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
     },
+    bottomSpace: {
+      height: Metrics._10,
+    },
   });
 };
 

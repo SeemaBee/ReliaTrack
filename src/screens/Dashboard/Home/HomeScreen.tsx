@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, Switch, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FlatList, RefreshControl, Switch, View } from 'react-native';
 import { AppNavigationProp } from 'common/types/navigationTypes';
 import CustomText from 'common/components/text';
 import { useTheme } from 'common/helperFunctions';
@@ -10,13 +10,14 @@ import useStyles from './HomeScreen.styles';
 import ChecklistModal from 'common/components/checklistModal';
 import Toast from 'react-native-simple-toast';
 import Loader from 'common/components/loader';
-import { safetyChecklistAPI } from 'api/dashboard/dashboardAPI';
+import { jobRequestsAPI, safetyChecklistAPI } from 'api/dashboard/dashboardAPI';
 import { SafetyChecklistProps } from 'utils/constant';
+import ListEmptyComponent from 'common/components/listEmptyComponent';
 
 type Props = {
   navigation: AppNavigationProp<'Home'>;
 };
-
+const PER_PAGE = 15;
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const styles = useStyles();
   const { t } = useTranslation();
@@ -24,7 +25,13 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [loader, setLoader] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const [showChecklist, setShowChecklist] = useState(false);
+  const [requests, setRequests] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
   const toggleSwitch = () => {
     if (!isEnabled) {
       setShowChecklist(true);
@@ -32,9 +39,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     setIsEnabled(previousState => !previousState);
   };
 
-  useEffect(() => {
-    getJobRequests();
-  }, []);
   const handleChecklist = async (checklistData: SafetyChecklistProps) => {
     try {
       const data = {
@@ -42,28 +46,58 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         latitude: 0,
         longitude: 0
       }
-      console.log(data)
-      // return
       const response = await safetyChecklistAPI(data);
-      console.log(response)
+      // console.log(response);
+      if (response?.success) {
+        Toast.showWithGravity(response?.message || "Safety checklist updated successfully", Toast.LONG, Toast.BOTTOM);
+        setShowChecklist(false);
+      }
     } catch (error: any) {
       Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
       console.log("Error:-", error);
-    } finally {
-      setLoader(false);
     }
   }
 
-  const getJobRequests = async () => {
+  const getJobRequests = useCallback(async (pageNum: number, isRefreshingCall = false) => {
     try {
-      
+      if (pageNum > 1) setLoadingMore(true);
+      else if (!isRefreshingCall) setLoader(true);
+      const response = await jobRequestsAPI(pageNum, PER_PAGE);
+      console.log(response, '====>jobs');
+      if (response?.success) {
+        const newData = response?.data?.requests || [];
+        setRequests(prev => (pageNum === 1 ? newData : [...prev, ...newData]));
+        setHasMore(newData.length === PER_PAGE);
+      }
     } catch (error: any) {
       Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
       console.log("Error:-", error);
     } finally {
       setLoader(false);
+      setRefreshing(false);
+      setLoadingMore(false);
+    }
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setPage(1);
+    setHasMore(true);
+    getJobRequests(1, true);
+  }, [getJobRequests]);
+
+  useEffect(() => {
+    getJobRequests(1);
+  }, [getJobRequests]);
+
+  const handleLoadMore = () => {
+    if (!loadingMore && hasMore && !loader) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      getJobRequests(nextPage);
     }
   }
+
   return (
     <View style={styles.container}>
       {loader && <Loader show={loader} />}
@@ -95,7 +129,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       </View>
       {selectedTab === 0 ?
         <FlatList
-          data={['1', '2']}
+          data={requests}
           style={styles.flx}
           contentContainerStyle={styles.contentStyle}
           renderItem={item => (
@@ -104,8 +138,22 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
               onPress={() => navigation.navigate('RequestScreen')}
             />
           )}
+          refreshControl={<RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[theme.primary]}
+            tintColor={theme.primary}
+          />
+          }
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={loadingMore ? <Loader show={true} /> : <View style={styles.bottomSpace} />}
           keyExtractor={item => item}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={() => (
+            !loader && <ListEmptyComponent title='No new requests found' />
+          )
+          }
         />
         :
         selectedTab === 1 ?

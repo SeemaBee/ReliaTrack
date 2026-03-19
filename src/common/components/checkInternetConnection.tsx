@@ -4,6 +4,7 @@ import { TriangleAlert } from 'lucide-react-native'
 import { useTheme } from 'common/helperFunctions'
 import { Metrics } from 'theme/metrics'
 import CustomText from './text'
+import { LightTheme } from 'theme/colors'
 
 const CheckInternetConnection = () => {
     const theme = useTheme();
@@ -33,7 +34,7 @@ const CheckInternetConnection = () => {
 
 export default CheckInternetConnection
 
-const createStyles = (theme: any) => {
+const createStyles = (theme: typeof LightTheme) => {
     return StyleSheet.create({
         container: {
             width: '100%',
@@ -47,7 +48,7 @@ const createStyles = (theme: any) => {
             zIndex: 5
         },
         label: {
-            color: theme.primaryText,
+            color: theme.white,
             marginLeft: Metrics._10,
         }
     })

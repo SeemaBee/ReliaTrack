@@ -45,11 +45,14 @@ const ChecklistModal = ({ show, onClose, onSuccess }: Props) => {
       checklist_type: 'pre_duty',
       lights_functional: answers.lights === 'Yes',
       tire_pressure_checked: answers.tires === 'Yes',
-      vehicle_exterior_check: answers.mirrors === 'Yes',
+      windshield_cleaned: answers.mirrors === 'Yes',
+      vehicle_locked: answers.vehicle_lock === 'Yes',
+      secure_phi_containers: answers.package_storage === 'Yes',
       id_badge_visible: answers.id_badge === 'Yes',
       biohazard_bags_available: answers.biohazard_kit === 'Yes',
+      secure_transport_containers: answers.containers === 'Yes',
       gloves_available: answers.gloves === 'Yes',
-      secure_transport_containers: answers.containers === 'Yes'
+      extra_leakproof_bags: answers.bags === 'Yes',
     }
     onSuccess(checklistData);
   }
@@ -277,7 +280,7 @@ const getStyles = (theme: typeof LightTheme) =>
     },
     dotRow: {
       flexDirection: 'row',
-      marginTop: Metrics._16
+      marginTop: Metrics._16,
     },
     emptyCircle: {
       height: Metrics._22,
