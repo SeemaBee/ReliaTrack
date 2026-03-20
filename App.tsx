@@ -10,6 +10,7 @@ import Orientation from 'react-native-orientation-locker';
 import CheckInternetConnection from 'common/components/checkInternetConnection';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './src/i18n';
+import { MenuProvider } from 'react-native-popup-menu';
 
 function App() {
   const [showNoInternetPopup, setShowNoInternetPopup] = useState(false);
@@ -23,13 +24,15 @@ function App() {
   }, []);
 
   return (
-    <SafeAreaProvider>
-      <SafeScreen>
-        <StatusBar barStyle={'dark-content'} />
-        <AppNavigator />
-        {showNoInternetPopup ? <CheckInternetConnection /> : null}
-      </SafeScreen>
-    </SafeAreaProvider>
+    <MenuProvider>
+      <SafeAreaProvider>
+        <SafeScreen>
+          <StatusBar barStyle={'dark-content'} />
+          <AppNavigator />
+          {showNoInternetPopup ? <CheckInternetConnection /> : null}
+        </SafeScreen>
+      </SafeAreaProvider>
+    </MenuProvider>
   );
 }
 

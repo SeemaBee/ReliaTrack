@@ -1,6 +1,7 @@
+import { Metrics } from './../../../theme/metrics';
 import { useTheme } from 'common/helperFunctions';
 import { Platform, StyleSheet } from 'react-native';
-import { Metrics } from 'theme/metrics';
+import { LightTheme } from 'theme/colors';
 
 const useStyles = () => {
   const theme = useTheme();
@@ -19,10 +20,22 @@ const useStyles = () => {
       fontSize: Metrics._22,
       marginTop: Metrics._28,
     },
-    row: {
+    rowBox: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
+    },
+    jobStatusView: {
+      alignItems: 'flex-start',
+    },
+    headerContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: '100%',
+    },
+    row: {
+      flexDirection: 'row',
+      marginTop: Metrics._8,
     },
     flx: {
       flex: 1,
@@ -40,6 +53,32 @@ const useStyles = () => {
     },
     bottomSpace: {
       height: Metrics._10,
+    },
+    verticalLine: {
+      height: Metrics._24,
+      width: Metrics._1,
+      backgroundColor: theme.grey8,
+      marginHorizontal: Metrics._10,
+    },
+    iconContainer: {
+      height: Metrics._24,
+      width: Metrics._24,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    menuOption: {
+      padding: Metrics._10,
+    },
+  });
+};
+
+export const optionsStyles = (theme: typeof LightTheme) => {
+  return StyleSheet.create({
+    optionsContainer: {
+      backgroundColor: theme.white,
+      padding: Metrics._5,
+      borderRadius: Metrics._8,
+      width: Metrics._150,
     },
   });
 };

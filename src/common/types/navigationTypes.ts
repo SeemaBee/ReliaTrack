@@ -19,6 +19,8 @@ export type StackParamList = {
   ProofOfDelivery: undefined;
   BarcodeScan: undefined;
   SignatureScreen: undefined;
+  EditProfile: undefined;
+  ChangePassword: undefined;
 };
 
 export type AppNavigationProp<T extends keyof StackParamList> =

@@ -1,18 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl, Switch, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, FlatList, RefreshControl, Switch, TouchableOpacity, View } from 'react-native';
 import { AppNavigationProp } from 'common/types/navigationTypes';
 import CustomText from 'common/components/text';
 import { useTheme } from 'common/helperFunctions';
 import Tabs from 'common/components/tab';
 import { useTranslation } from 'react-i18next';
 import JobCard from 'common/components/jobCard';
-import useStyles from './HomeScreen.styles';
+import useStyles, { optionsStyles } from './HomeScreen.styles';
 import ChecklistModal from 'common/components/checklistModal';
 import Toast from 'react-native-simple-toast';
 import Loader from 'common/components/loader';
 import { jobRequestsAPI, safetyChecklistAPI } from 'api/dashboard/dashboardAPI';
 import { SafetyChecklistProps } from 'utils/constant';
 import ListEmptyComponent from 'common/components/listEmptyComponent';
+import { Notification, User } from 'assets/svg';
+import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
 
 type Props = {
   navigation: AppNavigationProp<'Home'>;
@@ -31,6 +33,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const onEndReachedCalledDuringMomentum = useRef(true);
 
   const toggleSwitch = () => {
     if (!isEnabled) {
@@ -87,11 +90,12 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   }, [getJobRequests]);
 
   useEffect(() => {
-    getJobRequests(1);
+    // getJobRequests(1);
   }, [getJobRequests]);
 
   const handleLoadMore = () => {
-    if (!loadingMore && hasMore && !loader) {
+    if (!onEndReachedCalledDuringMomentum.current && !loadingMore && hasMore && !loader) {
+      onEndReachedCalledDuringMomentum.current = true;
       const nextPage = page + 1;
       setPage(nextPage);
       getJobRequests(nextPage);
@@ -100,16 +104,47 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {loader && <Loader show={loader} />}
-      <CustomText style={styles.title}>{t('home.title1')}</CustomText>
-      <Switch
-        trackColor={{ false: theme.grey3, true: theme.primary }}
-        thumbColor={theme.white}
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
+      {loader && <Loader isLoading={loader} />}
+      {/* <Menu>
+        <MenuTrigger style={styles.threeDotsContainer}>
+              <EllipsisVertical size={moderateScale(25)} color={colors.black} />
+            </MenuTrigger>
+      </Menu> */}
+      <View style={styles.headerContainer}>
+        <View style={styles.jobStatusView}>
+          <CustomText style={styles.title}>{t('home.title1')}</CustomText>
+          <Switch
+            trackColor={{ false: theme.grey3, true: theme.primary }}
+            thumbColor={theme.white}
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
+        </View>
+        <View style={styles.row}>
+          <TouchableOpacity activeOpacity={0.9} style={styles.iconContainer}>
+            <Notification />
+          </TouchableOpacity>
+          <View style={styles.verticalLine} />
+          <Menu>
+            <MenuTrigger style={styles.iconContainer}>
+              <User />
+            </MenuTrigger>
+            <MenuOptions customStyles={optionsStyles(theme)}>
+              <MenuOption onSelect={() => navigation.navigate("EditProfile")} style={styles.menuOption}>
+                <CustomText>{t("user_profile.edit_profile")}</CustomText>
+              </MenuOption>
+              <MenuOption onSelect={() => navigation.navigate("ChangePassword")} style={styles.menuOption}>
+                <CustomText>{t("auth.change_password")}</CustomText>
+              </MenuOption>
+              <MenuOption onSelect={() => { }} style={styles.menuOption}>
+                <CustomText>{t("auth.logout")}</CustomText>
+              </MenuOption>
+            </MenuOptions>
+          </Menu>
+        </View>
+      </View>
       <CustomText style={styles.title2}>{t('home.title2')}</CustomText>
-      <View style={styles.row}>
+      <View style={styles.rowBox}>
         <Tabs
           selected={selectedTab === 0}
           handleClick={() => setSelectedTab(0)}
@@ -143,12 +178,14 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             onRefresh={onRefresh}
             colors={[theme.primary]}
             tintColor={theme.primary}
-          />
-          }
+          />}
           onEndReached={handleLoadMore}
+          onMomentumScrollBegin={() => {
+            onEndReachedCalledDuringMomentum.current = false;
+          }}
           onEndReachedThreshold={0.5}
-          ListFooterComponent={loadingMore ? <Loader show={true} /> : <View style={styles.bottomSpace} />}
-          keyExtractor={item => item}
+          ListFooterComponent={loadingMore ? <ActivityIndicator size={'small'} color={theme.primary} /> : <View style={styles.bottomSpace} />}
+          keyExtractor={(_, index) => index?.toString()}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={() => (
             !loader && <ListEmptyComponent title='No new requests found' />

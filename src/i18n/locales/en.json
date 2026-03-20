@@ -5,6 +5,7 @@
     "auth": {
         "login": "Login",
         "subTitle": "Sign in to connect, collaborate, and grow.",
+        "full_name":"Full Name",
         "email": "Email",
         "email_placeholder": "Enter your email",
         "password": "Password",
@@ -12,10 +13,16 @@
         "forgotPassword": "Forgot Password?",
         "btn_signin": "Login",
         "reset_password_title": "Reset Password",
+        "change_password": "Change Password",
+        "current_password": "Current Password",
         "new_password": "New password",
+        "confirm_password": "Confirm Password",
+        "confirm_password_placeholder":"Confirm Password",
+        "current_password_placeholder": "Enter current password",
         "new_password_placeholder": "Enter new password",
         "confirm_new_password": "Confirm new password",
-        "confirm_new_password_placeholder": "Confirm new password"
+        "confirm_new_password_placeholder": "Confirm new password",
+        "logout": "Log out"
     },
     "forgot": {
         "title": "Forgot Password"
@@ -104,6 +111,9 @@
         "reason": "Reason",
         "provide_reason": "Please provide reason for not deliver",
         "item_detail": "Item Detail"
+    },
+    "user_profile": {
+        "edit_profile": "Edit Profile"
     },
     "action": {
         "submit": "Submit",

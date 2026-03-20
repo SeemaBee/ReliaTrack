@@ -67,7 +67,7 @@ const ResetPassword: React.FC<Props> = () => {
               onChangeText={handleChange('confirmPassword')}
             />
             <Button onPress={() => handleSubmit()} title={t("action.submit")} />
-            {isSubmitting && <Loader show={isSubmitting} />}
+            {isSubmitting && <Loader isLoading={isSubmitting} />}
           </Container>
         )}
       </Formik>

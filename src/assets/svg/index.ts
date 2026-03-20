@@ -3,5 +3,7 @@ import SignatureIcon from './signature.svg';
 import Car from './Vehicle.svg';
 import Medical from './Medical.svg';
 import Safety from './safety.svg';
+import User from './user.svg';
+import Notification from './notification.svg';
 
-export { MapIcon, SignatureIcon, Car, Medical, Safety };
+export { MapIcon, SignatureIcon, Car, Medical, Safety, User, Notification };

@@ -36,7 +36,8 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
       if (!token) {
         return navigation.reset({
           index: 0,
-          routes: [{ name: 'OnboardingNavigation' }],
+          routes: [{ name: 'DashboardNavigation' }],
+          // routes: [{ name: 'OnboardingNavigation' }],
         });
       }
       dispatch(setToken(token));

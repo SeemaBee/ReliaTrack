@@ -11,6 +11,8 @@ import ItemDetailsScreen from 'screens/Dashboard/ItemDetailsScreen/ItemDetailsSc
 import ProofOfDelivery from 'screens/Dashboard/ProofOfDelivery/ProofOfDelivery';
 import BarcodeScan from 'screens/Dashboard/BarcodeScan/BarcodeScan';
 import SignatureScreen from 'screens/Dashboard/SignatureScreen/SignatureScreen';
+import EditProfile from 'screens/Dashboard/EditProfile/EditProfile';
+import ChangePassword from 'screens/Dashboard/ChangePassword/ChangePassword';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
@@ -27,6 +29,8 @@ export default () => {
       <Stack.Screen name="ItemDetailsScreen" component={ItemDetailsScreen} />
       <Stack.Screen name="ProofOfDelivery" component={ProofOfDelivery} />
       <Stack.Screen name="SignatureScreen" component={SignatureScreen} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
     </Stack.Navigator>
   );
 };

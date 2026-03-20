@@ -103,7 +103,7 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 
   return (
     <Container contentStyle={styles.container}>
-      {loader && <Loader show={loader} />}
+      {loader && <Loader isLoading={loader} />}
       <CustomText style={styles.title}>{t('auth.login')}</CustomText>
       <CustomText style={styles.subTitle}>{t('auth.subTitle')}</CustomText>
       <Formik<LoginFormValues>

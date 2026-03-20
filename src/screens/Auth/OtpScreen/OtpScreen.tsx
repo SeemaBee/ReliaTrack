@@ -90,7 +90,7 @@ const OtpScreen = ({ navigation, route }: Props) => {
                 </View>
               )}
               <Button title={t("action.verify")} onPress={handleSubmit} />
-              {isSubmitting && <Loader show={isSubmitting} />}
+              {isSubmitting && <Loader isLoading={isSubmitting} />}
             </>
           )}
         </Formik>
