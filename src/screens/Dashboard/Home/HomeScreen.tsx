@@ -105,11 +105,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {loader && <Loader isLoading={loader} />}
-      {/* <Menu>
-        <MenuTrigger style={styles.threeDotsContainer}>
-              <EllipsisVertical size={moderateScale(25)} color={colors.black} />
-            </MenuTrigger>
-      </Menu> */}
       <View style={styles.headerContainer}>
         <View style={styles.jobStatusView}>
           <CustomText style={styles.title}>{t('home.title1')}</CustomText>

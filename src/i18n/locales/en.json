@@ -5,7 +5,7 @@
     "auth": {
         "login": "Login",
         "subTitle": "Sign in to connect, collaborate, and grow.",
-        "full_name":"Full Name",
+        "full_name": "Full Name",
         "email": "Email",
         "email_placeholder": "Enter your email",
         "password": "Password",
@@ -15,12 +15,11 @@
         "reset_password_title": "Reset Password",
         "change_password": "Change Password",
         "current_password": "Current Password",
-        "new_password": "New password",
-        "confirm_password": "Confirm Password",
-        "confirm_password_placeholder":"Confirm Password",
+        "new_password": "New Password",
+        "fullName_placeholder": "Enter your full name",
         "current_password_placeholder": "Enter current password",
         "new_password_placeholder": "Enter new password",
-        "confirm_new_password": "Confirm new password",
+        "confirm_new_password": "Confirm New Password",
         "confirm_new_password_placeholder": "Confirm new password",
         "logout": "Log out"
     },
@@ -39,11 +38,20 @@
         "email_required": "Email is required",
         "password_min": "Minimum 8 characters",
         "password_required": "Password is required",
+        "new_password_required": "New Password required",
+        "not_same": "New password cannot be the same as current password",
+        "current_password_required": "Current Password required",
         "password_regex": "Password must contain upper, lower, number & special character",
         "confirm_password_required": "Confirm password required",
         "password_match": "Passwords do not match",
         "otp_required": "OTP is required",
-        "otp_max": "OTP must be exactly 5 digits"
+        "otp_max": "OTP must be exactly 5 digits",
+        "valid_fullName": "Enter valid full name",
+        "fullName_required": "Full Name is required",
+        "valid_phone_number": "Enter valid phone number",
+        "phone_number_required": "Phone number is required",
+        "address_required": "Home address required",
+        "dob_required": "Date of birth is required"
     },
     "home": {
         "title1": "Job Status",
@@ -113,17 +121,25 @@
         "item_detail": "Item Detail"
     },
     "user_profile": {
-        "edit_profile": "Edit Profile"
+        "edit_profile": "Edit Profile",
+        "contact_number": "Contact Number",
+        "home_address": "Home Address",
+        "dob": "Date of Birth",
+        "contact_number_placeholder": "Enter contact number",
+        "home_address_placeholder": "Enter home address",
+        "dob_placeholder": "Select"
     },
     "action": {
         "submit": "Submit",
         "verify": "Verify OTP",
         "accept": "Accept",
+        "done": "Done",
         "confirm_pickup": "Confirm Pickup",
         "deliver": "Deliver",
         "not_deliver": "Not Deliver",
         "clear": "Clear",
         "save": "Save",
+        "cancel": "Cancel",
         "go_back": "Go back"
     }
 }

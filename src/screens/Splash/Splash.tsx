@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { View } from 'react-native';
 import { changeLanguage } from 'common/helperFunctions';
-import CustomText from 'common/components/text';
 import { AppNavigationProp } from 'common/types/navigationTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Language } from 'common/types/types';
@@ -9,6 +8,7 @@ import useStyles from './Splash.styles';
 import { useDispatch } from 'react-redux';
 import { LocalDB } from 'services/database';
 import { setToken, setUser } from 'redux/features/authSlice';
+import { Logo } from 'assets/svg';
 
 type Props = {
   navigation: AppNavigationProp<'Splash'>;
@@ -36,8 +36,8 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
       if (!token) {
         return navigation.reset({
           index: 0,
-          routes: [{ name: 'DashboardNavigation' }],
-          // routes: [{ name: 'OnboardingNavigation' }],
+          // routes: [{ name: 'DashboardNavigation' }],
+          routes: [{ name: 'OnboardingNavigation' }],
         });
       }
       dispatch(setToken(token));
@@ -66,7 +66,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <CustomText style={styles.title}>Relia Track</CustomText>
+      <Logo />
     </View>
   );
 };

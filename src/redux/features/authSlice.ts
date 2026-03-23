@@ -7,6 +7,8 @@ export interface User {
   role: string;
   phone: string;
   profile_photo: string;
+  address: string;
+  dob: string;
   status: string;
   driver_profile: string;
 }

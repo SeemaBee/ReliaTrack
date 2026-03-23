@@ -20,3 +20,17 @@ export type SafetyChecklistProps = {
   gloves_available: boolean;
   extra_leakproof_bags: boolean;
 };
+
+export type ChangePasswordProps = {
+  current_password: string;
+  new_password: string;
+  new_password_confirmation: string;
+};
+
+export type EditProfileProps = {
+  name: string;
+  email: string;
+  phone: string;
+  dob: string;
+  address: string;
+};

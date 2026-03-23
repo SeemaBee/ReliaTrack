@@ -9,7 +9,7 @@ const useStyles = () => {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme.background,
+      backgroundColor: theme.lightSkyBlue2,
     },
     title: {
       fontSize: Metrics._28,

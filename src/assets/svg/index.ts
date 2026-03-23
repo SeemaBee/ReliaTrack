@@ -5,5 +5,15 @@ import Medical from './Medical.svg';
 import Safety from './safety.svg';
 import User from './user.svg';
 import Notification from './notification.svg';
+import Logo from './logo.svg';
 
-export { MapIcon, SignatureIcon, Car, Medical, Safety, User, Notification };
+export {
+  MapIcon,
+  SignatureIcon,
+  Car,
+  Medical,
+  Safety,
+  User,
+  Notification,
+  Logo,
+};

@@ -15,6 +15,22 @@ const useStyles = () => {
       gap: Metrics._10,
       height: Metrics._50,
     },
+    rowBox: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      justifyContent: 'space-between',
+    },
+    cancelBtn: {
+      borderColor: theme.grey9,
+      width: '48%',
+    },
+    doneBtn: {
+      width: '48%',
+    },
+    greyTxt: {
+      color: theme.grey10,
+    },
   });
 };
 

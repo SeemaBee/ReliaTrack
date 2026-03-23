@@ -18,7 +18,14 @@ const PickupConfirmation: React.FC<Props> = ({ navigation }) => {
     const { t } = useTranslation();
     return (
         <View style={styles.container}>
-            <Header title={t("request.pickup_confirmation")} onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
+            <Header
+                title={t("request.pickup_confirmation")}
+                onBackPress={() => navigation.goBack()}
+                style={styles.headerStyle}
+                showProfile
+                onEditProfile={() => navigation.navigate("EditProfile")}
+                onChangePassword={() => navigation.navigate("ChangePassword")}
+            />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <JobCard data={{}} />
                 <CustomText style={styles.title2}>{t("request.delivery_items")}</CustomText>

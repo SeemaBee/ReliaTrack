@@ -33,6 +33,7 @@ const Button: React.FC<ButtonProps> = ({
   iconLeft: LeftIcon,
   iconRight: RightIcon,
   style,
+  textStyle
 }) => {
   const theme = useTheme();
 
@@ -40,8 +41,8 @@ const Button: React.FC<ButtonProps> = ({
     variant === 'primary'
       ? theme.primary
       : variant === 'secondary'
-      ? theme.secondary
-      : 'transparent';
+        ? theme.secondary
+        : 'transparent';
 
   const borderColor = variant === 'outline' ? theme.secondary : 'transparent';
 
@@ -49,8 +50,8 @@ const Button: React.FC<ButtonProps> = ({
     variant === 'outline'
       ? theme.secondary
       : variant === 'secondary'
-      ? theme.white
-      : theme.white;
+        ? theme.white
+        : theme.white;
 
   return (
     <TouchableOpacity
@@ -79,7 +80,7 @@ const Button: React.FC<ButtonProps> = ({
             />
           )}
 
-          <CustomText color={textColor}>{title}</CustomText>
+          <CustomText color={textColor} style={textStyle}>{title}</CustomText>
 
           {RightIcon && (
             <RightIcon

@@ -4,6 +4,7 @@ export const LightTheme = {
   cardBackground: '#F4F6FB',
   textSecondary: '#4C4C4F',
   lightSkyBlue: '#D2DAED',
+  lightSkyBlue2: '#EEF2FD',
   border1: '#D0D0D0',
   border2: '#0000004A',
   border3: '#E3E3E3',
@@ -55,6 +56,8 @@ export const LightTheme = {
   grey6: '#8D8D8D',
   grey7: '#979797',
   grey8: '#A7A4A4',
+  grey9: '#C0C0C0',
+  grey10: '#7D7D7D',
   white: '#FFFFFF',
 };
 
