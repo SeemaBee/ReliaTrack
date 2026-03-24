@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
   role: string;
@@ -10,7 +10,19 @@ export interface User {
   address: string;
   dob: string;
   status: string;
-  driver_profile: string;
+  driver_profile: {
+    id: number;
+    license_number: string;
+    vehicle_type: string;
+    vehicle_plate_number: string;
+    date_of_birth: string;
+    address: string;
+    availability_status: string;
+    current_location: {
+      latitude: string;
+      longitude: string;
+    };
+  };
 }
 
 const initialState = {

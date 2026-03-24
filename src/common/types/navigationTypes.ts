@@ -7,7 +7,7 @@ export type StackParamList = {
   Login: undefined;
   ForgotPassword: undefined;
   OtpScreen: { email: string };
-  ResetPassword: { email: string };
+  ResetPassword: { email: string; otp: string };
   DashboardNavigation: undefined;
   Home: undefined;
   RequestScreen: undefined;

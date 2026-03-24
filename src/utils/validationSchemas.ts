@@ -19,7 +19,7 @@ export const ForgotPasswordSchema = Yup.object().shape({
 export const VerifyOtpSchema = Yup.object().shape({
   otp: Yup.string()
     .required(i18n.t('validation.otp_required'))
-    .matches(/^\d{5}$/, i18n.t('validation.otp_max')),
+    .matches(/^\d{6}$/, i18n.t('validation.otp_max')),
 });
 
 export const ResetPasswordSchema = Yup.object().shape({
@@ -28,7 +28,7 @@ export const ResetPasswordSchema = Yup.object().shape({
     .matches(passwordRegex, i18n.t('validation.password_regex'))
     .required(i18n.t('validation.password_required')),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref('newPassword')], i18n.t('validation.password_match'))
+    .oneOf([Yup.ref('password')], i18n.t('validation.password_match'))
     .required(i18n.t('validation.confirm_password_required')),
 });
 

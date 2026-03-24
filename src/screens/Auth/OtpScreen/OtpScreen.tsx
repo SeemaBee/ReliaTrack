@@ -1,16 +1,19 @@
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Keyboard } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from 'common/components/header';
 import { AppNavigationProp, AppRouteProp } from 'common/types/navigationTypes';
 import Container from 'common/components/container';
-import { Formik, FormikHelpers } from 'formik';
+import { Formik } from 'formik';
 import { VerifyOtpSchema } from 'utils/validationSchemas';
 import OTPInput from 'common/components/otpInut';
 import CustomText from 'common/components/text';
 import Button from 'common/components/button';
 import Loader from 'common/components/loader';
 import useStyles from './OtpScreen.styles';
+import Toast from 'react-native-simple-toast';
 import { useTranslation } from 'react-i18next';
+import { forgotPasswordAPI, VerifyOtpAPI } from 'api/auth/authAPI';
+import { CommonActions } from '@react-navigation/native';
 
 interface Props {
   navigation: AppNavigationProp<'OtpScreen'>;
@@ -26,6 +29,7 @@ const OtpScreen = ({ navigation, route }: Props) => {
   const { t } = useTranslation();
   const [secondsLeft, setSecondsLeft] = useState(30);
   const [showResend, setShowResend] = useState(false);
+  const [loader, setLoader] = useState(false);
   const { email } = route.params;
 
   useEffect(() => {
@@ -41,28 +45,60 @@ const OtpScreen = ({ navigation, route }: Props) => {
     return () => clearTimeout(timer);
   }, [secondsLeft]);
 
-  const handleResend = () => { };
-  const handleOtpComplete = (
-    values: initialProp,
-    actions: FormikHelpers<initialProp>,
-  ) => {
-    actions.setSubmitting(false);
-    navigation.navigate('ResetPassword', { email: email });
+  const handleResend = async () => {
+    try {
+      const response = await forgotPasswordAPI(email);
+      if (response?.success) {
+        Toast.showWithGravity("OTP sent to your email", Toast.LONG, Toast.BOTTOM);
+        setShowResend(false);
+        setSecondsLeft(30);
+      }
+    } catch (error: any) {
+      Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
+      console.log("Error:-", error);
+    }
+  };
+  const handleOtpComplete = async (values: initialProp, resetForm: any) => {
+    Keyboard.dismiss();
+    try {
+      setLoader(true);
+      const response = await VerifyOtpAPI(email, values.otp);
+      if (response?.success) {
+        Toast.showWithGravity(response?.message || "OTP verified successfully", Toast.LONG, Toast.BOTTOM);
+        resetForm();
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [
+              { name: "Login" },
+              { name: "ResetPassword", params: { email: email, otp: values.otp } }
+            ]
+          })
+        )
+      }
+    } catch (error: any) {
+      Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
+      console.log("Error:-", error);
+    } finally {
+      setLoader(false);
+    }
   };
 
   return (
     <View style={styles.container}>
+      {loader && <Loader isLoading={loader} />}
       <Header title={t("verifyOtp.title")} onBackPress={() => navigation.goBack()} />
       <Container contentStyle={styles.subContainer}>
         <CustomText style={styles.title}>{t("verifyOtp.subTitle")}</CustomText>
         <Formik
           initialValues={{ otp: '' }}
           validationSchema={VerifyOtpSchema}
-          onSubmit={handleOtpComplete}
+          onSubmit={(values, { resetForm }) => handleOtpComplete(values, resetForm)}
         >
-          {({ setFieldValue, handleSubmit, errors, touched, isSubmitting }) => (
+          {({ setFieldValue, handleSubmit, errors, touched, values }) => (
             <>
               <OTPInput
+                values={values.otp}
                 onChange={(text: string) => setFieldValue('otp', text)}
               />
               {touched.otp && errors.otp ? (
@@ -90,7 +126,6 @@ const OtpScreen = ({ navigation, route }: Props) => {
                 </View>
               )}
               <Button title={t("action.verify")} onPress={handleSubmit} />
-              {isSubmitting && <Loader isLoading={isSubmitting} />}
             </>
           )}
         </Formik>

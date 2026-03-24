@@ -26,7 +26,7 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const styles = useStyles();
   const dispatch = useDispatch();
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState(false);
   const [biometricAvailable, setBiometricAvailable] = useState(false);
   const [biometricType, setBiometricType] = useState<string | null>(null);
   const passwordRef = useRef<TextInput>(null);

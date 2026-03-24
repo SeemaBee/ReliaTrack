@@ -27,6 +27,11 @@ export type ChangePasswordProps = {
   new_password_confirmation: string;
 };
 
+export type ResetPasswordProps = {
+  password: string;
+  confirmPassword: string;
+};
+
 export type EditProfileProps = {
   name: string;
   email: string;

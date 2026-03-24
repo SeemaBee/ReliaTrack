@@ -1,5 +1,5 @@
 import { useTheme } from 'common/helperFunctions';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Keyboard,
   TextInput,
@@ -13,18 +13,25 @@ import { Metrics } from 'theme/metrics';
 import { FontSizes } from 'theme/typography';
 
 type OTPInputProps = {
+  values: string;
   onChange: (otp: string) => void;
 };
 
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-const OTPInput = ({ onChange }: OTPInputProps) => {
-  const [otp, setOtp] = useState(['', '', '', '', '']);
+const OTPInput = ({ values, onChange }: OTPInputProps) => {
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const theme = useTheme();
+
+  useEffect(() => {
+    if (values === '') {
+      setOtp(['', '', '', '', '', '']);
+    }
+  }, [values]);
 
   const styles = useMemo(() => createStyles(theme), [theme]);
 
-  const inputs = Array.from({ length: 5 }, () => useRef<TextInput>(null));
+  const inputs = Array.from({ length: 6 }, () => useRef<TextInput>(null));
 
   const handlePress = (keyValue: string, index: number): void => {
     const newOtp = [...otp];
@@ -37,7 +44,7 @@ const OTPInput = ({ onChange }: OTPInputProps) => {
       }
     } else if (digits.includes(keyValue)) {
       newOtp[index] = keyValue;
-      if (index < 4) {
+      if (index < 5) {
         inputs[index + 1].current?.focus();
       } else {
         Keyboard.dismiss();
@@ -89,10 +96,10 @@ const createStyles = (theme: typeof LightTheme) =>
       justifyContent: 'space-between',
     },
     otpInput: {
-      width: Metrics._50,
-      height: Metrics._50,
+      width: Metrics._40,
+      height: Metrics._40,
       textAlign: 'center',
-      fontSize: FontSizes._16,
+      fontSize: FontSizes._14,
       borderRadius: Metrics._8,
       borderWidth: 1,
       borderColor: theme.border1,

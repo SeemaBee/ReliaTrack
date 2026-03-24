@@ -15,6 +15,7 @@ import { SafetyChecklistProps } from 'utils/constant';
 import ListEmptyComponent from 'common/components/listEmptyComponent';
 import { Notification, User } from 'assets/svg';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
+import { useLogout } from 'utils/useLogout';
 
 type Props = {
   navigation: AppNavigationProp<'Home'>;
@@ -22,6 +23,7 @@ type Props = {
 const PER_PAGE = 15;
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const styles = useStyles();
+  const { confirmLogout } = useLogout();
   const { t } = useTranslation();
   const theme = useTheme();
   const [loader, setLoader] = useState(false);
@@ -90,7 +92,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   }, [getJobRequests]);
 
   useEffect(() => {
-    // getJobRequests(1);
+    getJobRequests(1);
   }, [getJobRequests]);
 
   const handleLoadMore = () => {
@@ -131,7 +133,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
               <MenuOption onSelect={() => navigation.navigate("ChangePassword")} style={styles.menuOption}>
                 <CustomText>{t("auth.change_password")}</CustomText>
               </MenuOption>
-              <MenuOption onSelect={() => { }} style={styles.menuOption}>
+              <MenuOption onSelect={confirmLogout} style={styles.menuOption}>
                 <CustomText>{t("auth.logout")}</CustomText>
               </MenuOption>
             </MenuOptions>

@@ -42,3 +42,21 @@ export const editProfileAPI = async (data: EditProfileProps) => {
     throw new Error(error?.response?.data?.message ?? 'Something went wrong');
   }
 };
+
+export const logoutAPI = async () => {
+  const netState = await NetInfo.fetch();
+
+  if (!netState.isConnected) {
+    throw new Error('No internet connection');
+  }
+  try {
+    const response = await apiClient.post(ENDPOINTS.logout, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message ?? 'Something went wrong');
+  }
+};
