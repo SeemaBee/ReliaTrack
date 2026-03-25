@@ -1,6 +1,7 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import themeReducer from "./features/themeSlice";
-import authReducer from "./features/authSlice";
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import themeReducer from './features/themeSlice';
+import authReducer from './features/authSlice';
+import dashboardReducer from './features/dashboardSlice';
 import {
   persistReducer,
   persistStore,
@@ -10,26 +11,27 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from "redux-persist";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+} from 'redux-persist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const rootReducer = combineReducers({
   theme: themeReducer,
   auth: authReducer,
+  home: dashboardReducer,
 });
 
 const persistConfig = {
-  key: "root",
+  key: 'root',
   storage: AsyncStorage,
-  whitelist: ["auth", "theme"],  
-  blacklist: []
+  whitelist: ['auth', 'theme', 'home'],
+  blacklist: [],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],

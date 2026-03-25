@@ -10,7 +10,7 @@ import useStyles, { optionsStyles } from './HomeScreen.styles';
 import ChecklistModal from 'common/components/checklistModal';
 import Toast from 'react-native-simple-toast';
 import Loader from 'common/components/loader';
-import { jobRequestsAPI, safetyChecklistAPI } from 'api/dashboard/dashboardAPI';
+import { activeRequestAPI, completedRequestAPI, newRequestsAPI, safetyChecklistAPI } from 'api/dashboard/dashboardAPI';
 import { SafetyChecklistProps } from 'utils/constant';
 import ListEmptyComponent from 'common/components/listEmptyComponent';
 import { Notification, User } from 'assets/svg';
@@ -30,11 +30,17 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [showChecklist, setShowChecklist] = useState(false);
   const [requests, setRequests] = useState([]);
+  const [activeRequests, setActiveRequests] = useState([]);
+  const [completedRequests, setCompletedRequests] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [completedPage, setCompletedPage] = useState(1);
+  const [completedLoadingMore, setCompletedLoadingMore] = useState(false);
+  const [completedHasMore, setCompletedHasMore] = useState(true);
+  const completedMomentum = useRef(true);
   const onEndReachedCalledDuringMomentum = useRef(true);
 
   const toggleSwitch = () => {
@@ -67,10 +73,10 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     try {
       if (pageNum > 1) setLoadingMore(true);
       else if (!isRefreshingCall) setLoader(true);
-      const response = await jobRequestsAPI(pageNum, PER_PAGE);
-      console.log(response, '====>jobs');
+      const response = await newRequestsAPI(pageNum, PER_PAGE);
+      // console.log(response, '====>jobs');
       if (response?.success) {
-        const newData = response?.data?.requests || [];
+        const newData = response?.data?.deliveries || [];
         setRequests(prev => (pageNum === 1 ? newData : [...prev, ...newData]));
         setHasMore(newData.length === PER_PAGE);
       }
@@ -95,12 +101,55 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     getJobRequests(1);
   }, [getJobRequests]);
 
+  useEffect(() => {
+    getActiveJobRequests();
+    getCompletedJobRequests(1);
+  }, []);
+
   const handleLoadMore = () => {
     if (!onEndReachedCalledDuringMomentum.current && !loadingMore && hasMore && !loader) {
       onEndReachedCalledDuringMomentum.current = true;
       const nextPage = page + 1;
       setPage(nextPage);
       getJobRequests(nextPage);
+    }
+  }
+
+  const getActiveJobRequests = async () => {
+    try {
+      const response = await activeRequestAPI();
+      // console.log(response, "======>active");
+      if (response?.success) {
+        setActiveRequests(response?.data || []);
+      }
+    } catch (error: any) {
+      console.log("Error:-", error);
+    }
+  }
+
+  const getCompletedJobRequests = async (pageNum: number) => {
+    try {
+      if (pageNum > 1) setCompletedLoadingMore(true);
+      const response = await completedRequestAPI(pageNum, 20);
+      // console.log(response, "======>completed");
+      if (response?.success) {
+        const newData = response?.data?.deliveries || [];
+        setCompletedRequests(prev => pageNum === 1 ? newData : [...prev, ...newData]);
+        setCompletedHasMore(newData.length === 20);
+      }
+    } catch (error: any) {
+      console.log("Error:-", error);
+    } finally {
+      setCompletedLoadingMore(false);
+    }
+  }
+
+  const handleCompletedLoadMore = () => {
+    if (!completedMomentum.current && !completedLoadingMore && completedHasMore) {
+      completedMomentum.current = true;
+      const nextPage = completedPage + 1;
+      setCompletedPage(nextPage);
+      getCompletedJobRequests(nextPage);
     }
   }
 
@@ -164,10 +213,11 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           data={requests}
           style={styles.flx}
           contentContainerStyle={styles.contentStyle}
-          renderItem={item => (
+          renderItem={({ item, index: i }) => (
             <JobCard
-              data={item}
-              onPress={() => navigation.navigate('RequestScreen')}
+              item={item}
+              index={i}
+              onPress={() => navigation.navigate('RequestScreen', { id: item?.id })}
             />
           )}
           refreshControl={<RefreshControl
@@ -191,13 +241,43 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         />
         :
         selectedTab === 1 ?
-          <View style={styles.centeredContainer}>
-            <CustomText>Active Requests</CustomText>
-          </View>
+          <FlatList
+            data={activeRequests}
+            style={styles.flx}
+            contentContainerStyle={styles.contentStyle}
+            renderItem={({ item, index: i }) => (
+              <JobCard
+                item={item}
+                index={i}
+                onPress={() => navigation.navigate('RequestScreen', { id: item?.id })}
+              />
+            )}
+            ListEmptyComponent={<ListEmptyComponent title='No active requests found' />}
+          />
           :
-          <View style={styles.centeredContainer}>
-            <CustomText>Completed Requests</CustomText>
-          </View>
+          <FlatList
+            data={completedRequests}
+            style={styles.flx}
+            contentContainerStyle={styles.contentStyle}
+            renderItem={({ item, index: i }) => (
+              <JobCard
+                item={item}
+                index={i}
+                onPress={() => navigation.navigate('RequestScreen')}
+              />
+            )}
+            onEndReached={handleCompletedLoadMore}
+            onMomentumScrollBegin={() => {
+              completedMomentum.current = false;
+            }}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={
+              completedLoadingMore
+                ? <ActivityIndicator size="small" color={theme.primary} />
+                : <View style={styles.bottomSpace} />
+            }
+            ListEmptyComponent={<ListEmptyComponent title='No history found' />}
+          />
       }
       {showChecklist && (
         <ChecklistModal

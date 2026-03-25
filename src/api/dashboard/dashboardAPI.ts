@@ -21,14 +21,70 @@ export const safetyChecklistAPI = async (data: SafetyChecklistProps) => {
   }
 };
 
-export const jobRequestsAPI = async (page: number, per_page: number) => {
+export const newRequestsAPI = async (page: number, per_page: number) => {
   const netState = await NetInfo.fetch();
 
   if (!netState.isConnected) {
     throw new Error('No internet connection');
   }
   try {
-    let url = `${ENDPOINTS.jobRequests}?page=${page}&per_page=${per_page}`;
+    let url = `${ENDPOINTS.newJobs}?page=${page}&per_page=${per_page}`;
+    const response = await apiClient.get(url, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message ?? 'Something went wrong');
+  }
+};
+
+export const activeRequestAPI = async () => {
+  const netState = await NetInfo.fetch();
+
+  if (!netState.isConnected) {
+    throw new Error('No internet connection');
+  }
+  try {
+    const response = await apiClient.get(ENDPOINTS.activeJobs, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message ?? 'Something went wrong');
+  }
+};
+
+export const completedRequestAPI = async (page: number, per_page: number) => {
+  const netState = await NetInfo.fetch();
+
+  if (!netState.isConnected) {
+    throw new Error('No internet connection');
+  }
+  try {
+    let url = `${ENDPOINTS.completedJobs}?page=${page}&per_page=${per_page}`;
+    const response = await apiClient.get(url, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message ?? 'Something went wrong');
+  }
+};
+
+export const deliveryDetailsAPI = async (id: number) => {
+  const netState = await NetInfo.fetch();
+
+  if (!netState.isConnected) {
+    throw new Error('No internet connection');
+  }
+  try {
+    let url = `${ENDPOINTS.newJobs}/${id}`;
     const response = await apiClient.get(url, {
       headers: {
         'Content-Type': 'application/json',

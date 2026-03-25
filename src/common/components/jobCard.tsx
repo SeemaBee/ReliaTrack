@@ -7,54 +7,61 @@ import CustomText from './text';
 import { MapIcon } from 'assets/svg';
 import { Calendar, ChevronRight, Clock } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
+import { RequestData } from 'redux/features/dashboardSlice';
+import moment from 'moment';
 
 interface Props {
   onPress?: () => void;
-  data: any;
+  item: RequestData;
+  index: number;
 }
 
-const JobCard: React.FC<Props> = ({ onPress, data }) => {
+const JobCard: React.FC<Props> = ({ onPress, item, index }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const styles = getStyles(theme);
+  const pickupData = item?.pickup;
+  const deliveryData = item?.delivery;
+  const pickupDateTime = moment.utc(pickupData?.scheduled_time).local();
+  const deliveryDateTime = moment.utc(deliveryData?.scheduled_time).local();
 
   return (
-    <View style={styles.container}>
+    <View key={index} style={styles.container}>
       <View style={styles.itemBox}>
-        <CustomText style={styles.itemText}>2 {t("home.items")}</CustomText>
+        <CustomText style={styles.itemText}>{item?.items_count || 2} {t("home.items")}</CustomText>
       </View>
       <CustomText>{t("home.from")}</CustomText>
       <View style={styles.row}>
         <MapIcon />
         <CustomText numberOfLines={1} ellipsizeMode="tail">
-          1901 Thornridge Cir. Shiloh, Hawaii, USA, 81063
+          {pickupData?.address}
         </CustomText>
       </View>
       <CustomText>{t("home.pickup")}</CustomText>
       <View style={styles.dateTimeBox}>
         <View style={styles.row}>
           <Calendar color={theme.black5} size={Metrics._14} />
-          <CustomText style={styles.dateTimeText}>11/02/2026</CustomText>
+          <CustomText style={styles.dateTimeText}>{pickupDateTime.format("DD/MM/YYYY")}</CustomText>
         </View>
         <View style={styles.row}>
           <Clock color={theme.black5} size={Metrics._14} />
-          <CustomText style={styles.dateTimeText}>10:30</CustomText>
+          <CustomText style={styles.dateTimeText}>{pickupDateTime.format("HH:mm")}</CustomText>
         </View>
       </View>
       <CustomText>{t("home.delivery")}</CustomText>
       <View style={styles.dateTimeBox}>
         <View style={styles.row}>
           <Calendar color={theme.black5} size={Metrics._14} />
-          <CustomText style={styles.dateTimeText}>11/02/2026</CustomText>
+          <CustomText style={styles.dateTimeText}>{deliveryDateTime.format("DD/MM/YYYY")}</CustomText>
         </View>
         <View style={styles.row}>
           <Clock color={theme.black5} size={Metrics._14} />
-          <CustomText style={styles.dateTimeText}>12:30</CustomText>
+          <CustomText style={styles.dateTimeText}>{deliveryDateTime.format("HH:mm")}</CustomText>
         </View>
       </View>
       <View style={styles.urgencyLevelBox}>
         <CustomText style={styles.urgencyTxt}>{t("request.urgency_level")}: </CustomText>
-        <CustomText>ASAP</CustomText>
+        <CustomText>{item?.priority}</CustomText>
       </View>
       {onPress && (
         <View style={styles.detailContainer}>

@@ -45,12 +45,6 @@ const useStyles = () => {
       flexGrow: 1,
       paddingVertical: Metrics._20,
     },
-    centeredContainer: {
-      flex: 1,
-      width: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
     bottomSpace: {
       height: Metrics._10,
     },
