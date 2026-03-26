@@ -12,8 +12,8 @@ import moment from 'moment';
 
 interface Props {
   onPress?: () => void;
-  item: RequestData;
-  index: number;
+  item: RequestData | null;
+  index?: number;
 }
 
 const JobCard: React.FC<Props> = ({ onPress, item, index }) => {

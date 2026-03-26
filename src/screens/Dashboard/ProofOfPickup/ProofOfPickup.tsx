@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import ChooseImageOptions from 'common/components/chooseImageOptions';
 import { ImageFile } from 'utils/constant';
 import { handleOpenCamera, handleOpenGallery } from 'common/components/MediaOptions';
+import { SignatureIcon } from 'assets/svg';
 
 type Props = {
   navigation: AppNavigationProp<'ProofOfPickup'>;
@@ -99,6 +100,10 @@ const ProofOfPickup: React.FC<Props> = ({ navigation }) => {
             {imageError}
           </CustomText>
         )}
+        <TouchableOpacity activeOpacity={1} style={styles.signBtn} onPress={() => navigation.navigate("SignatureScreen")}>
+          <CustomText style={styles.actionLabel}>{t("proof.recipient_signature")}</CustomText>
+          <SignatureIcon />
+        </TouchableOpacity>
         <Input
           label={t("proof.add_note")}
           onChangeText={(v) => setNote(v)}

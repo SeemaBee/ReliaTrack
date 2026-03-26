@@ -1,4 +1,4 @@
-import { ScrollView, View } from 'react-native'
+import { FlatList, ScrollView, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import CustomText from 'common/components/text'
 import useStyles from './RequestScreen.styles'
@@ -9,7 +9,11 @@ import ItemCard from 'common/components/itemCard'
 import Button from 'common/components/button'
 import { useTranslation } from 'react-i18next'
 import Loader from 'common/components/loader'
-import { deliveryDetailsAPI } from 'api/dashboard/dashboardAPI'
+import Toast from 'react-native-simple-toast';
+import { acceptRequestAPI, deliveryDetailsAPI } from 'api/requests/requestsAPI'
+import { RequestData } from 'redux/features/dashboardSlice'
+import { useCurrentLocation } from 'common/components/useCurrentLocation'
+import { requestBackgroundPermission, requestForegroundPermissions } from 'common/components/PermissionServices'
 
 type Props = {
     navigation: AppNavigationProp<'RequestScreen'>;
@@ -19,27 +23,72 @@ type Props = {
 const RequestScreen: React.FC<Props> = ({ navigation, route }) => {
     const styles = useStyles();
     const { t } = useTranslation();
+    const { getCurrentLocation } = useCurrentLocation();
     const [loader, setLoader] = useState(false);
+    const [requestDetails, setRequestDetails] = useState<RequestData | null>(null);
     const { id } = route?.params;
 
-    
+    useEffect(() => {
+        initDelivery();
+    }, []);
+    const initDelivery = async () => {
+        const foregroundOk = await requestForegroundPermissions();
+        if (!foregroundOk) {
+            return;
+        }
+        const backgroundOk = await requestBackgroundPermission();
+        if (!backgroundOk) {
+            return;
+        }
+    };
+
     const getDeliverItemDetails = useCallback(async () => {
         try {
+            setLoader(true);
             const response = await deliveryDetailsAPI(id);
-            console.log(response, "======>details");
+            // console.log(response, "======>details");
             if (response?.success) {
-                // setActiveRequests(response?.data || []);
+                setRequestDetails(response?.data);
             }
         } catch (error: any) {
+            Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
             console.log("Error:-", error);
         } finally {
             setLoader(false);
         }
-    },[id]);
-    
+    }, [id]);
+
     useEffect(() => {
-        // getDeliverItemDetails();
-    }, []);
+        getDeliverItemDetails();
+    }, [getDeliverItemDetails]);
+
+    const acceptJobRequest = async () => {
+        navigation.navigate("PickupConfirmation");
+        return
+        try {
+            setLoader(true);
+            const location = await getCurrentLocation();
+            if (!location) {
+                Toast.showWithGravity("Location permission denied", Toast.LONG, Toast.BOTTOM);
+                return;
+            }
+            const data = {
+                latitude: location.latitude,
+                longitude: location.longitude
+            }
+            console.log(data);
+            const response = await acceptRequestAPI(id, data);
+            console.log(response, "=======>AcceptRequest");
+            if (response?.success) {
+                navigation.navigate("PickupConfirmation");
+            }
+        } catch (error: any) {
+            Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
+            console.log("Error:-", error);
+        } finally {
+            setLoader(false);
+        }
+    }
     return (
         <View style={styles.container}>
             {loader && <Loader isLoading={loader} />}
@@ -52,14 +101,19 @@ const RequestScreen: React.FC<Props> = ({ navigation, route }) => {
                 onChangePassword={() => navigation.navigate("ChangePassword")}
             />
             <ScrollView showsVerticalScrollIndicator={false}>
-                <JobCard data={{}} />
+                <JobCard item={requestDetails} />
                 <CustomText style={styles.title2}>{t("request.delivery_items")}</CustomText>
-                <ItemCard />
-                <ItemCard />
+                <FlatList
+                    data={requestDetails?.items}
+                    renderItem={({ item, index: i }) => (
+                        <ItemCard item={item} index={i} />
+                    )}
+                    keyExtractor={(_, index) => index.toString()}
+                />
                 <CustomText style={styles.title2}>{t("request.more_details")}</CustomText>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.urgency_level")}</CustomText>
-                    <CustomText style={styles.detailsValue}>ASAP</CustomText>
+                    <CustomText style={styles.detailsValue}>{requestDetails?.priority}</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.temperature_requirement")}</CustomText>
@@ -74,7 +128,7 @@ const RequestScreen: React.FC<Props> = ({ navigation, route }) => {
                     <CustomText style={styles.detailsValue}>4</CustomText>
                 </View>
 
-                <Button title={t("action.accept")} onPress={() => navigation.navigate("PickupConfirmation")} />
+                <Button title={t("action.accept")} onPress={() => acceptJobRequest()} />
             </ScrollView>
         </View>
     )

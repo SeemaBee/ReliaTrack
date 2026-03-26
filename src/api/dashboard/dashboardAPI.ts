@@ -76,22 +76,3 @@ export const completedRequestAPI = async (page: number, per_page: number) => {
     throw new Error(error?.response?.data?.message ?? 'Something went wrong');
   }
 };
-
-export const deliveryDetailsAPI = async (id: number) => {
-  const netState = await NetInfo.fetch();
-
-  if (!netState.isConnected) {
-    throw new Error('No internet connection');
-  }
-  try {
-    let url = `${ENDPOINTS.newJobs}/${id}`;
-    const response = await apiClient.get(url, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data;
-  } catch (error: any) {
-    throw new Error(error?.response?.data?.message ?? 'Something went wrong');
-  }
-};

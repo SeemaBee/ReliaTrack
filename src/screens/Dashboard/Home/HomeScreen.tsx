@@ -16,6 +16,7 @@ import ListEmptyComponent from 'common/components/listEmptyComponent';
 import { Notification, User } from 'assets/svg';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
 import { useLogout } from 'utils/useLogout';
+import { RequestData } from 'redux/features/dashboardSlice';
 
 type Props = {
   navigation: AppNavigationProp<'Home'>;
@@ -29,9 +30,9 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [loader, setLoader] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const [showChecklist, setShowChecklist] = useState(false);
-  const [requests, setRequests] = useState([]);
-  const [activeRequests, setActiveRequests] = useState([]);
-  const [completedRequests, setCompletedRequests] = useState([]);
+  const [requests, setRequests] = useState<RequestData[]>([]);
+  const [activeRequests, setActiveRequests] = useState<RequestData[]>([]);
+  const [completedRequests, setCompletedRequests] = useState<RequestData[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [page, setPage] = useState(1);
@@ -252,6 +253,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
                 onPress={() => navigation.navigate('RequestScreen', { id: item?.id })}
               />
             )}
+            keyExtractor={(_, index) => index?.toString()}
             ListEmptyComponent={<ListEmptyComponent title='No active requests found' />}
           />
           :
@@ -263,9 +265,10 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
               <JobCard
                 item={item}
                 index={i}
-                onPress={() => navigation.navigate('RequestScreen')}
+                onPress={() => navigation.navigate('RequestScreen', { id: item?.id })}
               />
             )}
+            keyExtractor={(_, index) => index?.toString()}
             onEndReached={handleCompletedLoadMore}
             onMomentumScrollBegin={() => {
               completedMomentum.current = false;

@@ -2,6 +2,10 @@ export type LoginFormValues = {
   email: string;
   password: string;
 };
+export type Location = {
+  latitude: number;
+  longitude: number;
+};
 export type ImageFile = {
   uri: string;
   name: string;

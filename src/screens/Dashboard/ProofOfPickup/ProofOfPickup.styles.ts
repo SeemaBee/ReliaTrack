@@ -79,16 +79,27 @@ const useStyles = () => {
       borderBottomColor: theme.black16,
       paddingBottom: Metrics._20,
     },
+    signBtn: {
+      height: Metrics._50,
+      borderWidth: Metrics._1,
+      borderColor: theme.border12,
+      borderRadius: Metrics._10,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: Metrics._16,
+      marginBottom: Metrics._20,
+    },
     flx: {
       flex: 1,
     },
-    error:{
-      color:theme.error
+    error: {
+      color: theme.error,
     },
-    sealPhotoStyle:{
-      height:Metrics._50,
-      width:Metrics._100,
-    }
+    sealPhotoStyle: {
+      height: Metrics._50,
+      width: Metrics._100,
+    },
   });
 };
 

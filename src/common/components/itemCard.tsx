@@ -6,22 +6,25 @@ import CustomText from "./text";
 import { Check } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { ItemsData } from "redux/features/dashboardSlice";
 
 interface Props {
     onPress?: () => void;
     show?: boolean;
+    item: ItemsData;
+    index?: number;
     selected?: boolean;
 }
 
-const ItemCard: React.FC<Props> = ({ onPress, show, selected }) => {
+const ItemCard: React.FC<Props> = ({ onPress, show, item, index, selected }) => {
     const theme = useTheme();
     const { t } = useTranslation();
     const styles = getStyles(theme);
     return (
-        <View style={styles.container}>
+        <View key={index} style={styles.container}>
             <View style={styles.row}>
                 <View style={styles.itemBox}>
-                    <CustomText style={styles.itemText}>{t("request.item")} 1</CustomText>
+                    <CustomText style={styles.itemText}>{t("request.item")} {item?.quantity}</CustomText>
                 </View>
                 {show && <TouchableOpacity activeOpacity={1} style={[styles.checkBoxContainer, selected && styles.selectionStyle]} onPress={onPress}>
                     {selected && <Check size={Metrics._20} color={theme.white} />}
@@ -29,15 +32,15 @@ const ItemCard: React.FC<Props> = ({ onPress, show, selected }) => {
             </View>
             <View style={styles.rowBox}>
                 <CustomText style={styles.labelTxt}>{t("request.name")}</CustomText>
-                <CustomText>Blood</CustomText>
+                <CustomText>{item?.specimen_type}</CustomText>
             </View>
             <View style={styles.rowBox}>
                 <CustomText style={styles.labelTxt}>{t("request.specimen_type")}</CustomText>
-                <CustomText>Blood</CustomText>
+                <CustomText>{item?.specimen_type}</CustomText>
             </View>
             <View style={styles.rowBox}>
                 <CustomText style={styles.labelTxt}>{t("request.accession")}</CustomText>
-                <CustomText>SP-2026-10245</CustomText>
+                <CustomText>{item?.barcode}</CustomText>
             </View>
             <View style={styles.horizontalLine} />
             <CustomText style={styles.labelTxt}>{t("request.drop_off")}</CustomText>

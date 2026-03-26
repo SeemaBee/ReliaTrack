@@ -34,11 +34,24 @@ export interface RequestData {
     name: string;
     phone: string;
   };
+  items: [];
   items_count: number;
   distance_km: string;
   estimated_duration_minutes: number;
   special_instructions: string | null;
   created_at: string;
+}
+
+export interface ItemsData {
+  id: number;
+  item_type: string;
+  specimen_type: string;
+  barcode: string;
+  quantity: number;
+  temperature_requirement: string;
+  requires_special_handling: boolean;
+  handling_instructions: null;
+  status: string;
 }
 
 const initialState = {
