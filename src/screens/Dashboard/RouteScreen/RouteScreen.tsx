@@ -33,7 +33,7 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
 
     const handleRoute = () => {
         Keyboard.dismiss();
-        navigation.navigate('StatusScreen')
+        navigation.navigate('StatusScreen');
     }
     const toggleItem = (id: string) => {
         setSelectedItems(prev => {

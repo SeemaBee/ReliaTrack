@@ -19,7 +19,7 @@ const ItemDetailsScreen: React.FC<Props> = ({ navigation }) => {
         <View style={styles.container}>
             <Header title={t("route.item_detail")} onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
             <ScrollView showsVerticalScrollIndicator={false}>
-                <JobCard data={{}} />
+                <JobCard />
                 <CustomText style={styles.title2}>{t("request.delivery_items")}</CustomText>
                 <ItemCard />
                 <ItemCard />

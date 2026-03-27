@@ -55,7 +55,7 @@ const StatusScreen: React.FC<Props> = ({ navigation }) => {
                 await stopBackgroundJob();
                 setStartTracking(false);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.log('Toggle error:', error);
         }
     };

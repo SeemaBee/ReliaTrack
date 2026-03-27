@@ -11,6 +11,7 @@ export const ENDPOINTS = {
   activeJobs: 'deliveries/my-active',
   completedJobs: 'deliveries/history',
   acceptRequest: 'job-requests',
+  pickupConfirmation: '',
   changePassword: 'change-password',
   profile: 'profile',
   logout: 'logout',

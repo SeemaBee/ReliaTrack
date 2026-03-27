@@ -43,3 +43,11 @@ export type EditProfileProps = {
   dob: string;
   address: string;
 };
+export type PickupProps = {
+  recipient_name: string;
+  signature_image: string;
+  photo_proof: string;
+  latitude: number;
+  longitude: number;
+  notes: string;
+};
