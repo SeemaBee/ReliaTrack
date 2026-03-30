@@ -243,8 +243,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         :
         selectedTab === 1 ?
           <FlatList
-            // data={activeRequests}
-            data={"1"}
+            data={activeRequests}
             style={styles.flx}
             contentContainerStyle={styles.contentStyle}
             renderItem={({ item, index: i }) => (

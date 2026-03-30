@@ -49,7 +49,7 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
             <Header title={t("route.start_route")} onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
             <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={"always"}>
                 <Container>
-                    <JobCard data={{}} />
+                    <JobCard />
                     <CustomText style={styles.title2}>{t("request.delivery_items")}</CustomText>
                     {items.map(item => (
                         <ItemCard

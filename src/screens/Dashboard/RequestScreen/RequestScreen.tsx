@@ -11,9 +11,10 @@ import { useTranslation } from 'react-i18next'
 import Loader from 'common/components/loader'
 import Toast from 'react-native-simple-toast';
 import { acceptRequestAPI, deliveryDetailsAPI } from 'api/requests/requestsAPI'
-import { RequestData } from 'redux/features/dashboardSlice'
+import { RequestData, setRequestData } from 'redux/features/dashboardSlice'
 import { useCurrentLocation } from 'common/components/useCurrentLocation'
 import { requestBackgroundPermission, requestForegroundPermissions } from 'common/components/PermissionServices'
+import { useDispatch } from 'react-redux'
 
 type Props = {
     navigation: AppNavigationProp<'RequestScreen'>;
@@ -23,6 +24,7 @@ type Props = {
 const RequestScreen: React.FC<Props> = ({ navigation, route }) => {
     const styles = useStyles();
     const { t } = useTranslation();
+    const dispatch = useDispatch();
     const { getCurrentLocation } = useCurrentLocation();
     const [loader, setLoader] = useState(false);
     const [requestDetails, setRequestDetails] = useState<RequestData | null>(null);
@@ -49,6 +51,7 @@ const RequestScreen: React.FC<Props> = ({ navigation, route }) => {
             // console.log(response, "======>details");
             if (response?.success) {
                 setRequestDetails(response?.data);
+                dispatch(setRequestData(response?.data));
             }
         } catch (error: any) {
             Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
@@ -108,6 +111,7 @@ const RequestScreen: React.FC<Props> = ({ navigation, route }) => {
                     renderItem={({ item, index: i }) => (
                         <ItemCard item={item} index={i} />
                     )}
+                    scrollEnabled={false}
                     keyExtractor={(_, index) => index.toString()}
                 />
                 <CustomText style={styles.title2}>{t("request.more_details")}</CustomText>
@@ -127,7 +131,6 @@ const RequestScreen: React.FC<Props> = ({ navigation, route }) => {
                     <CustomText style={styles.detailsLabel}>{t("request.number_of_bags")}</CustomText>
                     <CustomText style={styles.detailsValue}>4</CustomText>
                 </View>
-
                 <Button title={t("action.accept")} onPress={() => acceptJobRequest()} />
             </ScrollView>
         </View>

@@ -1,4 +1,4 @@
-import { ScrollView, View } from 'react-native'
+import { FlatList, ScrollView, View } from 'react-native'
 import React from 'react'
 import CustomText from 'common/components/text'
 import useStyles from './PickupConfirmation.styles'
@@ -8,6 +8,8 @@ import JobCard from 'common/components/jobCard'
 import ItemCard from 'common/components/itemCard'
 import Button from 'common/components/button'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { RootState } from 'redux/store'
 
 type Props = {
     navigation: AppNavigationProp<'PickupConfirmation'>;
@@ -16,6 +18,7 @@ type Props = {
 const PickupConfirmation: React.FC<Props> = ({ navigation }) => {
     const styles = useStyles();
     const { t } = useTranslation();
+    const requestDetails = useSelector((state: RootState) => state.home.request);
     return (
         <View style={styles.container}>
             <Header
@@ -27,14 +30,20 @@ const PickupConfirmation: React.FC<Props> = ({ navigation }) => {
                 onChangePassword={() => navigation.navigate("ChangePassword")}
             />
             <ScrollView showsVerticalScrollIndicator={false}>
-                <JobCard data={{}} />
+                <JobCard item={requestDetails} />
                 <CustomText style={styles.title2}>{t("request.delivery_items")}</CustomText>
-                <ItemCard />
-                <ItemCard />
+                <FlatList
+                    data={requestDetails?.items}
+                    renderItem={({ item, index: i }) => (
+                        <ItemCard item={item} index={i} />
+                    )}
+                    scrollEnabled={false}
+                    keyExtractor={(_, index) => index.toString()}
+                />
                 <CustomText style={styles.title2}>{t("request.more_details")}</CustomText>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.urgency_level")}</CustomText>
-                    <CustomText style={styles.detailsValue}>ASAP</CustomText>
+                    <CustomText style={styles.detailsValue}>{requestDetails?.priority}</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.temperature_requirement")}</CustomText>

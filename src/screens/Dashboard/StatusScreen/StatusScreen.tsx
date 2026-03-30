@@ -129,8 +129,7 @@ const StatusScreen: React.FC<Props> = ({ navigation }) => {
                     </Formik>
                 </Container>
             </ScrollView>
-            {
-                showReason &&
+            {showReason &&
                 <ReasonModal
                     show={showReason}
                     onClose={() => {

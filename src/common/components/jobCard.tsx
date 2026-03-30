@@ -28,7 +28,7 @@ const JobCard: React.FC<Props> = ({ onPress, item, index }) => {
   return (
     <View key={index} style={styles.container}>
       <View style={styles.itemBox}>
-        <CustomText style={styles.itemText}>{item?.items_count || 2} {t("home.items")}</CustomText>
+        <CustomText style={styles.itemText}>{item?.items_count || 'N/A'} {t("home.items")}</CustomText>
       </View>
       <CustomText>{t("home.from")}</CustomText>
       <View style={styles.row}>
