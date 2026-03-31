@@ -10,9 +10,14 @@ import { Flashlight, FlashlightOff, X } from 'lucide-react-native'
 
 type Props = {
     navigation: AppNavigationProp<'BarcodeScan'>;
+    route: {
+        params?: {
+            onScanSuccess?: (value: string) => void;
+        }
+    }
 }
 
-const BarcodeScan: React.FC<Props> = ({ navigation }) => {
+const BarcodeScan: React.FC<Props> = ({ navigation, route }) => {
     const theme = useTheme();
     const styles = useStyles();
     const [isScanned, setIsScanned] = useState(false);
@@ -71,6 +76,7 @@ const BarcodeScan: React.FC<Props> = ({ navigation }) => {
 
                 if (inHorizontalRange && inVerticalRange) {
                     setIsScanned(true);
+                    route?.params?.onScanSuccess?.(code.value);
                     Alert.alert("Scanned", code.value, [{ text: "OK", onPress: () => navigation.goBack() }]);
                 }
             }

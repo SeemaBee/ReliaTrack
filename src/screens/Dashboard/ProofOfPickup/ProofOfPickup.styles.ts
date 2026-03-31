@@ -49,6 +49,7 @@ const useStyles = () => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
+      marginBottom: Metrics._8,
     },
     detailText: {
       fontSize: Metrics._14,
@@ -60,35 +61,15 @@ const useStyles = () => {
       height: Metrics._50,
       borderWidth: Metrics._1,
       borderColor: theme.border12,
-      width: '48%',
       borderRadius: Metrics._10,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingHorizontal: Metrics._14,
+      marginTop: Metrics._20,
     },
     actionLabel: {
-      color: theme.black15,
-    },
-    actionContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginVertical: Metrics._22,
-      borderBottomWidth: Metrics._1,
-      borderBottomColor: theme.black16,
-      paddingBottom: Metrics._20,
-    },
-    signBtn: {
-      height: Metrics._50,
-      borderWidth: Metrics._1,
-      borderColor: theme.border12,
-      borderRadius: Metrics._10,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingHorizontal: Metrics._16,
-      marginBottom: Metrics._20,
+      color: theme.grey11,
     },
     flx: {
       flex: 1,
@@ -97,8 +78,37 @@ const useStyles = () => {
       color: theme.error,
     },
     sealPhotoStyle: {
-      height: Metrics._50,
-      width: Metrics._100,
+      height: '100%',
+      width: '100%',
+      resizeMode: 'contain',
+    },
+    imageContainer: {
+      height: Metrics._78,
+      width: '100%',
+      marginTop: Metrics._20,
+    },
+    signContainer: {
+      height: Metrics._78,
+      width: '100%',
+      marginTop: Metrics._20,
+    },
+    noteContainer: {
+      marginTop: Metrics._22,
+    },
+    crossContainer: {
+      position: 'absolute',
+      right: 0,
+      top: -Metrics._10,
+      zIndex: 2,
+    },
+    itemContainer: {
+      marginBottom: Metrics._20,
+      borderBottomWidth: Metrics._1,
+      borderBottomColor: theme.grey1,
+      paddingBottom: Metrics._20,
+    },
+    btnStyle: {
+      marginVertical: Metrics._10,
     },
   });
 };

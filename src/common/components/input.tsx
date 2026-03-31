@@ -5,6 +5,7 @@ import {
   TextInputProps,
   TouchableOpacity,
   StyleSheet,
+  ViewStyle,
 } from 'react-native';
 import { Eye, EyeOff } from 'lucide-react-native';
 import { useTheme } from 'common/helperFunctions';
@@ -20,6 +21,7 @@ interface InputProps extends TextInputProps {
   secureTextEntry?: boolean;
   multiline?: boolean;
   numberOfLines?: number;
+  outerStyle?: ViewStyle;
   ref?: Ref<TextInput> | undefined;
 }
 
@@ -32,6 +34,7 @@ export const Input: React.FC<InputProps> = ({
   multiline = false,
   numberOfLines,
   style,
+  outerStyle,
   ref,
   ...rest
 }) => {
@@ -40,7 +43,7 @@ export const Input: React.FC<InputProps> = ({
   const [isSecure, setIsSecure] = useState(secureTextEntry);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, outerStyle]}>
       {label && <CustomText style={styles.label}>{label}</CustomText>}
       <View
         style={[

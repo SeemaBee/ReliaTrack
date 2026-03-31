@@ -17,8 +17,8 @@ export type StackParamList = {
   StatusScreen: undefined;
   ItemDetailsScreen: undefined;
   ProofOfDelivery: undefined;
-  BarcodeScan: undefined;
-  SignatureScreen: undefined;
+  BarcodeScan: { onScanSuccess?: (value: string) => void };
+  SignatureScreen: { onSignSuccess?: (value: string) => void };
   EditProfile: undefined;
   ChangePassword: undefined;
 };

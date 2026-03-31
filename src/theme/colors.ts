@@ -58,6 +58,7 @@ export const LightTheme = {
   grey8: '#A7A4A4',
   grey9: '#C0C0C0',
   grey10: '#7D7D7D',
+  grey11: '#696969C4',
   white: '#FFFFFF',
 };
 

@@ -9,9 +9,14 @@ import { useTranslation } from 'react-i18next';
 
 type Props = {
     navigation: AppNavigationProp<'SignatureScreen'>;
+    route: {
+        params?: {
+            onSignSuccess?: (value: string) => void;
+        }
+    }
 };
 
-const SignatureScreen: React.FC<Props> = ({ navigation }) => {
+const SignatureScreen: React.FC<Props> = ({ navigation, route }) => {
     const styles = useStyles();
     const { t } = useTranslation();
     const signatureRef = useRef<SignatureViewRef>(null);
@@ -30,10 +35,11 @@ const SignatureScreen: React.FC<Props> = ({ navigation }) => {
     }, []);
 
     const handleSignature = useCallback((signature: string) => {
-        Alert.alert("Signature Captured", signature.substring(0, 50) + "...");
+        route?.params?.onSignSuccess?.(signature);
+        // Alert.alert("Signature Captured", signature.substring(0, 50) + "...");
         console.log(signature);
         navigation.goBack();
-    }, [navigation]);
+    }, [navigation, route]);
 
     const handleClear = () => {
         signatureRef.current?.clearSignature();
