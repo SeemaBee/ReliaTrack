@@ -56,61 +56,55 @@ const useStyles = () => {
       borderBottomWidth: Metrics._1,
       borderColor: theme.primary,
     },
-    actionContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginVertical: Metrics._22,
-      borderBottomWidth: Metrics._1,
-      borderBottomColor: theme.black16,
-      paddingBottom: Metrics._20,
-    },
     proofAction: {
       height: Metrics._50,
       borderWidth: Metrics._1,
       borderColor: theme.border12,
-      width: '48%',
       borderRadius: Metrics._10,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingHorizontal: Metrics._14,
+      marginTop: Metrics._20,
     },
     actionLabel: {
-      color: theme.black15,
-    },
-    flx: {
-      flex: 1,
-    },
-    deliveryAction: {
-      height: Metrics._50,
-      borderWidth: Metrics._1,
-      borderColor: theme.border12,
-      borderRadius: Metrics._10,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingHorizontal: Metrics._16,
-    },
-    separatorTxt: {
-      fontSize: FontSizes._16,
-      fontFamily: FontFamily.interTightMedium,
-      textAlign: 'center',
-      marginVertical: Metrics._10,
-    },
-    deliveryLabel: {
-      color: theme.black15,
-      fontSize: FontSizes._16,
-    },
-    deliveryProofContainer: {
-      marginBottom: Metrics._20,
+      color: theme.grey11,
     },
     error: {
       color: theme.error,
     },
+    itemContainer: {
+      marginBottom: Metrics._20,
+      borderBottomWidth: Metrics._1,
+      borderBottomColor: theme.grey1,
+      paddingBottom: Metrics._20,
+    },
+    imageContainer: {
+      height: Metrics._78,
+      width: '100%',
+      marginTop: Metrics._20,
+    },
+    crossContainer: {
+      position: 'absolute',
+      right: 0,
+      top: -Metrics._10,
+      zIndex: 2,
+    },
+    signContainer: {
+      height: Metrics._78,
+      width: '100%',
+      marginTop: Metrics._20,
+    },
     sealPhotoStyle: {
-      height: Metrics._50,
-      width: Metrics._100,
+      height: '100%',
+      width: '100%',
+      resizeMode: 'contain',
+    },
+    noteContainer: {
+      marginTop: Metrics._22,
+    },
+    btnStyle: {
+      marginVertical: Metrics._10,
     },
   });
 };

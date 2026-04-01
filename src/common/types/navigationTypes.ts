@@ -21,6 +21,7 @@ export type StackParamList = {
   SignatureScreen: { onSignSuccess?: (value: string) => void };
   EditProfile: undefined;
   ChangePassword: undefined;
+  NotificationsScreen: undefined;
 };
 
 export type AppNavigationProp<T extends keyof StackParamList> =

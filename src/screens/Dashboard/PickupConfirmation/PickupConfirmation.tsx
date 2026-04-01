@@ -26,6 +26,7 @@ const PickupConfirmation: React.FC<Props> = ({ navigation }) => {
                 onBackPress={() => navigation.goBack()}
                 style={styles.headerStyle}
                 showProfile
+                onNotification={() => navigation.navigate("NotificationsScreen")}
                 onEditProfile={() => navigation.navigate("EditProfile")}
                 onChangePassword={() => navigation.navigate("ChangePassword")}
             />
@@ -47,15 +48,15 @@ const PickupConfirmation: React.FC<Props> = ({ navigation }) => {
                 </View>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.temperature_requirement")}</CustomText>
-                    <CustomText style={styles.detailsValue}>Ambient</CustomText>
+                    <CustomText style={styles.detailsValue}>{requestDetails?.temperature_requirement || 'N/A'}</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.vehicle_requirements")}</CustomText>
-                    <CustomText style={styles.detailsValue}>Refrigerator</CustomText>
+                    <CustomText style={styles.detailsValue}>{requestDetails?.vehicle_requirements || 'N/A'}</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.number_of_bags")}</CustomText>
-                    <CustomText style={styles.detailsValue}>4</CustomText>
+                    <CustomText style={styles.detailsValue}>{requestDetails?.container_count}</CustomText>
                 </View>
                 <Button title={t("action.confirm_pickup")} onPress={() => navigation.navigate("ProofOfPickup")} />
             </ScrollView>

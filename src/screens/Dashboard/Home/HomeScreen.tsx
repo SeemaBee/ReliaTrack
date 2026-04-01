@@ -168,7 +168,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           />
         </View>
         <View style={styles.row}>
-          <TouchableOpacity activeOpacity={0.9} style={styles.iconContainer}>
+          <TouchableOpacity activeOpacity={0.9} style={styles.iconContainer} onPress={() => navigation.navigate("NotificationsScreen")}>
             <Notification />
           </TouchableOpacity>
           <View style={styles.verticalLine} />

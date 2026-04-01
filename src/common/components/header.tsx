@@ -15,13 +15,14 @@ type Props = {
   title: string;
   onBackPress: () => void;
   showProfile?: boolean;
+  onNotification?: () => void;
   onEditProfile?: () => void;
   onChangePassword?: () => void;
   onLogout?: () => void;
   style?: ViewStyle;
 };
 
-const Header = ({ title, onBackPress, style, showProfile, onEditProfile, onChangePassword, onLogout }: Props) => {
+const Header = ({ title, onBackPress, style, showProfile, onNotification, onEditProfile, onChangePassword, onLogout }: Props) => {
   const theme = useTheme();
   const styles = getStyles(theme);
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ const Header = ({ title, onBackPress, style, showProfile, onEditProfile, onChang
         <CustomText style={styles.title}>{title}</CustomText>
       </View>
       {showProfile && <View style={styles.rightView}>
-        <TouchableOpacity activeOpacity={0.9} style={styles.iconContainer}>
+        <TouchableOpacity activeOpacity={0.9} style={styles.iconContainer} onPress={onNotification}>
           <Notification />
         </TouchableOpacity>
         <View style={styles.verticalLine} />

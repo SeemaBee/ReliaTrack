@@ -129,6 +129,9 @@
         "home_address_placeholder": "Enter home address",
         "dob_placeholder": "Select"
     },
+    "notification": {
+        "title": "Notifications"
+    },
     "action": {
         "submit": "Submit",
         "verify": "Verify OTP",

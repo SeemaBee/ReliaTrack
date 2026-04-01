@@ -13,6 +13,7 @@ import BarcodeScan from 'screens/Dashboard/BarcodeScan/BarcodeScan';
 import SignatureScreen from 'screens/Dashboard/SignatureScreen/SignatureScreen';
 import EditProfile from 'screens/Dashboard/EditProfile/EditProfile';
 import ChangePassword from 'screens/Dashboard/ChangePassword/ChangePassword';
+import NotificationsScreen from 'screens/Dashboard/NotificationsScreen/NotificationsScreen';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
@@ -31,6 +32,7 @@ export default () => {
       <Stack.Screen name="SignatureScreen" component={SignatureScreen} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      <Stack.Screen name="NotificationsScreen" component={NotificationsScreen} />
     </Stack.Navigator>
   );
 };

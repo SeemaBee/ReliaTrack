@@ -100,6 +100,7 @@ const RequestScreen: React.FC<Props> = ({ navigation, route }) => {
                 onBackPress={() => navigation.goBack()}
                 style={styles.headerStyle}
                 showProfile
+                onNotification={() => navigation.navigate("NotificationsScreen")}
                 onEditProfile={() => navigation.navigate("EditProfile")}
                 onChangePassword={() => navigation.navigate("ChangePassword")}
             />
@@ -121,15 +122,15 @@ const RequestScreen: React.FC<Props> = ({ navigation, route }) => {
                 </View>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.temperature_requirement")}</CustomText>
-                    <CustomText style={styles.detailsValue}>Ambient</CustomText>
+                    <CustomText style={styles.detailsValue}>{requestDetails?.temperature_requirement || 'N/A'}</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.vehicle_requirements")}</CustomText>
-                    <CustomText style={styles.detailsValue}>Refrigerator</CustomText>
+                    <CustomText style={styles.detailsValue}>{requestDetails?.vehicle_requirements || 'N/A'}</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.number_of_bags")}</CustomText>
-                    <CustomText style={styles.detailsValue}>4</CustomText>
+                    <CustomText style={styles.detailsValue}>{requestDetails?.container_count}</CustomText>
                 </View>
                 <Button title={t("action.accept")} onPress={() => acceptJobRequest()} />
             </ScrollView>

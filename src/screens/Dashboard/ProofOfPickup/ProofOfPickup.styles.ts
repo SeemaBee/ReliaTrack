@@ -71,9 +71,6 @@ const useStyles = () => {
     actionLabel: {
       color: theme.grey11,
     },
-    flx: {
-      flex: 1,
-    },
     error: {
       color: theme.error,
     },

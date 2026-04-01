@@ -34,14 +34,16 @@ export interface RequestData {
     name: string;
     phone: string;
   };
-  items: [];
+  temperature_requirement: string | null;
+  vehicle_requirements: string | null;
+  container_count: number;
+  items: ItemsData[];
   items_count: number;
   distance_km: string;
   estimated_duration_minutes: number;
   special_instructions: string | null;
   created_at: string;
 }
-
 export interface ItemsData {
   id: number;
   item_type: string;
