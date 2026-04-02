@@ -51,3 +51,17 @@ export type PickupProps = {
   longitude: number;
   notes: string;
 };
+
+export interface ItemErrors {
+  image?: string;
+  barcode?: string;
+  signature?: string;
+}
+
+export interface ItemProof {
+  sealImage: ImageFile | null;
+  barcodeValue: string;
+  signatureValue: string;
+  note: string;
+  errors: ItemErrors;
+}

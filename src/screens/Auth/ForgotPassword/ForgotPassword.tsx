@@ -34,7 +34,7 @@ const ForgotPassword = ({ navigation }: Props) => {
       if (response?.success) {
         resetForm();
         Toast.showWithGravity(response?.message || "OTP sent to your email", Toast.LONG, Toast.BOTTOM);
-        navigation.navigate('OtpScreen', { email: values.email });
+        navigation.navigate('OtpScreen', { email: values.email, tempOtp: response?.data?.dev_otp });
       }
     } catch (error: any) {
       if (error?.message === "Validation error") {

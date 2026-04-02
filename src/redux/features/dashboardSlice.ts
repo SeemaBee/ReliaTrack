@@ -38,7 +38,7 @@ export interface RequestData {
   vehicle_requirements: string | null;
   container_count: number;
   items: ItemsData[];
-  items_count: number;
+  item_count: number;
   distance_km: string;
   estimated_duration_minutes: number;
   special_instructions: string | null;

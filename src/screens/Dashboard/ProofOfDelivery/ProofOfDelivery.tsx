@@ -12,68 +12,60 @@ import { Input } from 'common/components/input';
 import Button from 'common/components/button';
 import { SignatureIcon } from 'assets/svg';
 import { useTranslation } from 'react-i18next';
-import { ImageFile } from 'utils/constant';
+import { ImageFile, ItemErrors, ItemProof } from 'utils/constant';
 import ChooseImageOptions from 'common/components/chooseImageOptions';
 import { handleOpenCamera, handleOpenGallery } from 'common/components/MediaOptions';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
 
 type Props = {
     navigation: AppNavigationProp<'ProofOfDelivery'>;
 };
 
-interface ItemProof {
-    sealImage: ImageFile | null;
-    barcodeValue: string;
-    signatureValue: string;
-    note: string;
-    errors: {
-        image?: string;
-        barcode?: string;
-        signature?: string;
-    }
-}
-
 const ProofOfDelivery: React.FC<Props> = ({ navigation }) => {
     const theme = useTheme();
     const { t } = useTranslation();
     const styles = useStyles();
-    const deliveryItems = [
-        { id: 0, itemName: "Blood" },
-        { id: 1, itemName: "Tissue" },
-        { id: 2, itemName: "Insulin" },
-    ];
-    const [itemsProof, setItemsProof] = useState<Record<number, ItemProof>>(
-        deliveryItems.reduce((acc, item) => ({
-            ...acc,
-            [item.id]: { sealImage: null, barcodeValue: "", signatureValue: "", note: "", errors: {} }
-        }), {})
-    );
+    const requestDetails = useSelector((state: RootState) => state.home.request);
+    const deliveryItems = requestDetails?.items || [];
+    const [itemsProof, setItemsProof] = useState<Record<number, ItemProof>>(() => {
+        return deliveryItems.reduce((acc, item) => {
+            acc[item.id] = {
+                sealImage: null,
+                barcodeValue: "",
+                signatureValue: "",
+                note: "",
+                errors: {}
+            };
+            return acc;
+        }, {} as Record<number, ItemProof>);
+    });
     const [showPicker, setShowPicker] = useState<{ show: boolean, activeId: number | null }>({
         show: false,
         activeId: null
     });
-    const updateItemState = (id: number, updates: Partial<ItemProof>) => {
+    const updateItemState = (id: number, updates: Partial<Omit<ItemProof, 'errors'>> & { errors?: ItemErrors }) => {
         setItemsProof(prev => ({
             ...prev,
             [id]: { ...prev[id], ...updates }
         }));
     };
 
-    const openCamera = () => {
+    const handleMediaSelection = (type: 'camera' | 'gallery') => {
         const id = showPicker.activeId;
         if (id === null) return;
-        handleOpenCamera((file) => {
-            updateItemState(id, { sealImage: file, errors: { ...itemsProof[id].errors, image: "" } });
-            setShowPicker({ show: false, activeId: null });
-        }, () => setShowPicker({ show: false, activeId: null }));
-    };
 
-    const openGallery = () => {
-        const id = showPicker.activeId;
-        if (id === null) return;
-        handleOpenGallery((file) => {
-            updateItemState(id, { sealImage: file, errors: { ...itemsProof[id].errors, image: "" } });
+        const callback = (file: ImageFile) => {
+            updateItemState(id, {
+                sealImage: file,
+                errors: { ...itemsProof[id].errors, image: undefined }
+            });
             setShowPicker({ show: false, activeId: null });
-        }, () => setShowPicker({ show: false, activeId: null }));
+        };
+
+        const onCancel = () => setShowPicker({ show: false, activeId: null });
+
+        type === 'camera' ? handleOpenCamera(callback, onCancel) : handleOpenGallery(callback, onCancel);
     };
 
     const handleSubmit = () => {
@@ -83,22 +75,23 @@ const ProofOfDelivery: React.FC<Props> = ({ navigation }) => {
 
         deliveryItems.forEach((item) => {
             const proof = newProofs[item.id];
-            const errors: any = {};
+            const errors: ItemErrors = {};
+
             if (!proof.sealImage) errors.image = "Required*";
             if (!proof.barcodeValue) errors.barcode = "Required*";
             if (!proof.signatureValue) errors.signature = "Required*";
 
             if (Object.keys(errors).length > 0) {
-                newProofs[item.id].errors = errors;
+                newProofs[item.id] = { ...proof, errors };
                 hasError = true;
             }
         });
 
         if (hasError) {
             setItemsProof(newProofs);
-            return;
+        } else {
+            navigation.navigate("RouteScreen");
         }
-        navigation.navigate("RouteScreen");
     }
 
     return (
@@ -113,11 +106,12 @@ const ProofOfDelivery: React.FC<Props> = ({ navigation }) => {
                     <CustomText style={styles.title2}>{t("request.delivery_items")}</CustomText>
                     {deliveryItems.map((item, index) => {
                         const proof = itemsProof[item.id];
+                        if (!proof) return null;
                         return (
                             <View key={item.id} style={styles.itemContainer}>
                                 <CustomText style={styles.itemTxt}>{t("request.item")} {index + 1}</CustomText>
                                 <View style={styles.rowBox}>
-                                    <CustomText style={styles.itemTitle}>{item.itemName}</CustomText>
+                                    <CustomText style={styles.itemTitle}>{item.specimen_type}</CustomText>
                                     <TouchableOpacity activeOpacity={1} style={styles.detailBox}>
                                         <CustomText style={styles.detailText}>
                                             {t("home.view_more")}{' '}
@@ -191,8 +185,8 @@ const ProofOfDelivery: React.FC<Props> = ({ navigation }) => {
                 <ChooseImageOptions
                     show={showPicker.show}
                     onClose={() => setShowPicker({ show: false, activeId: null })}
-                    onCamera={openCamera}
-                    onImages={openGallery}
+                    onCamera={() => handleMediaSelection('camera')}
+                    onImages={() => handleMediaSelection('gallery')}
                     hideDelete={true}
                 />
             )}

@@ -36,6 +36,8 @@ const useStyles = () => {
     },
     itemTitle: {
       fontSize: FontSizes._16,
+      textTransform: 'capitalize',
+      width: '60%',
     },
     itemTxt: {
       color: theme.black14,
@@ -100,7 +102,7 @@ const useStyles = () => {
     },
     itemContainer: {
       marginBottom: Metrics._20,
-      borderBottomWidth: Metrics._1,
+      borderBottomWidth: Metrics.__5,
       borderBottomColor: theme.grey1,
       paddingBottom: Metrics._20,
     },

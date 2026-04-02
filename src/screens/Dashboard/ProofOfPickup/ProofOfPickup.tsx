@@ -13,34 +13,25 @@ import { Input } from 'common/components/input';
 import Button from 'common/components/button';
 import Container from 'common/components/container';
 import ChooseImageOptions from 'common/components/chooseImageOptions';
-import { ImageFile } from 'utils/constant';
+import { ImageFile, ItemErrors, ItemProof } from 'utils/constant';
 import { handleOpenCamera, handleOpenGallery } from 'common/components/MediaOptions';
 import { SignatureIcon } from 'assets/svg';
 import { RootState } from 'redux/store';
+import Toast from 'react-native-simple-toast';
+import Loader from 'common/components/loader';
+import { proofOfPickupAPI } from 'api/requests/requestsAPI';
+import { useCurrentLocation } from 'common/components/useCurrentLocation';
 
 type Props = {
   navigation: AppNavigationProp<'ProofOfPickup'>;
 };
 
-interface ItemErrors {
-  image?: string;
-  barcode?: string;
-  signature?: string;
-}
-
-interface ItemProof {
-  sealImage: ImageFile | null;
-  barcodeValue: string;
-  signatureValue: string;
-  note: string;
-  errors: ItemErrors;
-}
-
 const ProofOfPickup: React.FC<Props> = ({ navigation }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const styles = useStyles();
-
+  const { getCurrentLocation } = useCurrentLocation();
+  const [loader, setLoader] = useState(false);
   const requestDetails = useSelector((state: RootState) => state.home.request);
   const deliveryItems = requestDetails?.items || [];
 
@@ -86,7 +77,7 @@ const ProofOfPickup: React.FC<Props> = ({ navigation }) => {
     type === 'camera' ? handleOpenCamera(callback, onCancel) : handleOpenGallery(callback, onCancel);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     Keyboard.dismiss();
     let hasError = false;
     const newProofs = { ...itemsProof };
@@ -107,13 +98,53 @@ const ProofOfPickup: React.FC<Props> = ({ navigation }) => {
 
     if (hasError) {
       setItemsProof(newProofs);
-    } else {
-      navigation.navigate("RouteScreen");
+      return;
+    }
+    try {
+      setLoader(true);
+      const location = await getCurrentLocation();
+      const data = deliveryItems.map((item) => {
+        const proof = itemsProof[item.id];
+        return {
+          // item_id: item.id,
+          recipient_name: "driver",
+          signature_image: "string",
+          photo_proof: proof.sealImage?.uri,
+          // barcode: proof.barcodeValue,
+          notes: proof.note,
+          latitude: location?.latitude,
+          longitude: location?.longitude
+        }
+      })
+      const response = await proofOfPickupAPI(requestDetails?.id, data[0]);
+      // console.log(response)
+      if (response?.success) {
+        const resetItems = { ...itemsProof };
+        Object.keys(resetItems).forEach((key) => {
+          const id = Number(key);
+          resetItems[id] = {
+            sealImage: null,
+            barcodeValue: "",
+            signatureValue: "",
+            note: "",
+            errors: {}
+          };
+        });
+        setItemsProof(resetItems);
+        Toast.showWithGravity(response?.message || "Pickup confirmed successfully", Toast.LONG, Toast.BOTTOM);
+        navigation.navigate("RouteScreen");
+      }
+    } catch (error: any) {
+      Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
+      console.log("Error:-", error);
+    } finally {
+      setLoader(false);
     }
   };
 
   return (
     <View style={styles.container}>
+      {loader && <Loader isLoading={loader} />}
       <Header title={t("proof.title1")} onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
       <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="always">
         <Container>
@@ -136,7 +167,7 @@ const ProofOfPickup: React.FC<Props> = ({ navigation }) => {
                 <CustomText style={styles.itemTxt}>{t("request.item")} {index + 1}</CustomText>
                 <View style={styles.rowBox}>
                   <CustomText style={styles.itemTitle}>{item.specimen_type}</CustomText>
-                  <TouchableOpacity style={styles.detailBox}>
+                  <TouchableOpacity activeOpacity={1} style={styles.detailBox}>
                     <CustomText style={styles.detailText}>{t("home.view_more")}</CustomText>
                     <ChevronRight color={theme.black1} size={Metrics._16} />
                   </TouchableOpacity>
@@ -144,7 +175,7 @@ const ProofOfPickup: React.FC<Props> = ({ navigation }) => {
 
                 {!proof.sealImage ? (
                   <>
-                    <TouchableOpacity style={styles.proofAction} onPress={() => setShowPicker({ show: true, activeId: item.id })}>
+                    <TouchableOpacity activeOpacity={0.8} style={styles.proofAction} onPress={() => setShowPicker({ show: true, activeId: item.id })}>
                       <CustomText style={styles.actionLabel}>{t("proof.photo_of_seal")}</CustomText>
                       <Camera color={theme.grey6} size={Metrics._20} />
                     </TouchableOpacity>
@@ -160,6 +191,7 @@ const ProofOfPickup: React.FC<Props> = ({ navigation }) => {
                 )}
 
                 <TouchableOpacity
+                  activeOpacity={0.8}
                   style={styles.proofAction}
                   onPress={() => navigation.navigate('BarcodeScan', {
                     onScanSuccess: (val: string) => updateItemState(item.id, { barcodeValue: val, errors: { ...proof.errors, barcode: undefined } })
@@ -175,6 +207,7 @@ const ProofOfPickup: React.FC<Props> = ({ navigation }) => {
                 {!proof.signatureValue ? (
                   <>
                     <TouchableOpacity
+                      activeOpacity={0.8}
                       style={styles.proofAction}
                       onPress={() => navigation.navigate("SignatureScreen", {
                         onSignSuccess: (val: string) => updateItemState(item.id, { signatureValue: val, errors: { ...proof.errors, signature: undefined } })

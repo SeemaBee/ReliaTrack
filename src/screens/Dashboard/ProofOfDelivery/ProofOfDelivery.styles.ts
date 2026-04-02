@@ -45,6 +45,8 @@ const useStyles = () => {
     },
     itemTitle: {
       fontSize: FontSizes._16,
+      textTransform: 'capitalize',
+      width: '60%',
     },
     detailBox: {
       flexDirection: 'row',
@@ -75,7 +77,7 @@ const useStyles = () => {
     },
     itemContainer: {
       marginBottom: Metrics._20,
-      borderBottomWidth: Metrics._1,
+      borderBottomWidth: Metrics.__5,
       borderBottomColor: theme.grey1,
       paddingBottom: Metrics._20,
     },

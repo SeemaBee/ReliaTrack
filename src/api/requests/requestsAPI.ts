@@ -45,7 +45,7 @@ export const proofOfPickupAPI = async (id: number, data: PickupProps) => {
   const netState = await NetInfo.fetch();
 
   if (!netState.isConnected) {
-    throw new Error('No internet CheckInternetConnection');
+    throw new Error('No internet connection');
   }
   try {
     let url = `${ENDPOINTS.newJobs}/${id}/pickup`;

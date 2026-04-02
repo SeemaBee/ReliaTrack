@@ -24,7 +24,14 @@ const OTPInput = ({ values, onChange }: OTPInputProps) => {
   const theme = useTheme();
 
   useEffect(() => {
-    if (values === '') {
+    // if (values === '') {
+    //   setOtp(['', '', '', '', '', '']);
+    // }
+    if (values) {
+      const newOtp = values.split('').slice(0, 6); // Convert string to array
+      const paddedOtp = [...newOtp, ...Array(6 - newOtp.length).fill('')]; // Ensure 6 slots
+      setOtp(paddedOtp);
+    } else {
       setOtp(['', '', '', '', '', '']);
     }
   }, [values]);

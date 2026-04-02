@@ -2,6 +2,7 @@ import { Dimensions } from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
 
 export const Metrics = {
+  __5: moderateScale(0.5),
   _1: moderateScale(1),
   _2: moderateScale(2),
   _4: moderateScale(4),

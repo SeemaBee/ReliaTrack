@@ -12,7 +12,7 @@ interface Props {
     onPress?: () => void;
     show?: boolean;
     item: ItemsData;
-    index?: number;
+    index: number;
     selected?: boolean;
 }
 
@@ -24,7 +24,7 @@ const ItemCard: React.FC<Props> = ({ onPress, show, item, index, selected }) => 
         <View key={index} style={styles.container}>
             <View style={styles.row}>
                 <View style={styles.itemBox}>
-                    <CustomText style={styles.itemText}>{t("request.item")} {item?.quantity}</CustomText>
+                    <CustomText style={styles.itemText}>{t("request.item")} {index + 1}</CustomText>
                 </View>
                 {show && <TouchableOpacity activeOpacity={1} style={[styles.checkBoxContainer, selected && styles.selectionStyle]} onPress={onPress}>
                     {selected && <Check size={Metrics._20} color={theme.white} />}
@@ -32,15 +32,15 @@ const ItemCard: React.FC<Props> = ({ onPress, show, item, index, selected }) => 
             </View>
             <View style={styles.rowBox}>
                 <CustomText style={styles.labelTxt}>{t("request.name")}</CustomText>
-                <CustomText>{item?.specimen_type}</CustomText>
+                <CustomText style={styles.labelValue}>{item?.specimen_type}</CustomText>
             </View>
             <View style={styles.rowBox}>
                 <CustomText style={styles.labelTxt}>{t("request.specimen_type")}</CustomText>
-                <CustomText>{item?.specimen_type}</CustomText>
+                <CustomText style={styles.labelValue}>{item?.specimen_type}</CustomText>
             </View>
             <View style={styles.rowBox}>
                 <CustomText style={styles.labelTxt}>{t("request.accession")}</CustomText>
-                <CustomText>{item?.barcode}</CustomText>
+                <CustomText style={styles.labelValue}>{item?.barcode}</CustomText>
             </View>
             <View style={styles.horizontalLine} />
             <CustomText style={styles.labelTxt}>{t("request.drop_off")}</CustomText>
@@ -72,6 +72,10 @@ const getStyles = (theme: typeof LightTheme) =>
             fontSize: Metrics._16,
             color: theme.primary,
         },
+        labelValue: {
+            width: '50%',
+            textAlign: 'right'
+        },
         rowBox: {
             width: '100%',
             flexDirection: 'row',
@@ -79,7 +83,7 @@ const getStyles = (theme: typeof LightTheme) =>
             marginBottom: Metrics._6
         },
         labelTxt: {
-            color: theme.black2
+            color: theme.black2,
         },
         horizontalLine: {
             width: "100%",

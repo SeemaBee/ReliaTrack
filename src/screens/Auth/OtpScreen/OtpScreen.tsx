@@ -30,7 +30,7 @@ const OtpScreen = ({ navigation, route }: Props) => {
   const [secondsLeft, setSecondsLeft] = useState(30);
   const [showResend, setShowResend] = useState(false);
   const [loader, setLoader] = useState(false);
-  const { email } = route.params;
+  const { email, tempOtp } = route.params;
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
@@ -45,11 +45,12 @@ const OtpScreen = ({ navigation, route }: Props) => {
     return () => clearTimeout(timer);
   }, [secondsLeft]);
 
-  const handleResend = async () => {
+  const handleResend = async (setFieldValue: (field: string, value: any) => void) => {
     try {
       const response = await forgotPasswordAPI(email);
       if (response?.success) {
         Toast.showWithGravity("OTP sent to your email", Toast.LONG, Toast.BOTTOM);
+        setFieldValue('otp', response?.data?.dev_otp);
         setShowResend(false);
         setSecondsLeft(30);
       }
@@ -91,7 +92,8 @@ const OtpScreen = ({ navigation, route }: Props) => {
       <Container contentStyle={styles.subContainer}>
         <CustomText style={styles.title}>{t("verifyOtp.subTitle")}</CustomText>
         <Formik
-          initialValues={{ otp: '' }}
+          initialValues={{ otp: tempOtp || '' }}
+          enableReinitialize={true}
           validationSchema={VerifyOtpSchema}
           onSubmit={(values, { resetForm }) => handleOtpComplete(values, resetForm)}
         >
@@ -113,7 +115,7 @@ const OtpScreen = ({ navigation, route }: Props) => {
                   </CustomText>
                   <TouchableOpacity
                     activeOpacity={0.8}
-                    onPress={() => handleResend()}
+                    onPress={() => handleResend(setFieldValue)}
                   >
                     <CustomText style={styles.linkText}>{t("verifyOtp.resend_code")}</CustomText>
                   </TouchableOpacity>
