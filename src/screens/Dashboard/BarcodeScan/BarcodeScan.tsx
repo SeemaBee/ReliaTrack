@@ -7,6 +7,7 @@ import { Camera, useCameraDevice, useCameraPermission, useCodeScanner } from 're
 import { AppNavigationProp } from 'common/types/navigationTypes'
 import { Metrics } from 'theme/metrics'
 import { Flashlight, FlashlightOff, X } from 'lucide-react-native'
+import { useIsFocused } from '@react-navigation/native'
 
 type Props = {
     navigation: AppNavigationProp<'BarcodeScan'>;
@@ -20,6 +21,7 @@ type Props = {
 const BarcodeScan: React.FC<Props> = ({ navigation, route }) => {
     const theme = useTheme();
     const styles = useStyles();
+    const isFocused = useIsFocused();
     const [isScanned, setIsScanned] = useState(false);
     const { hasPermission, requestPermission } = useCameraPermission();
     const [torch, setTorch] = useState<'on' | 'off'>('off');
@@ -60,6 +62,8 @@ const BarcodeScan: React.FC<Props> = ({ navigation, route }) => {
             requestPermission();
         }
     }, [hasPermission, requestPermission]);
+
+    const canShowCamera = hasPermission && device != null && isFocused;
 
     const codeScanner = useCodeScanner({
         codeTypes: ['ean-13', 'upc-a'],
@@ -108,13 +112,15 @@ const BarcodeScan: React.FC<Props> = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            <Camera
-                style={StyleSheet.absoluteFill}
-                device={device}
-                isActive={!isScanned}
-                codeScanner={codeScanner}
-                torch={torch}
-            />
+            {canShowCamera && (
+                <Camera
+                    style={StyleSheet.absoluteFill}
+                    device={device}
+                    isActive={!isScanned}
+                    codeScanner={codeScanner}
+                    torch={torch}
+                    onError={(error) => console.error("Camera error:", error)}
+                />)}
             <View style={styles.overlay}>
                 <View style={styles.unfocusedContainer} />
                 <View style={styles.middleRow}>

@@ -6,6 +6,7 @@ import SignatureCanvas, { SignatureViewRef } from 'react-native-signature-canvas
 import Orientation from 'react-native-orientation-locker'
 import Button from 'common/components/button'
 import { useTranslation } from 'react-i18next';
+import { useIsFocused } from '@react-navigation/native';
 
 type Props = {
     navigation: AppNavigationProp<'SignatureScreen'>;
@@ -19,15 +20,15 @@ type Props = {
 const SignatureScreen: React.FC<Props> = ({ navigation, route }) => {
     const styles = useStyles();
     const { t } = useTranslation();
+    const isFocused = useIsFocused();
     const signatureRef = useRef<SignatureViewRef>(null);
-    const [canvasKey, setCanvasKey] = useState(0);
+    const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
         Orientation.lockToLandscape();
-
         const timer = setTimeout(() => {
-            setCanvasKey(prev => prev + 1);
-        }, 300);
+            setIsReady(true);
+        }, 500);
         return () => {
             clearTimeout(timer);
             Orientation.lockToPortrait();
@@ -36,35 +37,32 @@ const SignatureScreen: React.FC<Props> = ({ navigation, route }) => {
 
     const handleSignature = useCallback((signature: string) => {
         route?.params?.onSignSuccess?.(signature);
-        // Alert.alert("Signature Captured", signature.substring(0, 50) + "...");
-        console.log(signature);
         navigation.goBack();
     }, [navigation, route]);
 
-    const handleClear = () => {
-        signatureRef.current?.clearSignature();
-    };
-
-    const handleSave = () => {
-        signatureRef.current?.readSignature();
-    };
+    const handleClear = () => signatureRef.current?.clearSignature();
+    const handleSave = () => signatureRef.current?.readSignature();
 
     const webStyle = `
         .m-signature-pad--footer { display: none; margin: 0px; }
-        body,html { width: 100%; height: 100%; }
+        body,html { width: 100%; height: 100%; overflow: hidden; }
+        .m-signature-pad { box-shadow: none; border: none; }
     `;
 
     return (
         <View style={styles.container}>
-            <SignatureCanvas
-                key={canvasKey}
-                ref={signatureRef}
-                onOK={handleSignature}
-                onEmpty={() => Alert.alert("Empty", "Please provide a signature first.")}
-                descriptionText="Sign Here"
-                webStyle={webStyle}
-                autoClear={false}
-            />
+            {isFocused && isReady ? (
+                <SignatureCanvas
+                    ref={signatureRef}
+                    onOK={handleSignature}
+                    onEmpty={() => Alert.alert("Empty", "Please provide a signature first.")}
+                    descriptionText="Sign Here"
+                    webStyle={webStyle}
+                    autoClear={false}
+                />
+            ) : (
+                <View style={styles.container} />
+            )}
             <View style={styles.actionContainer}>
                 <Button title={t("action.go_back")} onPress={() => navigation.goBack()} style={styles.actionStyle} />
                 <Button title={t("action.clear")} onPress={handleClear} style={styles.actionStyle} />

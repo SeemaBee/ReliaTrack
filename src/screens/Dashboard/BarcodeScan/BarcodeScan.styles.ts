@@ -81,10 +81,10 @@ const useStyles = () => {
       position: 'absolute',
       left: 0,
       right: 0,
-      height: Metrics._5,
-      backgroundColor: theme.primary,
+      height: Metrics._2,
+      backgroundColor: theme.white,
       opacity: 0.8,
-      borderRadius: 4,
+      borderRadius: 1,
     },
     iconContainer: {
       height: Metrics._40,
