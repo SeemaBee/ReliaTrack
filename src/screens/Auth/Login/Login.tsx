@@ -92,17 +92,32 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
     const success = await triggerBiometricPrompt();
 
     if (success) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'DashboardNavigation' }],
-      });
+      try {
+        const data = await LocalDB.getMany(["authToken", "userData"]);
+        const token = data?.authToken;
+        const userData = data?.userData;
+        if (token && userData) {
+          const parsedUser = JSON.parse(userData);
+          dispatch(setUser(parsedUser));
+          dispatch(setToken(token));
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'DashboardNavigation' }],
+          });
+        } else {
+          Alert.alert("Error", "No saved session found. Please log in with email and password first.");
+        }
+      } catch (error) {
+        console.log("Storage error:", error);
+        Alert.alert('Authentication error');
+      }
     } else {
       Alert.alert('Authentication failed or cancelled');
     }
   };
 
   return (
-    <Container contentStyle={styles.container}>
+    <View style={styles.container}>
       {loader && <Loader isLoading={loader} />}
       <CustomText style={styles.title}>{t('auth.login')}</CustomText>
       <CustomText style={styles.subTitle}>{t('auth.subTitle')}</CustomText>
@@ -113,7 +128,7 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
         onSubmit={(values) => handleSignIn(values)}
       >
         {({ handleChange, handleSubmit, values, errors, touched }) => (
-          <>
+          <Container>
             <Input
               label={t('auth.email')}
               placeholder={t('auth.email_placeholder')}
@@ -149,15 +164,15 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
               </TouchableOpacity>
             </View>
             <Button title={t('auth.btn_signin')} onPress={handleSubmit} />
-          </>
+            <Button
+              title={`Use ${biometricType === null ? "biometrics" : biometricType}`}
+              onPress={handleBiometricLogin}
+              disabled={!biometricAvailable}
+            />
+          </Container>
         )}
       </Formik>
-      <Button
-        title={`Login with ${biometricType === null ? "biometrics" : biometricType}`}
-        onPress={handleBiometricLogin}
-        disabled={!biometricAvailable}
-      />
-    </Container>
+    </View>
   );
 };
 

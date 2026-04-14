@@ -65,3 +65,8 @@ export interface ItemProof {
   note: string;
   errors: ItemErrors;
 }
+
+export type DeliveryValues = {
+  temperatureReading: string;
+  note: string;
+};

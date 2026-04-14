@@ -5,10 +5,10 @@ import {
   StyleProp,
   StyleSheet,
   TouchableWithoutFeedback,
-  View,
   ViewStyle,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { LightTheme } from 'theme/colors';
 import { Metrics } from 'theme/metrics';
 
 type ContainerProps = {
@@ -18,6 +18,7 @@ type ContainerProps = {
 
 const Container: React.FC<ContainerProps> = ({ children, contentStyle }) => {
   const theme = useTheme();
+  const styles = getStyles(theme);
 
   const handleContainerPress = () => {
     Keyboard.dismiss();
@@ -25,28 +26,24 @@ const Container: React.FC<ContainerProps> = ({ children, contentStyle }) => {
 
   return (
     <TouchableWithoutFeedback onPress={handleContainerPress}>
-      <View style={[styles.flx, { backgroundColor: theme.background }]}>
-        <KeyboardAwareScrollView
-          contentContainerStyle={[styles.contentContainer, contentStyle]}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-          extraScrollHeight={Metrics._100}
-          enableOnAndroid={true}
-          enableAutomaticScroll={true}
-        >
-          {children}
-        </KeyboardAwareScrollView>
-      </View>
+      <KeyboardAwareScrollView
+        contentContainerStyle={[styles.contentContainer, contentStyle]}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        extraScrollHeight={Metrics._100}
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
+      >
+        {children}
+      </KeyboardAwareScrollView>
     </TouchableWithoutFeedback>
   );
 };
 
-const styles = StyleSheet.create({
-  flx: {
-    flex: 1,
-  },
+const getStyles = (theme: typeof LightTheme) => StyleSheet.create({
   contentContainer: {
     flexGrow: 1,
+    backgroundColor: theme.background,
   },
 });
 

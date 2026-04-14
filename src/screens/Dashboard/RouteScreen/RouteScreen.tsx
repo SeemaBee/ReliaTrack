@@ -9,10 +9,13 @@ import ItemCard from 'common/components/itemCard';
 import { Input } from 'common/components/input';
 import Button from 'common/components/button';
 import Container from 'common/components/container';
-import { Formik } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import Toast from 'react-native-simple-toast';
 import { RootState } from 'redux/store';
+import { DeliveryValues } from 'utils/constant';
+import { startRouteAPI } from 'api/delivery/deliveryAPI';
 
 type Props = {
     navigation: AppNavigationProp<'RouteScreen'>;
@@ -22,6 +25,7 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
     const styles = useStyles();
     const { t } = useTranslation();
     const noteRef = useRef<TextInput>(null);
+    const formikRef = useRef<FormikProps<DeliveryValues> | null>(null);
     const requestDetails = useSelector((state: RootState) => state.home.request);
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
     const initialValues = {
@@ -29,9 +33,20 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
         note: '',
     };
 
-    const handleRoute = () => {
+    const handleRoute = async (values: DeliveryValues) => {
         Keyboard.dismiss();
-        navigation.navigate('StatusScreen');
+        try {
+            // const data = {
+            //     temperature_reading: values.temperatureReading,
+            //     note: values.note,
+            // }
+            // const response = await startRouteAPI();
+            // console.log(response)
+            navigation.navigate('StatusScreen');
+        } catch (error: any) {
+            Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
+            console.log("Error:-", error);
+        }
     }
     const toggleItem = (id: number) => {
         setSelectedItems(prev => {
@@ -82,9 +97,10 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
                     </View>
                     <CustomText style={styles.title3}>{t("route.fill_in_the_details")}</CustomText>
                     <Formik
+                        innerRef={formikRef}
                         initialValues={initialValues}
                         // validationSchema={}
-                        onSubmit={handleRoute}
+                        onSubmit={(values) => handleRoute(values)}
                     >
                         {({ handleChange, handleSubmit, values, errors, touched }) => (
                             <>
