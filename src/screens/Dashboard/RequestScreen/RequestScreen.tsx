@@ -59,7 +59,7 @@ const RequestScreen: React.FC<Props> = ({ navigation, route }) => {
         } finally {
             setLoader(false);
         }
-    }, [id]);
+    }, [id, dispatch]);
 
     useEffect(() => {
         getDeliverItemDetails();
