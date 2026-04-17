@@ -43,13 +43,20 @@ export type EditProfileProps = {
   dob: string;
   address: string;
 };
+
+export interface ProofItems {
+  item_id: number;
+  barcode?: string;
+  recipient_name?: string;
+  signature_image?: string;
+  photo_proof?: string;
+  notes?: string;
+  scanned_at?: string;
+}
 export type PickupProps = {
-  recipient_name: string;
-  signature_image: string;
-  photo_proof: string;
-  latitude: number;
-  longitude: number;
-  notes: string;
+  latitude: number | undefined;
+  longitude: number | undefined;
+  items: ProofItems[];
 };
 
 export interface ItemErrors {
@@ -67,6 +74,13 @@ export interface ItemProof {
 }
 
 export type DeliveryValues = {
-  temperatureReading: string;
+  temperature_reading: string;
   note: string;
+};
+
+export type StartDeliveryProps = {
+  temperature_reading: string;
+  note: string;
+  latitude: number | undefined;
+  longitude: number | undefined;
 };

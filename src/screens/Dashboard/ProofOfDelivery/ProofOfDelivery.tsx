@@ -11,12 +11,16 @@ import { BadgeCheck, Camera, ChevronRight, CircleX, Scan } from 'lucide-react-na
 import { Input } from 'common/components/input';
 import Button from 'common/components/button';
 import { SignatureIcon } from 'assets/svg';
+import Toast from 'react-native-simple-toast';
 import { useTranslation } from 'react-i18next';
-import { ImageFile, ItemErrors, ItemProof } from 'utils/constant';
+import { ImageFile, ItemErrors, ItemProof, PickupProps } from 'utils/constant';
 import ChooseImageOptions from 'common/components/chooseImageOptions';
 import { handleOpenCamera, handleOpenGallery } from 'common/components/MediaOptions';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
+import Loader from 'common/components/loader';
+import { useCurrentLocation } from 'common/components/useCurrentLocation';
+import { proofOfDeliveryAPI } from 'api/delivery/deliveryAPI';
 
 type Props = {
     navigation: AppNavigationProp<'ProofOfDelivery'>;
@@ -28,6 +32,8 @@ const ProofOfDelivery: React.FC<Props> = ({ navigation }) => {
     const styles = useStyles();
     const requestDetails = useSelector((state: RootState) => state.home.request);
     const deliveryItems = requestDetails?.items || [];
+    const [loader, setLoader] = useState(false);
+    const { getCurrentLocation } = useCurrentLocation();
     const [itemsProof, setItemsProof] = useState<Record<number, ItemProof>>(() => {
         return deliveryItems.reduce((acc, item) => {
             acc[item.id] = {
@@ -68,7 +74,7 @@ const ProofOfDelivery: React.FC<Props> = ({ navigation }) => {
         type === 'camera' ? handleOpenCamera(callback, onCancel) : handleOpenGallery(callback, onCancel);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         Keyboard.dismiss();
         let hasError = false;
         const newProofs = { ...itemsProof };
@@ -89,13 +95,56 @@ const ProofOfDelivery: React.FC<Props> = ({ navigation }) => {
 
         if (hasError) {
             setItemsProof(newProofs);
-        } else {
-            navigation.navigate("RouteScreen");
+            return;
+        }
+        try {
+            setLoader(true);
+            const location = await getCurrentLocation();
+            const payload: PickupProps = {
+                latitude: location?.latitude,
+                longitude: location?.longitude,
+                items: deliveryItems.map((item) => {
+                    const proof = itemsProof[item.id];
+
+                    return {
+                        item_id: item.id,
+                        recipient_name: "driver",
+                        barcode: proof.barcodeValue,
+                        signature_image: "string",
+                        photo_proof: proof.sealImage?.uri,
+                        notes: proof.note,
+                        scanned_at: new Date().toISOString()
+                    };
+                }),
+            };
+            const response = await proofOfDeliveryAPI(requestDetails?.id, payload);
+            if (response?.success) {
+                const resetItems = { ...itemsProof };
+                Object.keys(resetItems).forEach((key) => {
+                    const id = Number(key);
+                    resetItems[id] = {
+                        sealImage: null,
+                        barcodeValue: "",
+                        signatureValue: "",
+                        note: "",
+                        errors: {},
+                    };
+                });
+                setItemsProof(resetItems);
+                Toast.showWithGravity(response?.message || "Item delivered successfully", Toast.LONG, Toast.BOTTOM);
+                navigation.navigate("RouteScreen");
+            }
+        } catch (error: any) {
+            Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
+            console.log("Error:-", error);
+        } finally {
+            setLoader(false);
         }
     }
 
     return (
         <View style={styles.container}>
+            {loader && <Loader isLoading={loader} />}
             <Header title={t("proof.title2")} onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
             <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={"always"}>
                 <Container>

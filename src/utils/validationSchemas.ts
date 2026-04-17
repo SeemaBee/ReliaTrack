@@ -56,3 +56,9 @@ export const EditProfileSchema = Yup.object().shape({
   address: Yup.string().required(i18n.t('validation.address_required')),
   dob: Yup.string().required(i18n.t('validation.dob_required')),
 });
+
+export const DeliverySchema = Yup.object().shape({
+  temperature_reading: Yup.string().required(
+    i18n.t('validation.temperature_required'),
+  ),
+});

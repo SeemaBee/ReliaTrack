@@ -13,7 +13,7 @@ import { Input } from 'common/components/input';
 import Button from 'common/components/button';
 import Container from 'common/components/container';
 import ChooseImageOptions from 'common/components/chooseImageOptions';
-import { ImageFile, ItemErrors, ItemProof } from 'utils/constant';
+import { ImageFile, ItemErrors, ItemProof, PickupProps } from 'utils/constant';
 import { handleOpenCamera, handleOpenGallery } from 'common/components/MediaOptions';
 import { SignatureIcon } from 'assets/svg';
 import { RootState } from 'redux/store';
@@ -103,20 +103,24 @@ const ProofOfPickup: React.FC<Props> = ({ navigation }) => {
     try {
       setLoader(true);
       const location = await getCurrentLocation();
-      const data = deliveryItems.map((item) => {
-        const proof = itemsProof[item.id];
-        return {
-          // item_id: item.id,
-          recipient_name: "driver",
-          signature_image: "string",
-          photo_proof: proof.sealImage?.uri,
-          // barcode: proof.barcodeValue,
-          notes: proof.note,
-          latitude: location?.latitude,
-          longitude: location?.longitude
-        }
-      })
-      const response = await proofOfPickupAPI(requestDetails?.id, data[0]);
+      const payload: PickupProps = {
+        latitude: location?.latitude,
+        longitude: location?.longitude,
+        items: deliveryItems.map((item) => {
+          const proof = itemsProof[item.id];
+
+          return {
+            item_id: item.id,
+            barcode: proof.barcodeValue,
+            recipient_name: "driver",
+            signature_image: "string",
+            photo_proof: proof.sealImage?.uri,
+            notes: proof.note,
+            scanned_at: new Date().toISOString(),
+          };
+        }),
+      };
+      const response = await proofOfPickupAPI(requestDetails?.id, payload);
       // console.log(response)
       if (response?.success) {
         const resetItems = { ...itemsProof };
@@ -127,7 +131,7 @@ const ProofOfPickup: React.FC<Props> = ({ navigation }) => {
             barcodeValue: "",
             signatureValue: "",
             note: "",
-            errors: {}
+            errors: {},
           };
         });
         setItemsProof(resetItems);

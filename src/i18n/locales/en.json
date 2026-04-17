@@ -51,7 +51,8 @@
         "valid_phone_number": "Enter valid phone number",
         "phone_number_required": "Phone number is required",
         "address_required": "Home address required",
-        "dob_required": "Date of birth is required"
+        "dob_required": "Date of birth is required",
+        "temperature_required": "Enter the temperature reading"
     },
     "home": {
         "title1": "Job Status",

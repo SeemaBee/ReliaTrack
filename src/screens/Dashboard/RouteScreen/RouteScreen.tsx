@@ -14,8 +14,11 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import Toast from 'react-native-simple-toast';
 import { RootState } from 'redux/store';
-import { DeliveryValues } from 'utils/constant';
+import { DeliveryValues, StartDeliveryProps } from 'utils/constant';
 import { startRouteAPI } from 'api/delivery/deliveryAPI';
+import { useCurrentLocation } from 'common/components/useCurrentLocation';
+import Loader from 'common/components/loader';
+import { DeliverySchema } from 'utils/validationSchemas';
 
 type Props = {
     navigation: AppNavigationProp<'RouteScreen'>;
@@ -28,24 +31,34 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
     const formikRef = useRef<FormikProps<DeliveryValues> | null>(null);
     const requestDetails = useSelector((state: RootState) => state.home.request);
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
+    const [loader, setLoader] = useState(false);
+    const { getCurrentLocation } = useCurrentLocation();
     const initialValues = {
-        temperatureReading: '',
+        temperature_reading: '',
         note: '',
     };
 
     const handleRoute = async (values: DeliveryValues) => {
         Keyboard.dismiss();
         try {
-            // const data = {
-            //     temperature_reading: values.temperatureReading,
-            //     note: values.note,
-            // }
-            // const response = await startRouteAPI();
+            setLoader(true);
+            const location = await getCurrentLocation();
+            const data: StartDeliveryProps = {
+                latitude: location?.latitude,
+                longitude: location?.longitude,
+                temperature_reading: values.temperature_reading,
+                note: values.note,
+            }
+            const response = await startRouteAPI(requestDetails?.id, data);
             // console.log(response)
-            navigation.navigate('StatusScreen');
+            if (response?.success) {
+                navigation.navigate('StatusScreen');
+            }
         } catch (error: any) {
             Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
             console.log("Error:-", error);
+        } finally {
+            setLoader(false);
         }
     }
     const toggleItem = (id: number) => {
@@ -59,6 +72,7 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
     }
     return (
         <View style={styles.container}>
+            {loader && <Loader isLoading={loader} />}
             <Header title={t("route.start_route")} onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
             <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={"always"}>
                 <Container>
@@ -99,17 +113,17 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
                     <Formik
                         innerRef={formikRef}
                         initialValues={initialValues}
-                        // validationSchema={}
+                        validationSchema={DeliverySchema}
                         onSubmit={(values) => handleRoute(values)}
                     >
                         {({ handleChange, handleSubmit, values, errors, touched }) => (
                             <>
                                 <Input
                                     label={t("route.temperature_reading")}
-                                    onChangeText={handleChange('temperatureReading')}
-                                    value={values.temperatureReading}
+                                    onChangeText={handleChange('temperature_reading')}
+                                    value={values.temperature_reading}
                                     autoCapitalize="none"
-                                    error={touched.temperatureReading ? errors.temperatureReading : undefined}
+                                    error={touched.temperature_reading ? errors.temperature_reading : undefined}
                                     returnKeyType="next"
                                     onSubmitEditing={() => noteRef?.current?.focus()}
                                     submitBehavior={'submit'}
