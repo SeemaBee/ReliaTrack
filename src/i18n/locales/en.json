@@ -61,6 +61,7 @@
         "tab2": "Active",
         "tab3": "Completed",
         "items": "Items",
+        "item":"Item",
         "from": "From",
         "pickup": "Pickup",
         "delivery": "Delivery",

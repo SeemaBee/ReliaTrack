@@ -254,6 +254,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
               />
             )}
             keyExtractor={(_, index) => index?.toString()}
+            showsVerticalScrollIndicator={false}
             ListEmptyComponent={<ListEmptyComponent title='No active requests found' />}
           />
           :
@@ -269,6 +270,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
               />
             )}
             keyExtractor={(_, index) => index?.toString()}
+            showsVerticalScrollIndicator={false}
             onEndReached={handleCompletedLoadMore}
             onMomentumScrollBegin={() => {
               completedMomentum.current = false;

@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://172.16.123.60:8000/api/mobile/v1/';
+export const BASE_URL = 'http://172.16.123.81:8000/api/mobile/v1/';
 export const IMAGE_URL = 'http://172.16.123.60:8000';
 
 export const ENDPOINTS = {

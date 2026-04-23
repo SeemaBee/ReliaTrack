@@ -24,11 +24,14 @@ const JobCard: React.FC<Props> = ({ onPress, item, index }) => {
   const deliveryData = item?.delivery;
   const pickupDateTime = moment.utc(pickupData?.scheduled_time).local();
   const deliveryDateTime = moment.utc(deliveryData?.scheduled_time).local();
+  const itemCount = item?.item_count ?? 0;
+  const displayCount = item?.item_count ?? 'N/A';
+  const itemLabel = itemCount === 1 ? t("home.item") : t("home.items");
 
   return (
     <View key={index} style={styles.container}>
       <View style={styles.itemBox}>
-        <CustomText style={styles.itemText}>{item?.item_count || 'N/A'} {t("home.items")}</CustomText>
+        <CustomText style={styles.itemText}>{displayCount} {itemLabel}</CustomText>
       </View>
       <CustomText>{t("home.from")}</CustomText>
       <View style={styles.row}>
