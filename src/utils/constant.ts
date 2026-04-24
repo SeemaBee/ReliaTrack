@@ -84,3 +84,9 @@ export type StartDeliveryProps = {
   latitude: number | undefined;
   longitude: number | undefined;
 };
+
+export type NotDeliveryProps = {
+  type: string;
+  item_id: number;
+  notes: string;
+};

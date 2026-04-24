@@ -9,18 +9,30 @@ import { FontFamily, FontSizes } from "theme/typography";
 import { Input } from "./input";
 import Button from "./button";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 type Props = {
     show: boolean;
     onClose: () => void;
-    onSuccess: () => void;
+    onSuccess: (v: string) => void;
 }
 
 const ReasonModal = ({ show, onClose, onSuccess }: Props) => {
     const theme = useTheme();
     const { t } = useTranslation();
     const styles = getStyles(theme);
-    
+    const [reason, setReason] = useState('');
+    const [error, setError] = useState<string | undefined>(undefined);
+
+    const handleSubmit = () => {
+        if (!reason || reason?.trim() === '') {
+            setError('Reason is required');
+            return;
+        }
+        setError(undefined);
+        onSuccess(reason);
+    }
+
     return (
         <ReactNativeModal
             isVisible={show}
@@ -43,8 +55,14 @@ const ReasonModal = ({ show, onClose, onSuccess }: Props) => {
                         label={t("route.provide_reason")}
                         multiline
                         numberOfLines={5}
+                        value={reason}
+                        onChangeText={(text) => {
+                            setReason(text);
+                            if (error) setError(undefined);
+                        }}
+                        error={error}
                     />
-                    <Button title={t("action.submit")} onPress={() => onSuccess()} />
+                    <Button title={t("action.submit")} onPress={handleSubmit} />
                 </View>
             </View>
         </ReactNativeModal>

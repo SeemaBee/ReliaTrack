@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, TextInput, TouchableOpacity, View } from 'react-native'
+import { FlatList, Keyboard, ScrollView, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import CustomText from 'common/components/text'
 import useStyles from './StatusScreen.styles'
@@ -14,11 +14,15 @@ import { Formik } from 'formik';
 import { Input } from 'common/components/input';
 import Button from 'common/components/button';
 import ReasonModal from 'common/components/ReasonModal';
+import Toast from 'react-native-simple-toast';
 import { useTranslation } from 'react-i18next';
 import { requestBackgroundPermission, requestForegroundPermissions } from 'common/components/PermissionServices';
 import { startBackgroundJob, stopBackgroundJob } from 'common/components/FetchingLocation';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
+import Loader from 'common/components/loader';
+import { notDeliveryAPI } from 'api/delivery/deliveryAPI';
+import { NotDeliveryProps } from 'utils/constant';
 
 type Props = {
     navigation: AppNavigationProp<'StatusScreen'>;
@@ -31,6 +35,7 @@ const StatusScreen: React.FC<Props> = ({ navigation }) => {
     const noteRef = useRef<TextInput>(null);
     const requestDetails = useSelector((state: RootState) => state.home.request);
     const [showReason, setShowReason] = useState(false);
+    const [loader, setLoader] = useState(false);
     const [startTracking, setStartTracking] = useState(false);
     const initialValues = {
         temperatureReading: '',
@@ -66,8 +71,31 @@ const StatusScreen: React.FC<Props> = ({ navigation }) => {
     const handleDeliver = () => {
         navigation.navigate("ProofOfDelivery")
     }
+
+    const handleNotDelivery = async (note: string) => {
+        Keyboard.dismiss();
+        setShowReason(false);
+        try {
+            const data: NotDeliveryProps = {
+                type: 'item',
+                item_id: requestDetails?.items[0]?.id,
+                notes: note
+            }
+            setLoader(true);
+            const response = await notDeliveryAPI(requestDetails?.id, data);
+            if (response?.success) {
+                Toast.showWithGravity(response?.message || "Delivery failed successfully", Toast.LONG, Toast.BOTTOM);
+            }
+        } catch (error: any) {
+            Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
+            console.log('Error:-', error);
+        } finally {
+            setLoader(false);
+        }
+    }
     return (
         <View style={styles.container}>
+            {loader && <Loader isLoading={loader} />}
             <Header title={t("route.status")} onBackPress={() => navigation.goBack()} style={styles.headerStyle} />
             <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={"always"}>
                 <Container>
@@ -145,7 +173,7 @@ const StatusScreen: React.FC<Props> = ({ navigation }) => {
                     onClose={() => {
                         setShowReason(false);
                     }}
-                    onSuccess={() => setShowReason(false)}
+                    onSuccess={(v) => handleNotDelivery(v)}
                 />
             }
         </View>
