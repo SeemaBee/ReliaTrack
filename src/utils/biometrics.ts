@@ -17,7 +17,7 @@ export const triggerBiometricPrompt = async () => {
     });
     return success;
   } catch (error) {
-    console.log(error);
+    console.log('Error:-', error);
     return false;
   }
 };

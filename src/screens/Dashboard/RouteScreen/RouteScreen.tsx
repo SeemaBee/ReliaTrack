@@ -41,6 +41,10 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
     const handleRoute = async (values: DeliveryValues) => {
         Keyboard.dismiss();
         try {
+            if (selectedItems?.length === 0) {
+                Toast.showWithGravity("Select atleast one delivery item", Toast.LONG, Toast.BOTTOM);
+                return;
+            }
             setLoader(true);
             const location = await getCurrentLocation();
             const data: StartDeliveryProps = {
@@ -95,7 +99,7 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
                     <CustomText style={styles.title2}>{t("request.more_details")}</CustomText>
                     <View style={styles.detailsItemView}>
                         <CustomText style={styles.detailsLabel}>{t("request.urgency_level")}</CustomText>
-                        <CustomText style={styles.detailsValue}>{requestDetails?.priority}</CustomText>
+                        <CustomText style={[styles.detailsValue, styles.uppercaseTxt]}>{requestDetails?.priority}</CustomText>
                     </View>
                     <View style={styles.detailsItemView}>
                         <CustomText style={styles.detailsLabel}>{t("request.temperature_requirement")}</CustomText>
@@ -103,7 +107,7 @@ const RouteScreen: React.FC<Props> = ({ navigation }) => {
                     </View>
                     <View style={styles.detailsItemView}>
                         <CustomText style={styles.detailsLabel}>{t("request.vehicle_requirements")}</CustomText>
-                        <CustomText style={styles.detailsValue}>{requestDetails?.vehicle_requirements || 'N/A'}</CustomText>
+                        <CustomText style={[styles.detailsValue, styles.capitalizeTxt]}>{requestDetails?.vehicle_requirements || 'N/A'}</CustomText>
                     </View>
                     <View style={styles.detailsItemView}>
                         <CustomText style={styles.detailsLabel}>{t("request.number_of_bags")}</CustomText>

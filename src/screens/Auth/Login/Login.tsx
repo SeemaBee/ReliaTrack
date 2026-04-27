@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Keyboard, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Keyboard, Platform, TextInput, TouchableOpacity, View } from 'react-native';
 import { Formik, FormikProps } from 'formik';
 import { AppNavigationProp } from 'common/types/navigationTypes';
 import Container from 'common/components/container';
@@ -17,7 +17,6 @@ import { LoginFormValues } from 'utils/constant';
 import { useDispatch } from 'react-redux';
 import { setToken, setUser } from 'redux/features/authSlice';
 import { LocalDB } from 'services/database';
-
 interface LoginProps {
   navigation: AppNavigationProp<'Login'>;
 }
@@ -59,8 +58,8 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
       const data = {
         email: values.email,
         password: values.password,
-        device_name: '',
-        fcm_token: ''
+        device_name: Platform.OS,
+        fcm_token: '',
       }
       const response = await loginAPI(data);
       // console.log(response, "====>Response");

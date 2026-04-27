@@ -28,16 +28,22 @@ const useStyles = () => {
       fontSize: FontSizes._16,
       marginTop: Metrics._4,
     },
+    uppercaseTxt: {
+      textTransform: 'uppercase',
+    },
+    capitalizeTxt: {
+      textTransform: 'capitalize',
+    },
     detailsItemView: {
       borderBottomWidth: Metrics._1,
       borderBottomColor: theme.border10,
       paddingBottom: Metrics._8,
       marginBottom: Metrics._20,
     },
-    title3:{
-      fontSize:FontSizes._16,
-      marginBottom:Metrics._10
-    }
+    title3: {
+      fontSize: FontSizes._16,
+      marginBottom: Metrics._10,
+    },
   });
 };
 

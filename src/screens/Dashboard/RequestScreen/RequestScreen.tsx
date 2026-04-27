@@ -118,7 +118,7 @@ const RequestScreen: React.FC<Props> = ({ navigation, route }) => {
                 <CustomText style={styles.title2}>{t("request.more_details")}</CustomText>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.urgency_level")}</CustomText>
-                    <CustomText style={styles.detailsValue}>{requestDetails?.priority}</CustomText>
+                    <CustomText style={[styles.detailsValue, styles.uppercaseTxt]}>{requestDetails?.priority}</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.temperature_requirement")}</CustomText>
@@ -126,7 +126,7 @@ const RequestScreen: React.FC<Props> = ({ navigation, route }) => {
                 </View>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.vehicle_requirements")}</CustomText>
-                    <CustomText style={styles.detailsValue}>{requestDetails?.vehicle_requirements || 'N/A'}</CustomText>
+                    <CustomText style={[styles.detailsValue, styles.capitalizeTxt]}>{requestDetails?.vehicle_requirements || 'N/A'}</CustomText>
                 </View>
                 <View style={styles.detailsItemView}>
                     <CustomText style={styles.detailsLabel}>{t("request.number_of_bags")}</CustomText>

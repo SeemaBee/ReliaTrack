@@ -32,11 +32,11 @@ const ItemCard: React.FC<Props> = ({ onPress, show, item, index, selected }) => 
             </View>
             <View style={styles.rowBox}>
                 <CustomText style={styles.labelTxt}>{t("request.name")}</CustomText>
-                <CustomText style={styles.labelValue}>{item?.specimen_type}</CustomText>
+                <CustomText style={[styles.labelValue, styles.capitalizeTxt]}>{item?.specimen_type}</CustomText>
             </View>
             <View style={styles.rowBox}>
                 <CustomText style={styles.labelTxt}>{t("request.specimen_type")}</CustomText>
-                <CustomText style={styles.labelValue}>{item?.specimen_type}</CustomText>
+                <CustomText style={[styles.labelValue, styles.capitalizeTxt]}>{item?.specimen_type}</CustomText>
             </View>
             <View style={styles.rowBox}>
                 <CustomText style={styles.labelTxt}>{t("request.accession")}</CustomText>
@@ -75,6 +75,9 @@ const getStyles = (theme: typeof LightTheme) =>
         labelValue: {
             width: '50%',
             textAlign: 'right'
+        },
+        capitalizeTxt: {
+            textTransform: 'capitalize'
         },
         rowBox: {
             width: '100%',

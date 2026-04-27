@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { LocalDB } from 'services/database';
 import { setToken, setUser } from 'redux/features/authSlice';
 import { Logo } from 'assets/svg';
-import { triggerBiometricPrompt } from 'utils/biometrics';
+import { checkBiometricAvailability, triggerBiometricPrompt } from 'utils/biometrics';
 
 type Props = {
   navigation: AppNavigationProp<'Splash'>;
@@ -43,6 +43,13 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
       dispatch(setToken(token));
       const parsedUser = userData ? JSON.parse(userData) : null;
       if (parsedUser) dispatch(setUser(parsedUser));
+      const { available } = await checkBiometricAvailability();
+      if (!available) {
+        return navigation.reset({
+          index: 0,
+          routes: [{ name: 'DashboardNavigation' }]
+        });
+      }
       const success = await triggerBiometricPrompt();
       if (success) {
         navigation.reset({

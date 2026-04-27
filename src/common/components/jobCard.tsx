@@ -64,7 +64,7 @@ const JobCard: React.FC<Props> = ({ onPress, item, index }) => {
       </View>
       <View style={styles.urgencyLevelBox}>
         <CustomText style={styles.urgencyTxt}>{t("request.urgency_level")}: </CustomText>
-        <CustomText>{item?.priority}</CustomText>
+        <CustomText style={styles.urgencyValue}>{item?.priority}</CustomText>
       </View>
       {onPress && (
         <View style={styles.detailContainer}>
@@ -145,6 +145,9 @@ const getStyles = (theme: typeof LightTheme) =>
       borderBottomWidth: Metrics._1,
       borderColor: theme.primary,
     },
+    urgencyValue: {
+      textTransform: "uppercase"
+    }
   });
 
 export default JobCard;

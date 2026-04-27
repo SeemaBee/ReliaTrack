@@ -41,6 +41,12 @@ const useStyles = () => {
       fontSize: FontSizes._16,
       marginTop: Metrics._4,
     },
+    uppercaseTxt: {
+      textTransform: 'uppercase',
+    },
+    capitalizeTxt: {
+      textTransform: 'capitalize',
+    },
     detailsItemView: {
       borderBottomWidth: Metrics._1,
       borderBottomColor: theme.border10,

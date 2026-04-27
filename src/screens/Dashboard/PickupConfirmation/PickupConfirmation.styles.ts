@@ -34,6 +34,12 @@ const useStyles = () => {
       paddingBottom: Metrics._8,
       marginBottom: Metrics._20,
     },
+    uppercaseTxt: {
+      textTransform: 'uppercase',
+    },
+    capitalizeTxt: {
+      textTransform: 'capitalize',
+    },
   });
 };
 export default useStyles;
