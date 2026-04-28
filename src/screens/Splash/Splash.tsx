@@ -9,7 +9,8 @@ import { useDispatch } from 'react-redux';
 import { LocalDB } from 'services/database';
 import { setToken, setUser } from 'redux/features/authSlice';
 import { Logo } from 'assets/svg';
-import { triggerBiometricPrompt } from 'utils/biometrics';
+import { checkBiometricAvailability, triggerBiometricPrompt } from 'utils/biometrics';
+import { CommonActions } from '@react-navigation/native';
 
 type Props = {
   navigation: AppNavigationProp<'Splash'>;
@@ -32,8 +33,6 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
       const data = await LocalDB.getMany(["authToken", "userData"]);
       const token = data?.authToken;
       const userData = data?.userData;
-      // console.log(token);
-      // console.log(userData)
       if (!token) {
         return navigation.reset({
           index: 0,
@@ -43,17 +42,45 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
       dispatch(setToken(token));
       const parsedUser = userData ? JSON.parse(userData) : null;
       if (parsedUser) dispatch(setUser(parsedUser));
-      const success = await triggerBiometricPrompt();
-      if (success) {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'DashboardNavigation' }],
-        });
+
+      const { available } = await checkBiometricAvailability();
+
+      if (available) {
+        const success = await triggerBiometricPrompt();
+        console.log('success - ', success);
+        if (success) {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'DashboardNavigation' }],
+          });
+        } else {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'OnboardingNavigation' }],
+          });
+        }
       } else {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'OnboardingNavigation' }],
-        });
+        const userPin = await LocalDB.getItem('userPin');
+        if (userPin) {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                {
+                  name: 'OnboardingNavigation',
+                  state: {
+                    routes: [{ name: 'EnterPin' }],
+                  },
+                },
+              ],
+            })
+          );
+        } else {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'OnboardingNavigation' }],
+          });
+        }
       }
     } catch (error) {
       console.error("Auth Check Error:", error);

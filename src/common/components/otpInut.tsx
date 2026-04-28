@@ -15,11 +15,12 @@ import { FontSizes } from 'theme/typography';
 type OTPInputProps = {
   values: string;
   onChange: (otp: string) => void;
+  secureTextEntry?: boolean
 };
 
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-const OTPInput = ({ values, onChange }: OTPInputProps) => {
+const OTPInput = ({ values, onChange, secureTextEntry = false }: OTPInputProps) => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const theme = useTheme();
 
@@ -77,6 +78,7 @@ const OTPInput = ({ values, onChange }: OTPInputProps) => {
             ref={inputs[index]}
             style={styles.otpInput}
             maxLength={1}
+            secureTextEntry={secureTextEntry}
             placeholder="X"
             placeholderTextColor={theme.black2}
             keyboardType="number-pad"

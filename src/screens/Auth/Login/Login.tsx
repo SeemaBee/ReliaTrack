@@ -35,8 +35,8 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   const checkBiometric = async () => {
     const { available, biometryType } =
       await checkBiometricAvailability();
-    // console.log(available);
-    // console.log(biometryType)
+    console.log(available);
+    console.log(biometryType)
 
     setBiometricAvailable(available);
     if (biometryType) {
@@ -48,8 +48,8 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   }, []);
 
   const initialValues = {
-    email: '',
-    password: '',
+    email: 'emily.thompson@medcourier.com',
+    password: 'password123',
   };
 
   const handleSignIn = async (values: LoginFormValues) => {
@@ -70,10 +70,14 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
         await LocalDB.setMany({ authToken: token, userData: JSON.stringify(user) });
         dispatch(setUser(user));
         dispatch(setToken(token));
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'DashboardNavigation' }],
-        });
+        if (!biometricAvailable) {
+          navigation.navigate('SetPin');
+        } else {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'DashboardNavigation' }],
+          });
+        }
       }
     } catch (error: any) {
       Toast.showWithGravity(error?.message || "Something went wrong", Toast.LONG, Toast.BOTTOM);
@@ -85,7 +89,7 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 
   const handleBiometricLogin = async () => {
     if (!biometricAvailable) {
-      Alert.alert('Biometrics not available on this device');
+      navigation.navigate('EnterPin');
       return;
     }
 
@@ -165,9 +169,8 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
             </View>
             <Button title={t('auth.btn_signin')} onPress={handleSubmit} />
             <Button
-              title={`Use ${biometricType === null ? "biometrics" : biometricType}`}
+              title={biometricAvailable ? `Use ${biometricType || "biometrics"}` : "Use PIN"}
               onPress={handleBiometricLogin}
-              disabled={!biometricAvailable}
             />
           </Container>
         )}

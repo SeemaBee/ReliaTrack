@@ -8,6 +8,8 @@ export type StackParamList = {
   ForgotPassword: undefined;
   OtpScreen: { email: string; tempOtp: string };
   ResetPassword: { email: string; otp: string };
+  SetPin: undefined;
+  EnterPin: undefined;
   DashboardNavigation: undefined;
   Home: undefined;
   RequestScreen: { id: number };

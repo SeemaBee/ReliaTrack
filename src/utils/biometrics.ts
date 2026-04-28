@@ -15,6 +15,7 @@ export const triggerBiometricPrompt = async () => {
       promptMessage: 'Authenticate to login',
       cancelButtonText: 'Cancel',
     });
+    console.log('success - ', success);
     return success;
   } catch (error) {
     console.log(error);
