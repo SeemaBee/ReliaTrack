@@ -80,7 +80,7 @@ export type DeliveryValues = {
 
 export type StartDeliveryProps = {
   temperature_reading: string;
-  note: string;
+  notes: string;
   latitude: number | undefined;
   longitude: number | undefined;
 };

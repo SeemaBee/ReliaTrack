@@ -8,8 +8,12 @@ import useStyles from './Splash.styles';
 import { useDispatch } from 'react-redux';
 import { LocalDB } from 'services/database';
 import { setToken, setUser } from 'redux/features/authSlice';
+import {
+  checkBiometricAvailability,
+  triggerBiometricPrompt,
+} from 'utils/biometrics';
+import CustomText from 'common/components/text';
 import { Logo } from 'assets/svg';
-import { checkBiometricAvailability, triggerBiometricPrompt } from 'utils/biometrics';
 
 type Props = {
   navigation: AppNavigationProp<'Splash'>;
@@ -29,7 +33,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
 
   const checkLoggedIn = useCallback(async () => {
     try {
-      const data = await LocalDB.getMany(["authToken", "userData"]);
+      const data = await LocalDB.getMany(['authToken', 'userData']);
       const token = data?.authToken;
       const userData = data?.userData;
       // console.log(token);
@@ -47,7 +51,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
       if (!available) {
         return navigation.reset({
           index: 0,
-          routes: [{ name: 'DashboardNavigation' }]
+          routes: [{ name: 'DashboardNavigation' }],
         });
       }
       const success = await triggerBiometricPrompt();
@@ -63,7 +67,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
         });
       }
     } catch (error) {
-      console.error("Auth Check Error:", error);
+      console.error('Auth Check Error:', error);
       navigation.reset({
         index: 0,
         routes: [{ name: 'OnboardingNavigation' }],
@@ -81,7 +85,13 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Logo />
+      <View style={styles.subContainer}>
+        <Logo />
+        <View style={styles.underline} />
+        <CustomText style={styles.subTitle}>
+          Reliable Tracking. {'\n'}Secure Logistics.
+        </CustomText>
+      </View>
     </View>
   );
 };

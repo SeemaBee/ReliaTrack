@@ -36,6 +36,7 @@ export const Metrics = {
   _100: moderateScale(100),
   _130: moderateScale(130),
   _150: moderateScale(150),
+  _180: moderateScale(180),
   _224: moderateScale(224),
   _300: moderateScale(300),
   deviceHeight: Dimensions.get('window').height,
